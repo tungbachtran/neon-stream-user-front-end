@@ -26,7 +26,6 @@ import {
 } from 'lucide-react';
 
 import { streamsApi } from '@/lib/api/streams';
-import { followsAPI } from '@/lib/api/follows';
 import { API_URL } from '@/lib/api/config';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -35,8 +34,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { LiveOverview, Stream } from '@/types';
-import { Navbar } from '@/components/layout/navbar';
-import { ChatButton } from '@/components/chat/ChatButton';
+import { useStreams } from '@/lib/hooks/use-streams';
 
 function formatViewers(value: number) {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
@@ -51,22 +49,15 @@ export default function BrowsePage() {
 
 
 
-  const {
-    data: initialFollowingLive,
-    isLoading: isFollowingLoading,
-  } = useQuery({
-    queryKey: ['follows', 'live'],
-    queryFn: followsAPI.getLiveFollowedStreams,
-    retry: false,
-  });
+  const { liveStreams, isLoadingLive} = useStreams();
 
-
-
+ 
   useEffect(() => {
-    if (initialFollowingLive) {
-      setFollowingLive(initialFollowingLive);
-    }
-  }, [initialFollowingLive]);
+    if (!liveStreams) return;
+      setFollowingLive(liveStreams);
+
+  }, [liveStreams]);
+
 
 
   useEffect(() => {
@@ -128,98 +119,163 @@ export default function BrowsePage() {
         <BrowseSidebar
           followingLive={followingLive}
           topLiveStreams={overview?.topLiveStreams ?? []}
-          isFollowingLoading={isFollowingLoading}
+          isFollowingLoading={isLoadingLive}
+          isLoading = {isLoadingLive}
         />
 
         <main className="min-w-0 flex-1 pl-0 lg:pl-[260px]">
-          <Navbar />
+          <TopNav
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
 
           <div className="mx-auto max-w-[1480px] px-4 py-6 md:px-8">
+         
+              <>
+                <HeroSection stream={heroStream} />
 
-            <>
-              <HeroSection stream={heroStream} />
-
-              <SectionHeader
-                eyebrow="/"
-                title="Recommended For You"
-                action="View All"
-              />
-
-              {filteredStreams.length > 0 ? (
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                  {filteredStreams.slice(0, 8).map((stream) => (
-                    <StreamCard key={stream.id} stream={stream} />
-                  ))}
-                </div>
-              ) : (
-                <EmptyState
-                  icon={<Video className="h-10 w-10" />}
-                  title="Không có live stream phù hợp"
-                  description={
-                    searchQuery
-                      ? 'Không tìm thấy stream theo từ khóa bạn nhập.'
-                      : 'Hiện chưa có ai đang live. Neon hơi yên tĩnh một chút.'
-                  }
+                <SectionHeader
+                  eyebrow="/"
+                  title="Recommended For You"
+                  action="View All"
                 />
-              )}
 
-              <SectionHeader
-                eyebrow="/"
-                title="Top Categories"
-                action="Explore More"
-                className="mt-10"
-              />
+                {filteredStreams.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                    {filteredStreams.slice(0, 8).map((stream) => (
+                      <StreamCard key={stream.id} stream={stream} />
+                    ))}
+                  </div>
+                ) : (
+                  <EmptyState
+                    icon={<Video className="h-10 w-10" />}
+                    title="Không có live stream phù hợp"
+                    description={
+                      searchQuery
+                        ? 'Không tìm thấy stream theo từ khóa bạn nhập.'
+                        : 'Hiện chưa có ai đang live. Neon hơi yên tĩnh một chút.'
+                    }
+                  />
+                )}
 
-              {overview?.liveCategories?.length ? (
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
-                  {overview.liveCategories.slice(0, 6).map((category) => (
-                    <CategoryCard key={category.id} category={category} />
-                  ))}
-                </div>
-              ) : (
-                <EmptyState
-                  compact
-                  icon={<Gamepad2 className="h-8 w-8" />}
-                  title="Chưa có danh mục đang live"
-                  description="Khi có stream live thuộc danh mục, khu vực này sẽ tự cập nhật realtime."
+                <SectionHeader
+                  eyebrow="/"
+                  title="Top Categories"
+                  action="Explore More"
+                  className="mt-10"
                 />
-              )}
 
-              <SectionHeader
-                title="Popular Channels"
-                className="mt-10"
-              />
+                {overview?.liveCategories?.length ? (
+                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+                    {overview.liveCategories.slice(0, 6).map((category) => (
+                      <CategoryCard key={category.id} category={category} />
+                    ))}
+                  </div>
+                ) : (
+                  <EmptyState
+                    compact
+                    icon={<Gamepad2 className="h-8 w-8" />}
+                    title="Chưa có danh mục đang live"
+                    description="Khi có stream live thuộc danh mục, khu vực này sẽ tự cập nhật realtime."
+                  />
+                )}
 
-              {overview?.popularChannels?.length ? (
-                <div className="grid grid-cols-3 gap-6 md:grid-cols-4 lg:grid-cols-6">
-                  {overview.popularChannels.map((channel) => (
-                    <PopularChannelCard
-                      key={channel.id}
-                      channel={channel}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <EmptyState
-                  compact
-                  icon={<Users className="h-8 w-8" />}
-                  title="Chưa có kênh nổi bật"
-                  description="Top kênh sẽ xuất hiện khi có streamer đang live."
+                <SectionHeader
+                  title="Popular Channels"
+                  className="mt-10"
                 />
-              )}
-            </>
+
+                {overview?.popularChannels?.length ? (
+                  <div className="grid grid-cols-3 gap-6 md:grid-cols-4 lg:grid-cols-6">
+                    {overview.popularChannels.map((channel) => (
+                      <PopularChannelCard
+                        key={channel.id}
+                        channel={channel}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <EmptyState
+                    compact
+                    icon={<Users className="h-8 w-8" />}
+                    title="Chưa có kênh nổi bật"
+                    description="Top kênh sẽ xuất hiện khi có streamer đang live."
+                  />
+                )}
+              </>
 
           </div>
         </main>
-        <ChatButton />
       </div>
     </div>
   );
 }
 
+function TopNav({
+  searchQuery,
+  onSearchChange,
+}: {
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
+}) {
+  return (
+    <header className="sticky top-0 z-30 border-b border-white/5 bg-[#08090d]/85 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-[1480px] items-center gap-4 px-4 md:px-8">
+        <div className="hidden items-center gap-6 lg:flex">
+          <Link
+            href="/browse"
+            className="text-sm font-semibold text-violet-300"
+          >
+            Browse
+          </Link>
+          <Link
+            href="/following"
+            className="text-sm text-zinc-400 transition hover:text-white"
+          >
+            Following
+          </Link>
+          <Link
+            href="/schedule"
+            className="text-sm text-zinc-400 transition hover:text-white"
+          >
+            Schedule
+          </Link>
+        </div>
 
+        <div className="relative mx-auto w-full max-w-[520px]">
+          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+          <Input
+            value={searchQuery}
+            onChange={(event) => onSearchChange(event.target.value)}
+            placeholder="Search channels, games, or vibes..."
+            className="h-10 rounded-xl border-white/10 bg-white/[0.06] pl-11 text-sm text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
+          />
+        </div>
 
-export function BrowseSidebar({
+        <Button
+          size="sm"
+          className="rounded-xl bg-violet-500 px-5 font-bold text-white hover:bg-violet-400"
+          asChild
+        >
+          <Link href="/dashboard/streams">Go Live</Link>
+        </Button>
+
+        <button className="hidden rounded-full p-2 text-zinc-400 transition hover:bg-white/10 hover:text-white md:inline-flex">
+          <Bell className="h-5 w-5" />
+        </button>
+
+        <Avatar className="h-9 w-9 ring-2 ring-cyan-400/50">
+          <AvatarImage src="" />
+          <AvatarFallback className="bg-cyan-950 text-cyan-200">
+            N
+          </AvatarFallback>
+        </Avatar>
+      </div>
+    </header>
+  );
+}
+
+function BrowseSidebar({
   followingLive,
   topLiveStreams,
   isFollowingLoading,
@@ -228,7 +284,7 @@ export function BrowseSidebar({
   followingLive: Stream[];
   topLiveStreams: Stream[];
   isFollowingLoading: boolean;
-  isLoading?: boolean;
+  isLoading: boolean;
 }) {
   return (
     <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[260px] border-r border-white/5 bg-[#111219] lg:flex lg:flex-col">
@@ -305,7 +361,7 @@ export function BrowseSidebar({
   );
 }
 
-export function SidebarNav() {
+function SidebarNav() {
   return (
     <div className="mb-5 space-y-1">
       <Link
