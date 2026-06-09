@@ -24,11 +24,8 @@ export const authApi = {
   register: (data: RegisterData) =>
     apiClient.post<AuthResponse>('/auth/register', data),
 
-  login: (data: LoginData) =>{
-    console.log(apiClient);
-    apiClient.post<AuthResponse>('/auth/login', data)
-
-  },
+  login: (data: LoginData) =>
+    apiClient.post<AuthResponse>('/auth/login', data),
 
   logout: () =>
     apiClient.post('/auth/logout'),
