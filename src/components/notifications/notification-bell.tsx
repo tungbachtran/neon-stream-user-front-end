@@ -19,39 +19,39 @@ interface FollowNotification {
 }
 
 export function NotificationBell() {
-  const { user } = useSelector(state => state.auth);
+  //const { user } = useSelector(state => state.auth);
   const [notifications, setNotifications] = useState<FollowNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!user) return;
+  // useEffect(() => {
+  //   if (!user) return;
 
-    const token = localStorage.getItem('access_token');
-    if (!token) return;
+  //   const token = localStorage.getItem('access_token');
+  //   if (!token) return;
 
-    // SSE connection để nhận follow notifications
-    const eventSource = new EventSource(
-      `${API_BASE_URL}/follows/notifications/stream`,
-      // Note: EventSource không hỗ trợ custom headers natively
-      // Nếu backend dùng cookie auth thì sẽ tự động gửi
-    );
+  //   // SSE connection để nhận follow notifications
+  //   const eventSource = new EventSource(
+  //     `${API_BASE_URL}/follows/notifications/stream`,
+  //     // Note: EventSource không hỗ trợ custom headers natively
+  //     // Nếu backend dùng cookie auth thì sẽ tự động gửi
+  //   );
 
-    eventSource.onmessage = (e) => {
-      try {
-        const data: FollowNotification = JSON.parse(e.data);
-        setNotifications((prev) => [data, ...prev].slice(0, 20));
-        setUnreadCount((prev) => prev + 1);
-      } catch {}
-    };
+  //   eventSource.onmessage = (e) => {
+  //     try {
+  //       const data: FollowNotification = JSON.parse(e.data);
+  //       setNotifications((prev) => [data, ...prev].slice(0, 20));
+  //       setUnreadCount((prev) => prev + 1);
+  //     } catch {}
+  //   };
 
-    eventSource.onerror = () => {
-      eventSource.close();
-    };
+  //   eventSource.onerror = () => {
+  //     eventSource.close();
+  //   };
 
-    return () => eventSource.close();
-  }, [user]);
+  //   return () => eventSource.close();
+  // }, [user]);
 
   // Click outside để đóng
   useEffect(() => {
