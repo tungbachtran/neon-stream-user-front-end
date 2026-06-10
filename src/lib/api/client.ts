@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { AxiosError, AxiosInstance } from 'axios';
-import { ApiError } from '@/types';
-import { API_BASE_URL } from './config';
-
-const API_URL = API_BASE_URL;
+// src/lib/api/client.ts
+import axios, { AxiosError, AxiosInstance } from "axios";
+import { ApiError } from "@/types";
+import { API_BASE_URL } from "./config";
 
 type FailedQueueItem = {
   resolve: (token: string) => void;
@@ -18,10 +16,10 @@ class ApiClient {
 
   constructor() {
     this.client = axios.create({
-      baseURL: API_URL,
-      withCredentials: true,
+      baseURL: API_BASE_URL,
+      withCredentials: false, // ✅ Không dùng cookie nữa
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -41,11 +39,11 @@ class ApiClient {
   }
 
   private setupInterceptors() {
-    // ── Request: gắn token ──────────────────────────────────────────────
+    // ── Request: gắn token từ localStorage ─────────────────────────────
     this.client.interceptors.request.use(
       (config) => {
-        if (typeof window !== 'undefined') {
-          const token = localStorage.getItem('access_token');
+        if (typeof window !== "undefined") {
+          const token = localStorage.getItem("access_token");
           if (token) {
             config.headers.Authorization = `Bearer ${token}`;
           }
@@ -68,49 +66,50 @@ class ApiClient {
         const originalRequest: any = error.config;
 
         const isAuthRoute =
-          originalRequest?.url?.includes('/auth/refresh') ||
-          originalRequest?.url?.includes('/auth/login') ||
-          originalRequest?.url?.includes('/auth/register');
+          originalRequest?.url?.includes("/auth/refresh") ||
+          originalRequest?.url?.includes("/auth/login") ||
+          originalRequest?.url?.includes("/auth/register");
 
-        // ── Xử lý 401 + auto-refresh ───────────────────────────────────
-        if (error.response?.status === 401 && !isAuthRoute && !originalRequest?._retry) {
-          // Nếu đang refresh → xếp hàng chờ
+        if (
+          error.response?.status === 401 &&
+          !isAuthRoute &&
+          !originalRequest?._retry
+        ) {
           if (this.isRefreshing) {
             return new Promise((resolve, reject) => {
               this.failedQueue.push({ resolve, reject });
-            }).then((newToken) => {
-              originalRequest.headers.Authorization = `Bearer ${newToken}`;
-              return this.client.request(originalRequest);
-            }).catch((err) => Promise.reject(err));
+            })
+              .then((newToken) => {
+                originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                return this.client.request(originalRequest);
+              })
+              .catch((err) => Promise.reject(err));
           }
 
           originalRequest._retry = true;
           this.isRefreshing = true;
 
           try {
-            // ✅ Lấy token mới từ response
-            const res = await this.client.post<{ accessToken: string }>('/auth/refresh');
+            const res = await this.client.post<{ accessToken: string }>(
+              "/auth/refresh"
+            );
             const newToken = (res as any).accessToken;
 
-            // ✅ Lưu vào localStorage
-            if (newToken && typeof window !== 'undefined') {
-              localStorage.setItem('access_token', newToken);
+            if (newToken && typeof window !== "undefined") {
+              localStorage.setItem("access_token", newToken);
             }
 
-            // ✅ Thông báo cho các request đang chờ
             this.processQueue(null, newToken);
             this.isRefreshing = false;
 
-            // ✅ Retry request gốc với token mới
             originalRequest.headers.Authorization = `Bearer ${newToken}`;
             return this.client.request(originalRequest);
-
           } catch (refreshError) {
             this.processQueue(refreshError, null);
             this.isRefreshing = false;
 
-            if (typeof window !== 'undefined') {
-              localStorage.removeItem('access_token');
+            if (typeof window !== "undefined") {
+              localStorage.removeItem("access_token");
             }
 
             this.onUnauthorized?.();
@@ -118,19 +117,18 @@ class ApiClient {
           }
         }
 
-        // ── 401 trên auth routes → logout ──────────────────────────────
         if (error.response?.status === 401 && isAuthRoute) {
-          if (typeof window !== 'undefined') {
-            localStorage.removeItem('access_token');
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("access_token");
           }
           this.onUnauthorized?.();
         }
 
         const apiError: ApiError = error.response?.data || {
           statusCode: 500,
-          message: 'An unexpected error occurred',
+          message: "An unexpected error occurred",
           timestamp: new Date().toISOString(),
-          path: error.config?.url || '',
+          path: error.config?.url || "",
         };
 
         return Promise.reject(apiError);

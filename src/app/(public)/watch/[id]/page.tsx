@@ -38,6 +38,7 @@ export default function WatchPage() {
     queryFn: () => streamsApi.getStreamById(streamId),
     refetchInterval: 5000,
   });
+  
 
   useQuery({
     queryKey: ['streams', streamId, 'playback'],
