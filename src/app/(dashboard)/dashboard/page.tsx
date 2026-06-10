@@ -1,7 +1,6 @@
 // src/app/(dashboard)/dashboard/page.tsx
 'use client';
 
-import { useAuth } from '@/lib/hooks/use-auth';
 import { useStreams } from '@/lib/hooks/use-streams';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { UserPlus, UserCheck, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { followsAPI } from '@/lib/api/follows';
-import { useAuth } from '@/lib/hooks/use-auth';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 

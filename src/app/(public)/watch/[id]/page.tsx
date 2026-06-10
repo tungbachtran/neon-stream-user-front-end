@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { streamsApi } from '@/lib/api/streams';
-import { useAuth } from '@/lib/hooks/use-auth';
 import { StreamPlayer } from '@/components/stream/stream-player';
 import { StreamChat } from '@/components/stream/stream-chat';
 import { Card, CardContent } from '@/components/ui/card';
@@ -27,10 +26,11 @@ import { GiftAnimationOverlay } from '@/components/gifts/gift-animation-overlay'
 import { GiftTriggerButton } from '@/components/gifts/gift-trigger-button';
 import { DonateAlertOverlay } from '@/components/donate/donate-alert-overlay';
 import { FollowButton } from '@/components/follow/follow-button';
+import { useSelector } from 'react-redux';
 
 export default function WatchPage() {
   const params = useParams();
-  const { user } = useAuth();
+  const { user } = useSelector(state => state.auth);
   const streamId = params.id as string;
 
   const { data: stream, isLoading } = useQuery({

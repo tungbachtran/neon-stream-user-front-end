@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCheckInStatus, useCheckIn } from '@/lib/hooks/use-check-in';
-import { useAuth } from '@/lib/hooks/use-auth';
+
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';

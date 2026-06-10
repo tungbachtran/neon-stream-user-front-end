@@ -5,6 +5,7 @@ import { Bell } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAuth } from '@/lib/hooks/use-auth';
 import { API_BASE_URL } from '@/lib/api/config';
+import { useSelector } from 'react-redux';
 
 
 interface FollowNotification {
@@ -18,7 +19,7 @@ interface FollowNotification {
 }
 
 export function NotificationBell() {
-  const { user } = useAuth();
+  const { user } = useSelector(state => state.auth);
   const [notifications, setNotifications] = useState<FollowNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);

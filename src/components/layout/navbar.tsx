@@ -17,7 +17,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { signOut } from 'next-auth/react';
-import { useAuth } from '@/lib/hooks/use-auth';
 import { NotificationBell } from '@/components/notifications/notification-bell';
 
 export function Navbar() {

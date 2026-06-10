@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { GiftPanel } from './gift-panel';
-import { useAuth } from '@/lib/hooks/use-auth';
+
 import { cn } from '@/lib/utils';
 import { useAppSelector } from '@/types/redux-type';
 
