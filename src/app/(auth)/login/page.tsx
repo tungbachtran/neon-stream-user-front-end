@@ -40,9 +40,10 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleLogin = () => {
     setIsGoogleLoading(true);
-    await signIn('google', { callbackUrl: '/' });
+  
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   };
 
   return (

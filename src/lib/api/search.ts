@@ -31,20 +31,20 @@ export const searchAPI = {
     const res = await apiClient.get('/streams/search', {
       params: { q: query, type: 'streamer' },
     });
-    return res.data?.streamers ?? [];
+    return res.streamers ?? [];
   },
 
   searchStreams: async (query: string): Promise<SearchStreamResult[]> => {
     const res = await apiClient.get('/streams/search', {
       params: { q: query, type: 'stream' },
     });
-    return res.data?.streams ?? [];
+    return res.streams ?? [];
   },
 
   getSuggestions: async (query: string): Promise<SearchStreamerResult[]> => {
     const res = await apiClient.get('/streams/search/suggestions', {
       params: { q: query },
     });
-    return res.data?.streamers ?? [];
+    return res.streamers ?? [];
   },
 };

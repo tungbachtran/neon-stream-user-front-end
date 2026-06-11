@@ -1,7 +1,7 @@
 // src/app/(auth)/auth/callback/page.tsx
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAppDispatch } from '@/types/redux-type';
 import { fetchProfile } from '@/lib/features/auth/authSlice';
@@ -11,18 +11,37 @@ export default function AuthCallbackPage() {
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
 
+  const hasHandled = useRef(false);
+
   useEffect(() => {
-    const token = searchParams.get('token');
-    if (token) {
-      // ✅ Lưu token từ Google OAuth vào localStorage
+    if (hasHandled.current) return;
+    hasHandled.current = true;
+
+    const handleGoogleCallback = async () => {
+      const token = searchParams.get('token');
+
+      if (!token) {
+        router.replace('/login?error=missing_google_token');
+        return;
+      }
+
       localStorage.setItem('access_token', token);
-      // Fetch lại profile với token mới
-      dispatch(fetchProfile());
-      router.replace('/browse');
-    } else {
-      router.replace('/login');
-    }
-  }, []);
+
+      try {
+        await dispatch(fetchProfile()).unwrap();
+
+        router.replace('/browse');
+      } catch (error) {
+        console.error('Google callback error:', error);
+
+        localStorage.removeItem('access_token');
+
+        router.replace('/login?error=google_login_failed');
+      }
+    };
+
+    void handleGoogleCallback();
+  }, [dispatch, router, searchParams]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#08080d] text-white">

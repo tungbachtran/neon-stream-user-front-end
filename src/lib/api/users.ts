@@ -31,7 +31,10 @@ export interface PublicProfile {
 
 export const usersAPI = {
   getPublicProfile: async (username: string): Promise<PublicProfile> => {
-    const res = await apiClient.get(`/users/profile/${username}`);
-    return res.data;
+    const profile = await apiClient.get<PublicProfile>(
+      `/users/profile/${encodeURIComponent(username)}`
+    );
+
+    return profile;
   },
 };

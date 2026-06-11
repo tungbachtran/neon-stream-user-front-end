@@ -111,18 +111,24 @@ const authSlice = createSlice({
     builder
       // fetchProfile
       .addCase(fetchProfile.pending, (state) => {
-        state.isCheckingAuth = true;
+        // Không bật lại global loading ở đây
         state.error = null;
       })
       .addCase(fetchProfile.fulfilled, (state, action) => {
         state.user = action.payload;
         state.isAuthenticated = true;
-        state.isCheckingAuth = false; // ✅ Xong rồi, không load nữa
+        state.isCheckingAuth = false;
+        state.error = null;
       })
-      .addCase(fetchProfile.rejected, (state) => {
+      .addCase(fetchProfile.rejected, (state, action) => {
         state.user = null;
         state.isAuthenticated = false;
-        state.isCheckingAuth = false; // ✅ Dù lỗi cũng phải tắt loading
+        state.isCheckingAuth = false;
+
+        const message = action.payload as string;
+
+        // Không cần hiển thị "No token" như lỗi thật
+        state.error = message === "No token" ? null : message;
       })
 
       // login
@@ -155,11 +161,20 @@ const authSlice = createSlice({
         state.error = action.payload as string;
       })
 
-      // logout
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
         state.isLoading = false;
+        state.isCheckingAuth = false;
+        state.error = null;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
       });
   },
 });

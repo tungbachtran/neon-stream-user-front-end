@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { StreamPlayer } from '@/components/stream/stream-player';
+import { StreamChat } from '@/components/stream/stream-chat';
+import { DonateAlertOverlay } from '@/components/donate/donate-alert-overlay';
 import { Icons } from '@/components/ui/icons';
 import { useAppSelector } from '@/types/redux-type';
 import { useUpload } from '@/lib/hooks/use-upload';
@@ -20,17 +22,13 @@ import {
     DollarSign,
     Eye,
     EyeOff,
-    Gift,
     Heart,
     Megaphone,
     MessageSquare,
     Pencil,
     Play,
     Scissors,
-    Send,
-    Settings,
     Share2,
-    Smile,
     Sparkles,
     Square,
     Upload,
@@ -39,7 +37,6 @@ import {
     Video,
     Volume2,
     Wifi,
-    X,
 } from 'lucide-react';
 import { API_BASE_URL } from '@/lib/api/config';
 
@@ -55,7 +52,6 @@ export default function StreamControlPage() {
     const [isStarting, setIsStarting] = useState(false);
     const [isEnding, setIsEnding] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
-    const [chatInput, setChatInput] = useState('');
 
     // ── Editable fields (local state, sync từ stream khi load) ──────────
     const [editTitle, setEditTitle] = useState('');
@@ -196,7 +192,7 @@ export default function StreamControlPage() {
 
     return (
         <div className="min-h-screen bg-[#08090d] p-4 text-white md:p-6">
-            <div className="mx-auto max-w-[1180px]">
+            <div className="mx-auto max-w-[1500px]">
                 {/* Header */}
                 <header className="mb-7 flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
                     <div className="min-w-0 flex-1">
@@ -298,7 +294,7 @@ export default function StreamControlPage() {
                 </header>
 
                 {/* Main layout */}
-                <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+                <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_400px]">
                     <main className="min-w-0 space-y-5">
                         {/* Preview */}
                         <section className="relative overflow-hidden rounded-2xl bg-[#050609] shadow-2xl shadow-black/40">
@@ -316,6 +312,8 @@ export default function StreamControlPage() {
                                         </div>
                                     </div>
                                 )}
+
+                                {isLive && <DonateAlertOverlay roomId={streamId} />}
 
                                 <div className="absolute left-4 top-4 flex items-center gap-3">
                                     <StatusPill live={isLive} />
@@ -509,21 +507,23 @@ export default function StreamControlPage() {
                         </section>
                     </main>
 
-                    {/* Right chat */}
+                    {/* Real-time chat — dùng chung component với trang watch */}
                     <aside className="min-w-0">
-                        {stream.isChatEnabled ? (
-                            <ManagerChat
-                                chatInput={chatInput}
-                                setChatInput={setChatInput}
-                                isLive={isLive}
-                            />
+                        {stream.isChatEnabled && isLive ? (
+                            <StreamChat roomId={streamId} />
                         ) : (
                             <div className="flex min-h-[640px] items-center justify-center rounded-2xl bg-[#1e1f27] p-6 text-center">
                                 <div>
                                     <MessageSquare className="mx-auto mb-4 h-12 w-12 text-white/25" />
-                                    <p className="font-bold text-white/70">Chat is disabled</p>
+                                    <p className="font-bold text-white/70">
+                                        {stream.isChatEnabled
+                                            ? 'Chat will be available when the stream is live'
+                                            : 'Chat is disabled'}
+                                    </p>
                                     <p className="mt-1 text-sm text-white/40">
-                                        Turn chat back on from Stream Settings.
+                                        {stream.isChatEnabled
+                                            ? 'Start the stream to connect to the live chat room.'
+                                            : 'Turn chat back on from Stream Settings.'}
                                     </p>
                                 </div>
                             </div>
@@ -720,143 +720,6 @@ function CopyField({
                     <Copy className="h-4 w-4" />
                 </Button>
             </div>
-        </div>
-    );
-}
-
-function ManagerChat({
-    chatInput,
-    setChatInput,
-    isLive,
-}: {
-    chatInput: string;
-    setChatInput: (value: string) => void;
-    isLive: boolean;
-}) {
-    return (
-        <div className="flex h-[calc(100vh-48px)] min-h-[720px] overflow-hidden rounded-2xl bg-[#202127] shadow-2xl shadow-black/40">
-            <div className="flex min-w-0 flex-1 flex-col">
-                <div className="flex h-[72px] items-center justify-between border-b border-white/5 px-5">
-                    <h2 className="text-sm font-black uppercase tracking-wide text-white/70">
-                        Stream Chat
-                    </h2>
-
-                    <div className="flex items-center gap-3 text-white/35">
-                        <Settings className="h-4 w-4" />
-                        <X className="h-4 w-4" />
-                    </div>
-                </div>
-
-                <div className="flex-1 space-y-4 overflow-y-auto px-5 py-5">
-                    {!isLive && (
-                        <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm text-white/45">
-                            Chat preview. Messages will appear here when your stream is live.
-                        </div>
-                    )}
-
-                    <ChatLine
-                        name="MOD_Viper"
-                        nameColor="text-pink-400"
-                        message="Welcome everyone! Keep it chill in the chat."
-                        mod
-                    />
-
-                    <ChatLine
-                        name="CyberPunk99"
-                        nameColor="text-cyan-400"
-                        message="That headshot was insane! 🔥"
-                    />
-
-                    <div className="rounded-lg bg-violet-400/15 px-3 py-2">
-                        <div className="flex items-center gap-2 text-sm">
-                            <Gift className="h-4 w-4 text-violet-300" />
-                            <span className="font-black text-violet-300">GiftBot:</span>
-                            <span className="font-semibold text-white/75">
-                                PixelArt gifted 5 Subs!
-                            </span>
-                        </div>
-                    </div>
-
-                    <ChatLine
-                        name="NeonGhost"
-                        nameColor="text-white/55"
-                        message="pogchamp"
-                    />
-
-                    <ChatLine
-                        name="Aero_Dynamics"
-                        nameColor="text-cyan-400"
-                        message="How long have you been streaming today?"
-                    />
-
-                    <ChatLine
-                        name="WatcherX"
-                        nameColor="text-white/55"
-                        message="drop the loadout details pls"
-                    />
-
-                    <ChatLine
-                        name="Zonked"
-                        nameColor="text-cyan-400"
-                        message="LUL 😂"
-                    />
-                </div>
-
-                <div className="border-t border-white/5 bg-[#18191f] p-4">
-                    <div className="flex items-center gap-2 rounded-xl bg-[#0d0e13] px-3 py-2">
-                        <Input
-                            value={chatInput}
-                            onChange={(event) => setChatInput(event.target.value)}
-                            placeholder="Send a message..."
-                            className="h-9 border-0 bg-transparent px-0 text-sm text-white placeholder:text-white/30 focus-visible:ring-0 focus-visible:ring-offset-0"
-                        />
-
-                        <Smile className="h-4 w-4 text-white/35" />
-
-                        <button className="grid h-8 w-8 place-items-center rounded-full text-cyan-400 transition hover:bg-cyan-400/10">
-                            <Send className="h-4 w-4 fill-current" />
-                        </button>
-                    </div>
-
-                    <div className="mt-3 flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2">
-                            <span className="rounded-md bg-black/30 px-2 py-1 text-[10px] font-black text-pink-300">
-                                ♥ 12.4k
-                            </span>
-
-                            <span className="rounded-md bg-black/30 px-2 py-1 text-[10px] font-black text-cyan-300">
-                                Points: 245
-                            </span>
-                        </div>
-
-                        <span className="text-[10px] font-black uppercase tracking-wider text-cyan-300">
-                            Slow Mode: On
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function ChatLine({
-    name,
-    nameColor,
-    message,
-    mod = false,
-}: {
-    name: string;
-    nameColor: string;
-    message: string;
-    mod?: boolean;
-}) {
-    return (
-        <div className="text-sm leading-relaxed">
-            <span className={`font-black ${nameColor}`}>
-                {mod && <span className="mr-2 inline-block h-2 w-2 rounded-full bg-pink-400" />}
-                {name}:
-            </span>{' '}
-            <span className="text-white/70">{message}</span>
         </div>
     );
 }

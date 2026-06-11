@@ -56,7 +56,7 @@ export default function BrowsePage() {
     isLoading: isFollowingLoading,
   } = useQuery({
     queryKey: ['follows', 'live'],
-    queryFn: followsAPI.getLiveFollowedStreams,
+    queryFn: streamsApi.getLiveStreams,
     retry: false,
   });
 

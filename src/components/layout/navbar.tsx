@@ -16,19 +16,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { signOut } from 'next-auth/react';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '@/lib/store/store';
+import { logout } from '@/lib/features/auth/authSlice';
 import { NotificationBell } from '@/components/notifications/notification-bell';
 
 export function Navbar() {
   const router = useRouter();
-  const { user } = useSelector(state => state.auth);
+  const { user, isLoading } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<SearchStreamerResult[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
-
+  const dispatch = useDispatch<AppDispatch>();
   const searchRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -102,6 +106,17 @@ export function Navbar() {
     router.push(`/profile/${username}`);
     setShowSuggestions(false);
     setQuery('');
+  };
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logout()).unwrap();
+
+      router.replace('/');
+      router.refresh();
+    } catch (error) {
+      console.error('Đăng xuất thất bại:', error);
+    }
   };
 
   return (
@@ -233,10 +248,12 @@ export function Navbar() {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-white/10" />
                   <DropdownMenuItem
-                    onClick={() => signOut({ callbackUrl: '/' })}
+                    onSelect={() => void handleLogout()}
+                    disabled={isLoading}
                     className="text-red-400 focus:text-red-300 cursor-pointer flex items-center gap-2"
                   >
-                    <LogOut className="w-4 h-4" /> Đăng xuất
+                    <LogOut className="w-4 h-4" />
+                    {isLoading ? 'Đang đăng xuất...' : 'Đăng xuất'}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

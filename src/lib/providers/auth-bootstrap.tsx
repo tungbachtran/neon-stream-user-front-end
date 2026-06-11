@@ -2,26 +2,42 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { fetchProfile } from '@/lib/features/auth/authSlice';
 import { AuthLoadingScreen } from '@/components/auth/auth-loading-screen';
 import { useAppDispatch, useAppSelector } from '@/types/redux-type';
 
-export function AuthBootstrap({ children }: { children: React.ReactNode }) {
+export function AuthBootstrap({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const dispatch = useAppDispatch();
-  const { isCheckingAuth } = useAppSelector((state) => state.auth);
+  const pathname = usePathname();
 
-  // ✅ useRef đảm bảo chỉ dispatch đúng 1 lần, dù component re-render bao nhiêu lần
+  const { isCheckingAuth } = useAppSelector(
+    (state) => state.auth
+  );
+
   const hasFetched = useRef(false);
 
-  useEffect(() => {
-    if (hasFetched.current) return; // ✅ Đã fetch rồi → bỏ qua
-    hasFetched.current = true;
-    dispatch(fetchProfile());
-  }, [dispatch]);
+  const isGoogleCallback = pathname === '/auth/callback';
 
-  // ✅ Chỉ show loading screen lần đầu tiên (isCheckingAuth = true ban đầu)
-  // Sau khi fetchProfile xong (fulfilled hoặc rejected), isCheckingAuth = false
-  // và sẽ không bao giờ về true nữa → không bao giờ show loading lại
+  useEffect(() => {
+    // Trang callback phải tự xử lý token trước
+    if (isGoogleCallback) return;
+
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+
+    void dispatch(fetchProfile());
+  }, [dispatch, isGoogleCallback]);
+
+  // Không dùng global loading để che trang callback
+  if (isGoogleCallback) {
+    return <>{children}</>;
+  }
+
   if (isCheckingAuth) {
     return <AuthLoadingScreen />;
   }
