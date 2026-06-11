@@ -1,42 +1,35 @@
-// src/lib/api/upload.ts
-import { apiClient } from "./client";
-import { FileType } from "@/types";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export interface PresignedUploadResponse {
-  fileId: string;
-  uploadUrl: string;
-  objectKey: string;
-  expiresAt: string;
+export interface UploadResponse {
+  publicUrl: string;
 }
 
-export interface ConfirmUploadResponse {
-  fileId: string;
-  objectKey: string;
-  bucketName: string;
-  publicUrl: string;
-  originalName: string;
-  fileSize: number;
-  mimeType: string;
-  createdAt: string;
+async function uploadFile(
+  endpoint: string,
+  file: File,
+  token: string
+): Promise<UploadResponse> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch(`${API_URL}${endpoint}`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.message ?? "Upload failed");
+  }
+
+  return res.json();
 }
 
 export const uploadApi = {
-  requestPresignedUrl: (data: {
-    userId: string;
-    fileName: string;
-    fileType: FileType;
-  }) => apiClient.post<PresignedUploadResponse>("/upload/presigned", data),
+  uploadAvatar: (file: File, token: string) =>
+    uploadFile("/upload/avatar", file, token),
 
-  uploadToMinio: async (uploadUrl: string, file: File): Promise<void> => {
-    await fetch(uploadUrl, {
-      method: "PUT",
-      body: file,
-      headers: { "Content-Type": file.type },
-    });
-  },
-
-  confirmUpload: (fileId: string, userId: string) =>
-    apiClient.post<ConfirmUploadResponse>(`/upload/confirm/${fileId}`, {
-      userId,
-    }),
+  uploadThumbnail: (file: File, token: string) =>
+    uploadFile("/upload/thumbnail", file, token),
 };

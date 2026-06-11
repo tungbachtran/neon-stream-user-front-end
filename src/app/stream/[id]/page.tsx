@@ -44,7 +44,7 @@ export default function StreamControlPage() {
     const params = useParams();
     const router = useRouter();
     const { user } = useAppSelector((state) => state.auth);
-    const { uploadFile, isUploading } = useUpload();
+    const { uploadImage, isUploading } = useUpload();
 
     const streamId = params.id as string;
     const { stream, credentials, updateStream, isLoading } = useStream(streamId);
@@ -123,7 +123,7 @@ export default function StreamControlPage() {
             // Upload thumbnail lên MinIO nếu user đã chọn ảnh mới
             if (thumbnailFile) {
                 try {
-                    thumbnailUrl = await uploadFile(user.id, thumbnailFile, 'THUMBNAIL');
+                    thumbnailUrl = await uploadImage(thumbnailFile, "thumbnail");
                     setThumbnailFile(null);
                     // Giữ preview cho đến khi query refetch
                 } catch {

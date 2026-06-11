@@ -54,7 +54,7 @@ const languages = ["English", "Vietnamese", "Japanese", "Korean", "French"];
 export default function StreamSetup() {
   const router = useRouter();
   const { user } = useAppSelector((state) => state.auth);
-  const { uploadFile, isUploading } = useUpload();
+  const { uploadImage, isUploading } = useUpload();
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -133,7 +133,7 @@ export default function StreamSetup() {
       // Upload thumbnail lên MinIO trước khi tạo stream
       if (thumbnailFile) {
         try {
-          thumbnailUrl = await uploadFile(user.id, thumbnailFile, "THUMBNAIL");
+          thumbnailUrl = await uploadImage(thumbnailFile, "thumbnail");
         } catch {
           toast.error("Upload thumbnail thất bại, stream vẫn được tạo không có ảnh.");
         }
