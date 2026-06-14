@@ -37,6 +37,7 @@ import { Button } from '@/components/ui/button';
 import { LiveOverview, Stream } from '@/types';
 import { Navbar } from '@/components/layout/navbar';
 import { ChatButton } from '@/components/chat/ChatButton';
+import { DailyCheckInModal } from '@/components/check-in/daily-check-in-modal';
 
 function formatViewers(value: number) {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
@@ -104,7 +105,7 @@ export default function BrowsePage() {
   }, []);
 
   const filteredStreams = useMemo(() => {
-    const streams = overview?.liveStreams ?? [];
+    const streams = followingLive ?? [];
 
     if (!searchQuery.trim()) return streams;
 
@@ -118,7 +119,7 @@ export default function BrowsePage() {
         stream.category?.name.toLowerCase().includes(q)
       );
     });
-  }, [overview?.liveStreams, searchQuery]);
+  }, [followingLive, searchQuery]);
 
   const heroStream = overview?.heroStream ?? filteredStreams[0] ?? null;
 
@@ -211,6 +212,7 @@ export default function BrowsePage() {
 
           </div>
         </main>
+        <DailyCheckInModal/>
         <ChatButton />
       </div>
     </div>

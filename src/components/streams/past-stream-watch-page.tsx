@@ -31,7 +31,7 @@ export interface PastStream {
     title: string;
     description?: string | null;
 
-    videoUrl: string;
+    recordingUrl: string;
     thumbnailUrl?: string | null;
 
     viewCount?: number;
@@ -101,7 +101,7 @@ export function PastStreamWatchPage({
                             <div className="aspect-video w-full">
                                 <video
                                     key={stream.id}
-                                    src={stream.videoUrl}
+                                    src={stream.recordingUrl}
                                     poster={stream.thumbnailUrl || undefined}
                                     controls
                                     autoPlay

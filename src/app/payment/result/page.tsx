@@ -80,7 +80,7 @@ export default function PaymentResultPage() {
             Nạp thêm
           </button>
           <button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => router.push('/')}
             className="flex-1 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 transition-all text-sm font-semibold"
           >
             Về trang chủ

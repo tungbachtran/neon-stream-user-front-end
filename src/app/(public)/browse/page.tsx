@@ -95,7 +95,7 @@ export default function BrowsePage() {
   }, []);
 
   const filteredStreams = useMemo(() => {
-    const streams = overview?.liveStreams ?? [];
+    const streams = followingLive ?? [];
 
     if (!searchQuery.trim()) return streams;
 
@@ -109,7 +109,7 @@ export default function BrowsePage() {
         stream.category?.name.toLowerCase().includes(q)
       );
     });
-  }, [overview?.liveStreams, searchQuery]);
+  }, [followingLive, searchQuery]);
 
   const heroStream = overview?.heroStream ?? filteredStreams[0] ?? null;
 
