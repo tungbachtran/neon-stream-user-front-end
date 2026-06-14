@@ -38,7 +38,7 @@ export default function WatchPage() {
     queryFn: () => streamsApi.getStreamById(streamId),
     refetchInterval: 5000,
   });
-  
+
 
   useQuery({
     queryKey: ['streams', streamId, 'playback'],
@@ -186,10 +186,10 @@ export default function WatchPage() {
               </div>
 
               <div className="flex shrink-0 flex-wrap gap-3">
-              <FollowButton
-    username={stream?.streamer?.username ?? ''}
-    size="sm"
-  />
+                <FollowButton
+                  username={stream?.streamer?.username ?? ''}
+                  size="sm"
+                />
 
                 <Button className="h-12 rounded-xl bg-[#25252d] px-8 text-base font-black text-white/75 hover:bg-[#30303a]">
                   <Tag className="mr-2 h-5 w-5 text-pink-400" />

@@ -215,40 +215,31 @@ function PastStreamCard({
 }: {
   stream: PublicProfile['pastStreams'][number];
 }) {
-  const [showPlayer, setShowPlayer] = useState(false);
-
   return (
-    <div className="bg-white/5 border border-white/10 hover:border-purple-500/30 rounded-xl overflow-hidden transition-all group">
-      {/* Thumbnail / Player */}
-      <div className="relative aspect-video bg-black/40 cursor-pointer" onClick={() => setShowPlayer(true)}>
-        {showPlayer && stream.recordingUrl ? (
-          <video
-            src={stream.recordingUrl}
-            controls
-            autoPlay
-            className="w-full h-full object-cover"
-            onClick={(e) => e.stopPropagation()}
+    <Link
+      href={`/watch/past/${stream.id}`}
+      className="bg-white/5 border border-white/10 hover:border-purple-500/30 rounded-xl overflow-hidden transition-all group block"
+    >
+      {/* Thumbnail */}
+      <div className="relative aspect-video bg-black/40">
+        {stream.thumbnailUrl ? (
+          <img
+            src={stream.thumbnailUrl}
+            alt={stream.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <>
-            {stream.thumbnailUrl ? (
-              <img
-                src={stream.thumbnailUrl}
-                alt={stream.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-900/20 to-pink-900/10">
-                <Play className="w-8 h-8 text-gray-600" />
-              </div>
-            )}
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <Play className="w-6 h-6 text-white fill-white ml-0.5" />
-              </div>
-            </div>
-          </>
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-900/20 to-pink-900/10">
+            <Play className="w-8 h-8 text-gray-600" />
+          </div>
         )}
+
+        {/* hover play icon */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <Play className="w-6 h-6 text-white fill-white ml-0.5" />
+          </div>
+        </div>
       </div>
 
       {/* Info */}
@@ -256,11 +247,13 @@ function PastStreamCard({
         <h3 className="text-sm font-medium text-white truncate group-hover:text-purple-300 transition-colors">
           {stream.title}
         </h3>
+
         <div className="flex items-center justify-between mt-1.5 text-xs text-gray-400">
           <span className="flex items-center gap-1">
             <Eye className="w-3 h-3" />
             {stream.viewerCount.toLocaleString()} lượt xem
           </span>
+
           <span>
             {formatDistanceToNow(new Date(stream.createdAt), {
               addSuffix: true,
@@ -268,6 +261,7 @@ function PastStreamCard({
             })}
           </span>
         </div>
+
         {stream.category && (
           <Badge
             variant="secondary"
@@ -277,6 +271,6 @@ function PastStreamCard({
           </Badge>
         )}
       </div>
-    </div>
+    </Link>
   );
 }

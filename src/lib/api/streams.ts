@@ -1,4 +1,5 @@
 // src/lib/api/streams.ts
+import { PastStreamResponse } from "@/components/streams/past-stream-watch-page";
 import { apiClient } from "./client";
 import { LiveOverview, Stream, StreamCredentials } from "@/types";
 
@@ -32,6 +33,9 @@ export const streamsApi = {
     apiClient.get<Stream[]>("/streams/live", {
       params: limit ? { limit } : undefined,
     }),
+
+    getPastStream: (id: string) =>
+      apiClient.get<PastStreamResponse>(`/streams/paststreams/${id}`),
 
   getLiveOverview: () => apiClient.get<LiveOverview>("/streams/live-overview"),
 
