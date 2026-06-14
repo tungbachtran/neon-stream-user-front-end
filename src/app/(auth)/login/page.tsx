@@ -51,7 +51,7 @@ export default function LoginPage() {
       {/* Left side - image */}
       <div className="hidden md:flex w-1/2 bg-gradient-to-br from-purple-900 to-black items-center justify-center">
         <img
-          src="/login-bg.png" // bạn có thể thay bằng ảnh của bạn
+          src="https://thietbimayanh.com/wp-content/uploads/2024/11/thiet-ke-phong-livestream-game-2.png" // bạn có thể thay bằng ảnh của bạn
           alt="NeonStream"
           className="object-cover h-full w-full opacity-90"
         />

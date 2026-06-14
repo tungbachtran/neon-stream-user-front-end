@@ -56,7 +56,7 @@ export default function RegisterPage() {
       {/* Left side - image/background */}
       <div className="hidden md:flex w-1/2 relative">
         <img
-          src="/register-bg.png" // đổi thành ảnh nền của bạn
+          src="https://thietbimayanh.com/wp-content/uploads/2024/11/thiet-ke-phong-livestream-game-2.png" // đổi thành ảnh nền của bạn
           alt="NeonStream"
           className="object-cover w-full h-full"
         />
