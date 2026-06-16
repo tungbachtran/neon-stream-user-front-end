@@ -291,9 +291,7 @@ function StreamInformation({ stream }: { stream: PastStream }) {
 
                             <div className="mt-5 flex flex-wrap gap-2">
                                 <Pill>Past Stream</Pill>
-                                <Pill>Cạnh Tranh</Pill>
-                                <Pill>Tiếng Việt</Pill>
-                                <Pill accent>Drops Được Bật</Pill>
+
                             </div>
                         </div>
                     </div>
@@ -305,25 +303,13 @@ function StreamInformation({ stream }: { stream: PastStream }) {
                         size="sm"
                     />
 
-                    <Button className="h-12 rounded-xl bg-[#25252d] px-8 text-base font-black text-white/75 hover:bg-[#30303a]">
-                        <Tag className="mr-2 h-5 w-5 text-pink-400" />
-                        Đăng Ký
-                    </Button>
 
-                    <Button
-                        size="icon"
-                        onClick={handleShare}
-                        aria-label="Chia sẻ stream"
-                        className="h-12 w-12 rounded-xl bg-[#25252d] text-white/70 hover:bg-[#30303a]"
-                    >
-                        <Share2 className="h-5 w-5" />
-                    </Button>
                 </div>
             </div>
 
             {/* Thông tin streamer */}
             <Link href={`/profile/${stream.streamer.username}`}>
-                <div className="mt-7 flex max-w-[760px] items-center gap-4 rounded-2xl bg-[#16161b] p-4 transition hover:bg-[#1d1d24]">
+                <div className="mt-7 flex max-w-[1100px] items-center gap-4 rounded-2xl bg-[#16161b] p-4 transition hover:bg-[#1d1d24]">
                     <Avatar className="h-12 w-12 ring-2 ring-violet-400/40">
                         <AvatarImage src={stream.streamer.avatar || undefined} />
 
@@ -360,7 +346,7 @@ function StreamInformation({ stream }: { stream: PastStream }) {
             </Link>
 
             {/* Mô tả video */}
-            <div className="mt-8 max-w-[760px] rounded-2xl bg-[#1a1a20] p-6 shadow-xl shadow-black/10">
+            <div className="mt-8 max-w-[1100px] rounded-2xl bg-[#1a1a20] p-6 shadow-xl shadow-black/10">
                 <h3 className="mb-4 text-xl font-black text-white">
                     Về Buổi Phát Này
                 </h3>

@@ -43,8 +43,8 @@ export function CreatorSidebar() {
   };
 
   return (
-    <aside className="flex h-screen w-[240px] flex-col border-r border-white/5 bg-[#15151a] text-zinc-300 pt-6">
-      <div className="px-6 pt-6">
+    <aside className="flex h-[880px] w-[240px] flex-col border-r border-white/5 bg-[#15151a] text-zinc-300">
+      <div className="px-6 ">
 
       </div>
 

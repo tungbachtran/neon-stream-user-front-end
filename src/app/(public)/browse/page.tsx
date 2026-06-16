@@ -71,7 +71,6 @@ export default function BrowsePage() {
 
   return (
     <div className="min-h-screen bg-[#08090d] text-white">
-      <TopNav searchQuery={searchQuery} onSearchChange={setSearchQuery} />
 
       <main className="mx-auto max-w-[1480px] px-4 py-8 md:px-8">
         {isLoading ? (
@@ -108,63 +107,7 @@ export default function BrowsePage() {
   );
 }
 
-function TopNav({
-  searchQuery,
-  onSearchChange,
-}: {
-  searchQuery: string;
-  onSearchChange: (value: string) => void;
-}) {
-  return (
-    <header className="sticky top-0 z-30 border-b border-white/5 bg-[#08090d]/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-[1480px] items-center gap-4 px-4 md:px-8">
-        <div className="hidden items-center gap-6 lg:flex">
-          <Link
-            href="/browse"
-            className="text-sm font-semibold text-violet-300"
-          >
-            Duyệt
-          </Link>
-          <Link
-            href="/following"
-            className="text-sm text-zinc-400 transition hover:text-white"
-          >
-            Đang Theo Dõi
-          </Link>
-        </div>
 
-        <div className="relative mx-auto w-full max-w-[520px]">
-          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" />
-          <Input
-            value={searchQuery}
-            onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Tìm kiếm danh mục hoặc stream..."
-            className="h-10 rounded-xl border-white/10 bg-white/[0.06] pl-11 text-sm text-white placeholder:text-zinc-500 focus-visible:ring-violet-500"
-          />
-        </div>
-
-        <Button
-          size="sm"
-          className="rounded-xl bg-violet-500 px-5 font-bold text-white hover:bg-violet-400"
-          asChild
-        >
-          <Link href="/dashboard/streams">Phát Sóng</Link>
-        </Button>
-
-        <button className="hidden rounded-full p-2 text-zinc-400 transition hover:bg-white/10 hover:text-white md:inline-flex">
-          <Bell className="h-5 w-5" />
-        </button>
-
-        <Avatar className="h-9 w-9 ring-2 ring-cyan-400/50">
-          <AvatarImage src="" />
-          <AvatarFallback className="bg-cyan-950 text-cyan-200">
-            N
-          </AvatarFallback>
-        </Avatar>
-      </div>
-    </header>
-  );
-}
 
 function CategorySection({
   category,

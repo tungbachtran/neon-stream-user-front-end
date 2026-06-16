@@ -123,7 +123,7 @@ export function GiftAnimationOverlay({ streamId }: GiftAnimationOverlayProps) {
   const { activeGifts } = useGiftEvents(streamId);
 
   return (
-    <div className="absolute left-4 bottom-20 z-40 space-y-2 pointer-events-none">
+    <div className="absolute left-10 bottom-50 z-40 space-y-2 pointer-events-none">
       <AnimatePresence mode="popLayout">
         {activeGifts.slice(-5).map((event) => (
           <GiftNotification key={event.uid} event={event} />

@@ -123,7 +123,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0f0f1a]/95 backdrop-blur-md border-b border-white/10 h-16">
+    <nav className=" bg-[#0f0f1a]/95 backdrop-blur-md border-b border-white/10 h-16">
       <div className="max-w-screen-2xl mx-auto px-4 h-full flex items-center gap-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">

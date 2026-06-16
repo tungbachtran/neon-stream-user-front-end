@@ -51,7 +51,7 @@ export default function LoginPage() {
       {/* Bên trái - hình ảnh */}
       <div className="hidden md:flex w-1/2 bg-gradient-to-br from-purple-900 to-black items-center justify-center">
         <img
-          src="https://thietbimayanh.com/wp-content/uploads/2024/11/thiet-ke-phong-livestream-game-2.png"
+          src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=900&auto=format&fit=crop"
           alt="NeonStream"
           className="h-full w-auto opacity-90"
         />
@@ -68,7 +68,7 @@ export default function LoginPage() {
       <div className="flex flex-col w-full md:w-1/2 justify-center items-center bg-[#0f0f0f] p-8">
         <div className="w-full max-w-md space-y-6">
           <h2 className="text-2xl font-bold text-white text-center">Chào mừng trở lại</h2>
-          <p className="text-gray-400 text-center">Nhập chi tiết của bạn để đồng bộ hóa luồng của bạn.</p>
+
 
           <Button
             variant="outline"
@@ -88,7 +88,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-1">
-              <Label htmlFor="identifier" className="text-gray-300">Email hoặc Số điện thoại</Label>
+              <Label htmlFor="identifier" className="text-gray-300">Email hoặc số điện thoại</Label>
               <Input
                 id="identifier"
                 placeholder="Nhập thông tin đăng nhập của bạn"

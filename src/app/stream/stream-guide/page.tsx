@@ -73,7 +73,7 @@ function ResourceItem({ icon, title, subtitle }) {
 
 export default function StreamGuideSection() {
   return (
-    <section className="h-full bg-[#070b14] px-6 py-8 md:px-10 lg:px-12 overflow-y-auto mt-5">
+    <section className="h-[830px] bg-[#070b14] px-6 py-8 md:px-10 lg:px-12 overflow-y-auto mt-5">
       <div className="mx-auto max-w-[1400px] ">
         <div className="relative overflow-hidden rounded-[30px] border border-white/8 bg-[#050811] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_60px_rgba(46,84,255,0.08)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(59,130,246,0.09),transparent_18%),radial-gradient(circle_at_78%_30%,rgba(37,99,235,0.08),transparent_22%),linear-gradient(90deg,rgba(3,7,18,0.96)_0%,rgba(3,7,18,0.88)_42%,rgba(3,7,18,0.62)_68%,rgba(3,7,18,0.84)_100%)]" />
@@ -124,7 +124,7 @@ export default function StreamGuideSection() {
           </div>
 
           <div className="relative px-5 pb-8 pt-2 sm:px-8 lg:px-10 lg:pb-10">
-            <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
+            <div className="grid gap-5 lg:grid-cols-[1fr]">
               <div className="space-y-5">
                 <StepCard
                   number="01"
@@ -146,7 +146,7 @@ export default function StreamGuideSection() {
                   glowClass="from-cyan-400/8"
                   badgeClass="from-cyan-300 to-sky-400 text-[#07141b]"
                   title="Tạo Livestream Mới"
-                  description="Quay lại trang dashboard và tạo một livestream mới. Điền tiêu đề, mô tả và các cài đặt khác cho stream của bạn."
+                  description="Quay lại trang Thiết lập livestream và tạo một livestream mới. Điền tiêu đề, mô tả và các cài đặt khác cho stream của bạn."
                 >
                   <div className="mt-6 grid gap-3 sm:grid-cols-2">
                     <InfoTile label="Tiêu đề" value="Nhập tiêu đề stream..." />
@@ -197,7 +197,7 @@ export default function StreamGuideSection() {
                   glowClass="from-cyan-400/8"
                   badgeClass="from-cyan-300 to-sky-400 text-[#07141b]"
                   title="Bắt Đầu Phát Trực Tiếp"
-                  description="Trong OBS, bấm nút 'Start Streaming'. Sau đó, quay lại trang điều khiển stream và bấm nút 'Phát Trực Tiếp' để kích hoạt stream."
+                  description="Trong OBS, bấm nút 'Start Streaming'. Sau đó, quay lại trang Thiết lập livestream "
                 >
                   <div className="mt-6 flex flex-wrap gap-3">
                     <MiniButton icon={<Monitor className="h-4 w-4" />} label="Start Streaming (OBS)" />
@@ -221,77 +221,9 @@ export default function StreamGuideSection() {
                 </StepCard>
               </div>
 
-              <div className="space-y-5">
-                <aside className="rounded-[22px] border border-white/8 bg-[linear-gradient(180deg,rgba(16,20,33,0.96),rgba(10,12,20,0.98))] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                    <span className="h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.7)]" />
-                    Thông Tin Kết Nối
-                  </div>
-
-                  <div className="mt-5 space-y-4">
-                    <div>
-                      <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
-                        URL Server RTMP
-                      </div>
-                      <div className="flex items-center justify-between rounded-xl border border-white/6 bg-black/40 px-3 py-3 text-sm text-cyan-300">
-                        <span className="truncate pr-3">rtmp://live.neonstream.io/...</span>
-                        <Copy className="h-4 w-4 shrink-0 text-white/45" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
-                        Khóa Stream Riêng Tư
-                      </div>
-                      <div className="flex items-center justify-between rounded-xl border border-white/6 bg-black/40 px-3 py-3 text-sm text-white/60">
-                        <span className="truncate pr-3">••••••••••••••••••••</span>
-                        <Copy className="h-4 w-4 shrink-0 text-white/45" />
-                      </div>
-                      <div className="mt-2 text-[11px] text-red-300/70">
-                        Không bao giờ chia sẻ khóa stream của bạn.
-                      </div>
-                    </div>
-
-                    <Button className="w-full rounded-xl bg-white/10 py-5 text-sm font-semibold text-white hover:bg-white/15">
-                      Đặt Lại Stream Key
-                    </Button>
-                  </div>
-                </aside>
-
-                <aside className="rounded-[22px] border border-white/8 bg-[linear-gradient(180deg,rgba(16,20,33,0.96),rgba(10,12,20,0.98))] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
-                  <div className="text-sm font-semibold text-white">Tài Nguyên Hữu Ích</div>
-                  <div className="mt-4 space-y-3">
-                    <ResourceItem
-                      icon={<Monitor className="h-4 w-4" />}
-                      title="Máy Tính Bitrate"
-                      subtitle="Tối ưu hóa cài đặt của bạn"
-                    />
-                    <ResourceItem
-                      icon={<Calendar className="h-4 w-4" />}
-                      title="Quản Lý VOD"
-                      subtitle="Lưu trữ stream của bạn"
-                    />
-                  </div>
-                </aside>
-              </div>
+            
             </div>
 
-            <div className="pt-16 text-center">
-              <p className="text-sm text-white/40">
-                Gặp vấn đề với thiết lập? Đội hỗ trợ kỹ thuật 24/7 của chúng tôi sẵn sàng giúp bạn.
-              </p>
-              <div className="mt-4 flex flex-wrap items-center justify-center gap-6 text-sm font-medium">
-                <a href="#" className="text-violet-300 transition hover:text-violet-200">
-                  Liên Hệ Hỗ Trợ
-                </a>
-                <a href="#" className="text-white/60 transition hover:text-white">
-                  Discord Cộng Đồng
-                </a>
-                <a href="#" className="text-white/60 transition hover:text-white">
-                  Cơ Sở Kiến Thức
-                </a>
-              </div>
-            </div>
           </div>
         </div>
       </div>

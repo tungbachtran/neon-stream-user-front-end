@@ -10,7 +10,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex h-screen flex-col">
       {/* Navbar ở trên cùng */}
       <Navbar />
 
@@ -20,7 +20,7 @@ export default function DashboardLayout({
         <CreatorSidebar />
 
         {/* Main content */}
-        <main className="flex-1 bg-[#0f0f13] p-6 h-screen">
+        <main className="flex-1 bg-[#0f0f13] p-6 h-[880px]">
           {children}
         </main>
       </div>

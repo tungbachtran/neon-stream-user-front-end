@@ -56,7 +56,7 @@ export default function RegisterPage() {
       {/* Bên trái - hình ảnh/nền */}
       <div className="hidden md:flex w-1/2 bg-gradient-to-br from-purple-900 to-black items-center justify-center">
         <img
-          src="https://thietbimayanh.com/wp-content/uploads/2024/11/thiet-ke-phong-livestream-game-2.png"
+          src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=900&auto=format&fit=crop"
           alt="NeonStream"
           className="h-full w-auto opacity-90"
         />
@@ -78,7 +78,7 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-1">
-              <Label htmlFor="fullName" className="text-gray-300">Họ và Tên</Label>
+              <Label htmlFor="fullName" className="text-gray-300">Họ và tên</Label>
               <Input
                 id="fullName"
                 placeholder="Elias Vance"
@@ -90,7 +90,7 @@ export default function RegisterPage() {
 
             <div className="flex gap-4">
               <div className="flex-1 space-y-1">
-                <Label htmlFor="username" className="text-gray-300">Tên Người Dùng</Label>
+                <Label htmlFor="username" className="text-gray-300">Tên người dùng</Label>
                 <Input
                   id="username"
                   placeholder="@neon_knight"
@@ -100,7 +100,7 @@ export default function RegisterPage() {
                 {errors.username && <p className="text-xs text-red-500">{errors.username.message}</p>}
               </div>
               <div className="flex-1 space-y-1">
-                <Label htmlFor="phone" className="text-gray-300">Số Điện Thoại</Label>
+                <Label htmlFor="phone" className="text-gray-300">Số điện thoại</Label>
                 <Input
                   id="phone"
                   placeholder="+1 (555) 000-0000"
@@ -112,7 +112,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="email" className="text-gray-300">Địa Chỉ Email</Label>
+              <Label htmlFor="email" className="text-gray-300">Địa chỉ email</Label>
               <Input
                 id="email"
                 type="email"
@@ -124,7 +124,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="password" className="text-gray-300">Khóa Bảo Mật</Label>
+              <Label htmlFor="password" className="text-gray-300">Mật khẩu</Label>
               <Input
                 id="password"
                 type="password"

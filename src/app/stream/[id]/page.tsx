@@ -39,6 +39,7 @@ import {
     Wifi,
 } from 'lucide-react';
 import { API_BASE_URL } from '@/lib/api/config';
+import { GiftAnimationOverlay } from '@/components/gifts/gift-animation-overlay';
 
 export default function StreamControlPage() {
     const params = useParams();
@@ -191,7 +192,7 @@ export default function StreamControlPage() {
             thumbnailFile !== null);
 
     return (
-        <div className="h-screen overflow-auto bg-[#08090d] p-4 text-white pt-15">
+        <div className=" h-[850px] overflow-auto bg-[#08090d] p-4 text-white ">
             <div className="mx-auto max-w-[1500px]">
                 {/* Tiêu đề */}
                 <header className="mb-7 flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
@@ -260,35 +261,6 @@ export default function StreamControlPage() {
                                 </Button>
                             )}
 
-                            {isIdle && (
-                                <Button
-                                    onClick={handleStartStream}
-                                    disabled={isStarting || isSaving || isUploading}
-                                    className="h-12 rounded-xl bg-[#9b7cff] px-5 font-black text-[#120c25] shadow-[0_0_22px_rgba(155,124,255,0.35)] hover:bg-[#aa8cff]"
-                                >
-                                    {isStarting ? (
-                                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                                    ) : (
-                                        <Play className="mr-2 h-4 w-4 fill-current" />
-                                    )}
-                                    Phát Trực Tiếp
-                                </Button>
-                            )}
-
-                            {isLive && (
-                                <Button
-                                    onClick={handleEndStream}
-                                    disabled={isEnding}
-                                    className="h-12 rounded-xl bg-pink-500 px-5 font-black text-white shadow-[0_0_22px_rgba(236,72,153,0.25)] hover:bg-pink-400"
-                                >
-                                    {isEnding ? (
-                                        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                                    ) : (
-                                        <Square className="mr-2 h-4 w-4 fill-current" />
-                                    )}
-                                    Kết Thúc Stream
-                                </Button>
-                            )}
                         </div>
                     </div>
                 </header>
@@ -314,6 +286,7 @@ export default function StreamControlPage() {
                                 )}
 
                                 {isLive && <DonateAlertOverlay roomId={streamId} />}
+                                {isLive && <GiftAnimationOverlay streamId={streamId} />}
 
                                 <div className="absolute left-4 top-4 flex items-center gap-3">
                                     <StatusPill live={isLive} />
@@ -332,17 +305,7 @@ export default function StreamControlPage() {
                                     </button>
                                 </div>
 
-                                <div className="absolute bottom-6 right-5 flex items-center gap-3">
-                                    <span className="text-xs font-bold text-white/70">
-                                        Bitrate:{' '}
-                                        {stream.metrics?.bitrate
-                                            ? `${stream.metrics.bitrate} kbps`
-                                            : '— kbps'}
-                                    </span>
-                                    <div className="h-1.5 w-28 overflow-hidden rounded-full bg-white/15">
-                                        <div className="h-full w-[82%] rounded-full bg-cyan-400" />
-                                    </div>
-                                </div>
+                               
                             </div>
                         </section>
 
@@ -406,25 +369,7 @@ export default function StreamControlPage() {
                             </section>
                         )}
 
-                        {/* Nút hành động */}
-                        <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                            <ActionButton icon={<Scissors className="h-6 w-6" />} label="Cắt Clip" color="violet" />
-                            <ActionButton icon={<Bookmark className="h-6 w-6 fill-current" />} label="Đánh Dấu" color="cyan" />
-                            <ActionButton icon={<Megaphone className="h-6 w-6" />} label="Phát Quảng Cáo" color="pink" />
-                            <ActionButton icon={<Sparkles className="h-6 w-6" />} label="Raid Kênh" color="white" />
-                        </section>
-
-                        {/* Sức Khỏe Stream */}
-                        <section className="rounded-2xl bg-[#171820] p-5 shadow-xl shadow-black/20">
-                            <h2 className="mb-5 text-sm font-black uppercase tracking-[0.22em] text-white/45">
-                                Sức Khỏe Stream
-                            </h2>
-                            <div className="grid gap-5 md:grid-cols-3">
-                                <HealthMetric label="Frame Bị Mất" value="0%" percent={0} color="cyan" />
-                                <HealthMetric label="Sử Dụng CPU" value="24%" percent={24} color="violet" />
-                                <HealthMetric label="Bộ Nhớ" value="4.2GB" percent={68} color="pink" />
-                            </div>
-                        </section>
+                       
 
                         {/* Thiết lập OBS */}
                         {isIdle && credentials && (
@@ -485,26 +430,7 @@ export default function StreamControlPage() {
                         </section>
 
                         {/* Trạng thái dưới cùng */}
-                        <section className="flex justify-center pt-8">
-                            <div className="flex items-center gap-5 rounded-full bg-[#101118] px-6 py-3 shadow-2xl shadow-black/40">
-                                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wide text-white/55">
-                                    <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.9)]" />
-                                    Bitrate Ổn Định
-                                </div>
-                                <div className="flex items-center gap-2 text-sm font-bold text-white/70">
-                                    <Heart className="h-5 w-5 fill-pink-400 text-pink-400" />
-                                    4.2k
-                                </div>
-                                <div className="flex items-center gap-2 text-sm font-bold text-white/70">
-                                    <Share2 className="h-5 w-5 text-cyan-400" />
-                                    892
-                                </div>
-                                <div className="flex items-center gap-2 text-sm font-bold text-white/70">
-                                    <MessageSquare className="h-5 w-5 text-violet-400" />
-                                    15k
-                                </div>
-                            </div>
-                        </section>
+
                     </main>
 
                     {/* Chat trực tiếp — sử dụng component chung với trang watch */}

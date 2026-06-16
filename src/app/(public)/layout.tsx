@@ -38,13 +38,13 @@ export default function PublicLayout({
       <Navbar />
 
       {/* ✅ Sidebar + Content nằm ngang bên dưới navbar */}
-      <div className="flex flex-1 pt-[64px]"> {/* pt bằng chiều cao navbar */}
+      <div className="flex flex-1 "> {/* pt bằng chiều cao navbar */}
         <BrowseSidebar
           followingLive={followingLive}
           topLiveStreams={overview?.topLiveStreams ?? []}
           isFollowingLoading={isFollowingLoading}
         />
-        <main className="flex-1 h-screen overflow-hidden">
+        <main className="flex-1 h-[880px] overflow-auto">
           {children}
         </main>
       </div>

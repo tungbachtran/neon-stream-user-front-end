@@ -125,19 +125,19 @@ export default function BrowsePage() {
   const heroStream = overview?.heroStream ?? filteredStreams[0] ?? null;
 
   return (
-    <div className="min-h-screen bg-[#08090d] text-white">
+    <div className="h-full bg-[#08090d] text-white">
       <Navbar />
-      <div className="flex min-h-screen pt-15">
+      <div className="flex h-[880px]">
         <BrowseSidebar
           followingLive={followingLive}
           topLiveStreams={overview?.topLiveStreams ?? []}
           isFollowingLoading={isFollowingLoading}
         />
 
-        <main className="min-w-0 flex-1 pl-0 lg:pl-[260px]">
+        <main className="min-w-0 flex-1 pl-0 ">
 
 
-          <div className="mx-auto max-w-[1480px] px-4 py-6 md:px-8">
+          <div className="mx-auto max-w-[1480px] px-4 py-6 md:px-8 h-[880px] overflow-auto">
 
             <>
               <HeroSection stream={heroStream} />
@@ -235,10 +235,10 @@ export function BrowseSidebar({
   isLoading?: boolean;
 }) {
   return (
-    <aside className="  hidden h-screen w-[260px] border-r border-white/5 bg-[#111219] lg:flex lg:flex-col ">
+    <aside className=" h-[880px] w-[260px] border-r border-white/5 bg-[#111219] lg:flex lg:flex-col  ">
 
 
-      <div className="flex-1 overflow-y-auto px-4 pb-4 pt-5">
+      <div className="flex-1  px-4 pb-4 pt-5">
         <SidebarNav />
 
         <SidebarSection title="Kênh">
@@ -336,7 +336,7 @@ function SidebarSection({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mb-7">
+    <section className="mb-7 mt-10">
       <h3 className="mb-3 px-3 text-[11px] font-black uppercase tracking-[0.22em] text-zinc-500">
         {title}
       </h3>
