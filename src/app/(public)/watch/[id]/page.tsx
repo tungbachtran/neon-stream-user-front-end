@@ -65,13 +65,13 @@ export default function WatchPage() {
       <div className="flex min-h-screen items-center justify-center bg-[#0d0d10] text-white">
         <div className="text-center">
           <Video className="mx-auto mb-4 h-16 w-16 text-white/35" />
-          <h2 className="mb-2 text-2xl font-black">Stream not found</h2>
+          <h2 className="mb-2 text-2xl font-black">Không tìm thấy stream</h2>
           <p className="mb-4 text-white/50">
-            This stream may have ended or been removed
+            Stream này có thể đã kết thúc hoặc bị xóa
           </p>
           <Link href="/browse">
             <Button className="rounded-xl bg-[#8b6cff] font-bold text-white hover:bg-[#9a7dff]">
-              Browse Live Streams
+              Duyệt Live Streams
             </Button>
           </Link>
         </div>
@@ -84,24 +84,19 @@ export default function WatchPage() {
 
   return (
     <div className="min-h-screen bg-[#0d0d10] text-white">
-      <div className="mx-auto grid max-w-[1500px] grid-cols-1 gap-0 lg:grid-cols-[minmax(0,1fr)_400px]">
+      <div className=" grid h-full w-full grid-cols-1 gap-0 lg:grid-cols-[minmax(0,1fr)_400px]">
         <main className="min-w-0 px-4 py-4 lg:px-6 lg:py-7">
           <section className="overflow-hidden rounded-xl bg-black shadow-2xl shadow-black/40">
             {isLive ? (
-              <div className="relative">
+              <div >
                 <StreamPlayer url={stream.playbackUrl} />
 
                 <DonateAlertOverlay roomId={streamId} />
                 <GiftAnimationOverlay streamId={streamId} />
-
-                <div className="absolute bottom-4 right-4 z-50">
-                  <GiftTriggerButton streamId={streamId} />
-                </div>
-
                 <div className="absolute left-4 top-4 flex items-center gap-3">
                   <Badge className="rounded-full bg-pink-500 px-3 py-1 text-xs font-black uppercase text-white hover:bg-pink-500">
                     <span className="mr-2 h-2 w-2 rounded-full bg-white" />
-                    Live
+                    Đang Phát
                   </Badge>
 
                   <Badge className="rounded-full bg-black/70 px-3 py-1 text-xs font-bold text-white backdrop-blur hover:bg-black/70">
@@ -121,12 +116,12 @@ export default function WatchPage() {
                 <div className="text-center">
                   <Video className="mx-auto mb-4 h-16 w-16 text-white/35" />
                   <p className="mb-2 text-xl font-black">
-                    {isEnded ? 'Stream Ended' : 'Stream Offline'}
+                    {isEnded ? 'Stream Đã Kết Thúc' : 'Stream Ngoại Tuyến'}
                   </p>
                   <p className="text-white/45">
                     {isEnded
-                      ? 'This stream has ended'
-                      : 'This stream is not currently live'}
+                      ? 'Stream này đã kết thúc'
+                      : 'Stream này hiện không đang phát trực tiếp'}
                   </p>
                 </div>
               </div>
@@ -154,7 +149,7 @@ export default function WatchPage() {
                       <span className="h-1 w-1 rounded-full bg-white/25" />
 
                       <span className="text-sm font-semibold text-white/45">
-                        {formatCompact(stream.viewerCount)} followers
+                        {formatCompact(stream.viewerCount)} người theo dõi
                       </span>
 
                       {stream.startedAt && (
@@ -163,11 +158,11 @@ export default function WatchPage() {
                           <span className="flex items-center gap-1.5 text-sm text-white/45">
                             <Calendar className="h-3.5 w-3.5" />
                             {isLive
-                              ? `Started ${formatDistanceToNow(
+                              ? `Bắt đầu ${formatDistanceToNow(
                                 new Date(stream.startedAt),
                                 { addSuffix: true }
                               )}`
-                              : `Streamed ${formatDistanceToNow(
+                              : `Phát ${formatDistanceToNow(
                                 new Date(stream.startedAt),
                                 { addSuffix: true }
                               )}`}
@@ -176,11 +171,7 @@ export default function WatchPage() {
                       )}
                     </div>
 
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      <Pill>Competitive</Pill>
-                      <Pill>English</Pill>
-                      <Pill accent>Drops Enabled</Pill>
-                    </div>
+
                   </div>
                 </div>
               </div>
@@ -191,17 +182,6 @@ export default function WatchPage() {
                   size="sm"
                 />
 
-                <Button className="h-12 rounded-xl bg-[#25252d] px-8 text-base font-black text-white/75 hover:bg-[#30303a]">
-                  <Tag className="mr-2 h-5 w-5 text-pink-400" />
-                  Subscribe
-                </Button>
-
-                <Button
-                  size="icon"
-                  className="h-12 w-12 rounded-xl bg-[#25252d] text-white/70 hover:bg-[#30303a]"
-                >
-                  <Share2 className="h-5 w-5" />
-                </Button>
               </div>
             </div>
 
@@ -227,19 +207,19 @@ export default function WatchPage() {
                   variant="outline"
                   className="rounded-xl border-white/10 bg-transparent font-bold text-white/70 hover:bg-white/5 hover:text-white"
                 >
-                  View Profile
+                  Xem Hồ Sơ
                 </Button>
               </div>
             </Link>
 
             <div className="mt-8 max-w-[760px] rounded-2xl bg-[#1a1a20] p-6 shadow-xl shadow-black/10">
               <h3 className="mb-4 text-xl font-black text-white">
-                About the Stream
+                Về Stream Này
               </h3>
 
               <p className="text-sm leading-7 text-white/55">
                 {stream.description ||
-                  'Welcome to the global championship finals! Today we determine who takes home the trophy. Join NeonViper as he breaks down the tactics, showcases high-level gameplay, and interacts with the community. Don’t forget to use code NEON for 20% off at the shop!'}
+                  'Chào mừng đến với chung kết giải vô địch toàn cầu! Hôm nay chúng ta xác định ai sẽ mang về chiếc cúp. Hãy theo dõi NeonViper khi anh ấy phân tích chiến thuật, trình diễn gameplay cấp cao và tương tác với cộng đồng. Đừng quên sử dụng mã NEON để giảm 20% tại cửa hàng!'}
               </p>
             </div>
           </section>
@@ -255,8 +235,8 @@ export default function WatchPage() {
                   <Eye className="mb-4 h-12 w-12 text-white/35" />
                   <p className="text-center text-white/45">
                     {stream.isChatEnabled
-                      ? 'Chat will be available when stream is live'
-                      : 'Chat is disabled for this stream'}
+                      ? 'Chat sẽ có sẵn khi stream đang phát trực tiếp'
+                      : 'Chat bị vô hiệu hóa cho stream này'}
                   </p>
                 </CardContent>
               </Card>

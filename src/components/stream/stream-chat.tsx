@@ -13,6 +13,7 @@ import { DonateTier } from '@/lib/api/donate';
 import { DonateChatBubble } from '../donate/donate-chat-bubble';
 import { DonatePanel } from '../donate/donate-panel';
 import { API_BASE_URL } from '@/lib/api/config';
+import { GiftTriggerButton } from '../gifts/gift-trigger-button';
 
 interface StreamChatProps {
   roomId: string;
@@ -58,7 +59,7 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
     });
 
     newSocket.on('connect', () => {
-      console.log('Connected to chat');
+      console.log('Kết nối đến chat');
       newSocket.emit('join_room', { roomId, userId: user?.id });
     });
 
@@ -121,7 +122,7 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
     });
 
     newSocket.on('error', (error: any) => {
-      console.error('Chat error:', error);
+      console.error('Lỗi chat:', error);
     });
 
     setSocket(newSocket);
@@ -196,7 +197,7 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
       <div className="flex h-full flex-col">
         <div className="flex h-[64px] items-center justify-between border-b border-white/5 px-5">
           <h2 className="text-sm font-black uppercase tracking-[0.22em] text-white/85">
-            Live Chat
+            Chat Trực Tiếp
           </h2>
 
           <div className="flex items-center gap-3 text-white/60">
@@ -210,22 +211,17 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
           className="flex-1 overflow-y-auto px-5 py-5 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10"
         >
           <div className="mb-4 text-[10px] font-extrabold uppercase tracking-wide text-white/35">
-            Welcome to the chat room!
+            Chào mừng đến phòng chat!
           </div>
 
           <div className="space-y-4">
-            <div className="text-sm leading-relaxed">
-              <span className="font-bold text-cyan-400">Mod_Luna:</span>{' '}
-              <span className="text-white/75">
-                Please keep the chat respectful everyone! Let&apos;s go Viper! 🔥
-              </span>
-            </div>
+           
 
             {messages.map((message) => (
               message.isDonate && message.donateData ? (
                 <DonateChatBubble
                   key={message.messageId}
-                  senderUsername={message.user?.username ?? 'Anonymous'}
+                  senderUsername={message.user?.username ?? 'Ẩn danh'}
                   diamonds={message.donateData.diamonds}
                   tier={message.donateData.tier}
                   message={message.donateData.message}
@@ -239,12 +235,12 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
                 >
                   <div className="min-w-0 flex-1">
                     <span className="font-bold text-[#8b6cff]">
-                      {message.user?.username || 'Anonymous'}:
+                      {message.user?.username || 'Ẩn danh'}:
                     </span>{' '}
 
                     {message.status === 'FLAGGED' && (
                       <Badge className="mr-1 rounded-full bg-red-500/20 px-2 py-0 text-[10px] text-red-400">
-                        Removed
+                        Đã xóa
                       </Badge>
                     )}
 
@@ -268,36 +264,16 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
               </div>
             )}
 
-            <div className="rounded-xl border border-pink-400/20 bg-pink-500/10 p-4">
-              <div className="flex items-center gap-3">
-                <div className="grid h-9 w-9 place-items-center rounded-full bg-pink-400 text-[#160b12]">
-                  <Gift className="h-4 w-4" />
-                </div>
+            
 
-                <div>
-                  <p className="text-xs font-black uppercase tracking-wide text-pink-300">
-                    Gift Alert
-                  </p>
-                  <p className="text-sm font-semibold text-white/80">
-                    StarGazer gifted 5 subs!
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-sm leading-relaxed">
-              <span className="font-bold text-violet-400">EliteGamer_01:</span>{' '}
-              <span className="font-semibold text-white/80">
-                VIPER IS THE GOAT 🐍🐍🐍
-              </span>
-            </div>
+           
           </div>
         </div>
 
         <div className="border-t border-white/5 bg-[#1b1b20] p-4">
           <div className="flex items-center gap-2 rounded-xl bg-black px-3 py-2 shadow-inner">
             <Input
-              placeholder="Send a message"
+              placeholder="Gửi tin nhắn"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => {
@@ -323,16 +299,9 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
           </div>
 
           <div className="mt-4 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-semibold text-white/35">
-              <span className="grid h-5 w-5 place-items-center rounded-full bg-white/10 text-[11px]">
-                $
-              </span>
-              <span>250 Points</span>
-            </div>
-
-            <Button className="h-7 rounded-full bg-pink-400 px-5 text-xs font-black uppercase text-[#241018] hover:bg-pink-300">
-              Gift
-            </Button>
+            
+            <GiftTriggerButton streamId={roomId}/>
+           
             {/* ✅ Nút Donate — tách riêng */}
             <Button
               onClick={() => setShowDonatePanel(true)}
@@ -353,19 +322,19 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
 
           <div className="mt-6 border-t border-white/5 pt-5">
             <h3 className="mb-4 text-[11px] font-black uppercase tracking-[0.24em] text-white/35">
-              Recommended Streams
+              Các Stream Được Đề Xuất
             </h3>
 
             <div className="space-y-3">
               <RecommendedStream
-                title="Retro Night: Classic RPGs"
+                title="Đêm Retro: RPG Kinh Điển"
                 streamer="PixelMistress"
                 viewers="12.5K"
                 imageClass="from-cyan-500/50 via-blue-500/20 to-violet-500/30"
               />
 
               <RecommendedStream
-                title="Character Design Workshop"
+                title="Workshop Thiết Kế Nhân Vật"
                 streamer="ArtByAris"
                 viewers="3.2K"
                 imageClass="from-emerald-500/40 via-zinc-700 to-orange-500/20"

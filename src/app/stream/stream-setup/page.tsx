@@ -1,4 +1,4 @@
-// components/stream-setup.tsx
+// components/stream-setup.tsx (cập nhật)
 "use client";
 
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
@@ -36,35 +36,24 @@ import { useStreams } from "@/lib/hooks/use-streams";
 import { useUpload } from "@/lib/hooks/use-upload";
 import { useAppSelector } from "@/types/redux-type";
 import { streamsApi } from "@/lib/api/streams";
+import { useCategories } from "@/lib/hooks/use-categories";
 import { toast } from "sonner";
 
-const categories = [
-  "Just Chatting",
-  "Gaming",
-  "Music",
-  "Art",
-  "Esports",
-  "IRL",
-  "Tech",
-  "Education",
-];
-
-const languages = ["English", "Vietnamese", "Japanese", "Korean", "French"];
+const languages = ["Tiếng Anh", "Tiếng Việt", "Tiếng Nhật", "Tiếng Hàn", "Tiếng Pháp"];
 
 export default function StreamSetup() {
   const router = useRouter();
   const { user } = useAppSelector((state) => state.auth);
   const { uploadImage, isUploading } = useUpload();
+  const { data: categories = [], isLoading: categoriesLoading } = useCategories();
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("Just Chatting");
-  const [language, setLanguage] = useState("English");
+  const [category, setCategory] = useState("");
+  const [language, setLanguage] = useState("Tiếng Anh");
   const [tags, setTags] = useState(["NoMic", "Chill"]);
 
-  // thumbnailFile: file thực để upload lên MinIO khi submit
-  // thumbnailPreview: object URL để preview ngay lập tức
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
 
@@ -79,7 +68,6 @@ export default function StreamSetup() {
       try {
         const myStreams = await streamsApi.getMyStreams();
         if (myStreams && myStreams.length > 0) {
-          // Đã có stream → navigate thẳng sang manager
           router.replace(`/stream/${myStreams[0].id}`);
           return;
         }
@@ -91,16 +79,27 @@ export default function StreamSetup() {
     })();
   }, [user, router]);
 
+  // ── Set default category khi categories load xong ────────────────────
+  useEffect(() => {
+    if (categories.length > 0 && !category) {
+      setCategory(categories[0].id);
+    }
+  }, [categories, category]);
+
   const previewTitle = useMemo(
-    () => title.trim() || "UNSET TITLE",
+    () => title.trim() || "CHƯA ĐẶT TIÊU ĐỀ",
     [title]
+  );
+
+  const selectedCategory = useMemo(
+    () => categories.find((c) => c.id === category),
+    [categories, category]
   );
 
   function handleThumbnailUpload(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Revoke URL cũ để tránh memory leak
     if (thumbnailPreview) URL.revokeObjectURL(thumbnailPreview);
 
     setThumbnailFile(file);
@@ -123,6 +122,10 @@ export default function StreamSetup() {
       toast.error("Vui lòng nhập tiêu đề stream");
       return;
     }
+    if (!category) {
+      toast.error("Vui lòng chọn danh mục");
+      return;
+    }
     if (!user) return;
 
     setIsSubmitting(true);
@@ -130,7 +133,6 @@ export default function StreamSetup() {
     try {
       let thumbnailUrl: string | undefined;
 
-      // Upload thumbnail lên MinIO trước khi tạo stream
       if (thumbnailFile) {
         try {
           thumbnailUrl = await uploadImage(thumbnailFile, "thumbnail");
@@ -141,6 +143,7 @@ export default function StreamSetup() {
 
       const stream = await streamsApi.createStream({
         title: title.trim(),
+        categoryId: category,
         ...(thumbnailUrl ? { thumbnailUrl } : {}),
       });
 
@@ -155,7 +158,6 @@ export default function StreamSetup() {
     }
   }
 
-  // ── Loading state khi đang check stream ──────────────────────────────
   if (isCheckingStream) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#08090d]">
@@ -164,38 +166,17 @@ export default function StreamSetup() {
     );
   }
 
-  const isBusy = isSubmitting || isUploading;
+  const isBusy = isSubmitting || isUploading || categoriesLoading;
 
   return (
-    <main className="min-h-screen flex-1 overflow-hidden bg-[radial-gradient(circle_at_55%_70%,rgba(20,184,166,0.08),transparent_28%),linear-gradient(135deg,#0b0b10_0%,#111018_45%,#08090c_100%)] text-zinc-100">
-      <header className="flex h-16 items-center justify-between border-b border-white/5 px-14">
-        <nav className="flex items-center gap-7 text-sm font-semibold text-zinc-500">
-          <button className="transition hover:text-zinc-100">Discover</button>
-          <button className="transition hover:text-zinc-100">Browse</button>
-          <button className="transition hover:text-zinc-100">Esports</button>
-        </nav>
-
-        <div className="flex items-center gap-5">
-          <button className="text-zinc-500 transition hover:text-zinc-100">
-            <Bell className="size-5" />
-          </button>
-          <button className="text-zinc-500 transition hover:text-zinc-100">
-            <Grid2X2 className="size-5" />
-          </button>
-          <Avatar className="size-9 border border-violet-400/30">
-            <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=120&auto=format&fit=crop" />
-            <AvatarFallback>NN</AvatarFallback>
-          </Avatar>
-        </div>
-      </header>
-
-      <section className="px-14 py-10">
+    <main className="h-full flex-1 overflow-hidden bg-[radial-gradient(circle_at_55%_70%,rgba(20,184,166,0.08),transparent_28%),linear-gradient(135deg,#0b0b10_0%,#111018_45%,#08090c_100%)] text-zinc-100">
+      <section className="px-14 py-15">
         <div>
           <h1 className="text-4xl font-black tracking-tight text-zinc-100">
-            STREAM SETUP
+            THIẾT LẬP STREAM
           </h1>
           <p className="mt-2 text-sm font-medium text-zinc-500">
-            Configure your broadcast parameters for maximum engagement.
+            Cấu hình các thông số phát trực tiếp của bạn để tối đa hóa sự tương tác.
           </p>
         </div>
 
@@ -203,7 +184,7 @@ export default function StreamSetup() {
           <Card className="border-white/5 bg-[#17171c]/95 p-7 shadow-2xl shadow-black/40">
             <div className="mb-7 flex items-center justify-between">
               <h2 className="text-lg font-extrabold text-violet-300">
-                Set Up Your Broadcast
+                Thiết Lập Phát Trực Tiếp Của Bạn
               </h2>
               <button className="text-zinc-500 transition hover:text-zinc-100">
                 <SlidersHorizontal className="size-5" />
@@ -213,12 +194,12 @@ export default function StreamSetup() {
             <div className="space-y-6">
               <div className="space-y-3">
                 <Label className="text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500">
-                  Stream Title
+                  Tiêu Đề Stream
                 </Label>
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="What are you streaming today?"
+                  placeholder="Bạn đang phát stream cái gì hôm nay?"
                   className="h-13 rounded-xl border-white/5 bg-[#27272d] px-4 font-medium text-zinc-100 placeholder:text-zinc-500 focus-visible:ring-violet-500/50"
                 />
               </div>
@@ -226,16 +207,16 @@ export default function StreamSetup() {
               <div className="grid grid-cols-2 gap-5">
                 <div className="space-y-3">
                   <Label className="text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500">
-                    Category
+                    Danh Mục
                   </Label>
-                  <Select value={category} onValueChange={setCategory}>
+                  <Select value={category} onValueChange={setCategory} disabled={categoriesLoading}>
                     <SelectTrigger className="h-13 rounded-xl border-white/5 bg-[#27272d] px-4 text-zinc-100 focus:ring-violet-500/50">
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder={categoriesLoading ? "Đang tải..." : "Chọn danh mục"} />
                     </SelectTrigger>
                     <SelectContent className="border-white/10 bg-[#1d1d24] text-zinc-100">
                       {categories.map((item) => (
-                        <SelectItem key={item} value={item}>
-                          {item}
+                        <SelectItem key={item.id} value={item.id}>
+                          {item.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -244,13 +225,11 @@ export default function StreamSetup() {
 
                 <div className="space-y-3">
                   <Label className="text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500">
-                    Language
+                    Ngôn Ngữ
                   </Label>
                   <Select value={language} onValueChange={setLanguage}>
                     <SelectTrigger className="h-13 rounded-xl border-white/5 bg-[#27272d] px-4 text-zinc-100 focus:ring-violet-500/50">
-                      <div className="flex items-center gap-2">
-                        <SelectValue placeholder="Select language" />
-                      </div>
+                      <SelectValue placeholder="Chọn ngôn ngữ" />
                     </SelectTrigger>
                     <SelectContent className="border-white/10 bg-[#1d1d24] text-zinc-100">
                       {languages.map((item) => (
@@ -265,9 +244,9 @@ export default function StreamSetup() {
 
               <div className="space-y-3">
                 <Label className="text-[11px] font-black uppercase tracking-[0.2em] text-zinc-500">
-                  Stream Tags{" "}
+                  Thẻ Stream{" "}
                   <span className="tracking-normal text-zinc-600">
-                    Optional
+                    Tùy Chọn
                   </span>
                 </Label>
                 <div className="flex flex-wrap items-center gap-2">
@@ -297,7 +276,7 @@ export default function StreamSetup() {
                     className="h-8 rounded-full bg-white/7 px-3 text-xs font-bold text-zinc-400 hover:bg-white/10 hover:text-zinc-100"
                   >
                     <Plus className="mr-1 size-3.5" />
-                    Add Tag
+                    Thêm Thẻ
                   </Button>
                 </div>
               </div>
@@ -311,10 +290,10 @@ export default function StreamSetup() {
                   {isBusy ? (
                     <>
                       <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                      {isUploading ? "Uploading..." : "Creating..."}
+                      {isUploading ? "Đang Upload..." : "Đang Tạo..."}
                     </>
                   ) : (
-                    "Go to Manager"
+                    "Đi Tới Quản Lý"
                   )}
                 </Button>
                 <Button
@@ -322,7 +301,7 @@ export default function StreamSetup() {
                   disabled={isBusy}
                   className="h-13 rounded-xl bg-[#28282f] font-bold text-zinc-300 hover:bg-[#32323a] hover:text-zinc-100"
                 >
-                  Cancel
+                  Hủy
                 </Button>
               </div>
             </div>
@@ -334,14 +313,15 @@ export default function StreamSetup() {
                 <img
                   src={
                     thumbnailPreview ||
+                    selectedCategory?.thumbnailUrl ||
                     "https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=900&auto=format&fit=crop"
                   }
-                  alt="Stream thumbnail preview"
+                  alt="Xem trước hình thu nhỏ stream"
                   className="h-full w-full object-cover opacity-80 transition duration-300 group-hover:scale-105 group-hover:opacity-60"
                 />
 
                 <div className="absolute left-3 top-3 rounded-md bg-rose-500 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-white">
-                  Preview
+                  Xem Trước
                 </div>
 
                 <button
@@ -350,7 +330,7 @@ export default function StreamSetup() {
                   className="absolute left-1/2 top-3 hidden -translate-x-1/2 items-center gap-2 rounded-full border border-white/15 bg-black/65 px-4 py-2 text-xs font-bold text-white backdrop-blur-md transition hover:bg-violet-500 group-hover:flex"
                 >
                   <Upload className="size-4" />
-                  Upload thumbnail
+                  Upload hình thu nhỏ
                 </button>
 
                 <button className="absolute left-1/2 top-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/35 text-white backdrop-blur-sm transition group-hover:scale-105">
@@ -376,7 +356,7 @@ export default function StreamSetup() {
                       {previewTitle}
                     </h3>
                     <p className="mt-0.5 text-xs font-bold uppercase text-zinc-500">
-                      {category}
+                      {selectedCategory?.name || "Chưa chọn danh mục"}
                     </p>
                   </div>
                 </div>
@@ -403,15 +383,14 @@ export default function StreamSetup() {
                 </div>
                 <div>
                   <h3 className="text-xs font-black uppercase tracking-wide text-cyan-300">
-                    Creator Tip
+                    Mẹo Cho Người Tạo Nội Dung
                   </h3>
                   <p className="mt-2 text-xs leading-5 text-zinc-400">
-                    Streams with descriptive titles and at least 3 relevant tags
-                    see a{" "}
+                    Các stream có tiêu đề mô tả và ít nhất 3 thẻ liên quan sẽ có tỷ lệ khám phá cao hơn{" "}
                     <span className="font-bold text-zinc-200">
-                      24% higher discovery rate
+                      24% trên tab Duyệt
                     </span>{" "}
-                    in the Browse tab.
+                    so với những stream khác.
                   </p>
                 </div>
               </div>

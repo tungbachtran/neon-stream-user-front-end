@@ -71,7 +71,7 @@ export function GiftPanel({ streamId, isOpen, onClose }: GiftPanelProps) {
                         {/* Header */}
                         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
                             <div className="flex items-center gap-2">
-                                <span className="text-white font-semibold text-sm">Send Gift</span>
+                                <span className="text-white font-semibold text-sm">Gửi quà</span>
                             </div>
                             <div className="flex items-center gap-1.5 bg-yellow-500/20 border border-yellow-500/30 rounded-full px-3 py-1">
                                 <Diamond className="h-3.5 w-3.5 text-yellow-400" />
@@ -155,7 +155,7 @@ export function GiftPanel({ streamId, isOpen, onClose }: GiftPanelProps) {
                         <div className="px-4 pb-4 space-y-3">
                             {/* Quantity selector */}
                             <div className="flex items-center gap-2">
-                                <span className="text-white/50 text-xs">Qty:</span>
+                                <span className="text-white/50 text-xs">Số lượng:</span>
                                 <div className="flex gap-1.5 flex-1">
                                     {QUANTITY_OPTIONS.map((q) => (
                                         <button
@@ -193,18 +193,18 @@ export function GiftPanel({ streamId, isOpen, onClose }: GiftPanelProps) {
                                                 transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
                                                 className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
                                             />
-                                            Sending...
+                                            Đang gửi...
                                         </span>
                                     ) : selectedGift ? (
                                         <span className="flex items-center gap-2">
-                                            Send {selectedGift.emoji} {selectedGift.name}
+                                            Gửi {selectedGift.emoji} {selectedGift.name}
                                             <span className="flex items-center gap-1 bg-black/20 rounded-full px-2 py-0.5">
                                                 <Diamond className="h-3 w-3 text-yellow-300" />
                                                 <span className="text-yellow-300 text-xs">{totalCost.toLocaleString()}</span>
                                             </span>
                                         </span>
                                     ) : (
-                                        'Select a gift'
+                                        'Chọn 1 món quà'
                                     )}
                                 </Button>
                             </motion.div>

@@ -24,30 +24,32 @@ export default function PublicLayout({
     retry: false,
   });
 
-
-
   useEffect(() => {
     if (initialFollowingLive) {
       setFollowingLive(initialFollowingLive);
     }
   }, [initialFollowingLive]);
+
   const [overview, setOverview] = useState<LiveOverview | null>(null);
+
   return (
-    <>
-      <div className='flex min-h-screen'>
-      <BrowseSidebar
+    <div className="flex min-h-screen flex-col">
+      {/* ✅ Navbar nằm trên cùng, full width */}
+      <Navbar />
+
+      {/* ✅ Sidebar + Content nằm ngang bên dưới navbar */}
+      <div className="flex flex-1 pt-[64px]"> {/* pt bằng chiều cao navbar */}
+        <BrowseSidebar
           followingLive={followingLive}
           topLiveStreams={overview?.topLiveStreams ?? []}
           isFollowingLoading={isFollowingLoading}
         />
-      <main className="min-w-0 flex-1 pl-0 lg:pl-[260px]">
-      <Navbar />
-        {children}
+        <main className="flex-1 h-screen overflow-hidden">
+          {children}
         </main>
-     
-      <ChatButton />
       </div>
 
-    </>
+      <ChatButton />
+    </div>
   );
 }

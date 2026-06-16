@@ -15,12 +15,12 @@ import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/ui/icons';
 
 const registerSchema = z.object({
-  fullName: z.string().min(1, 'Full name is required'),
-  username: z.string().min(3, 'Username must be at least 3 characters'),
+  fullName: z.string().min(1, 'Họ và tên là bắt buộc'),
+  username: z.string().min(3, 'Tên người dùng phải có ít nhất 3 ký tự'),
   phone: z.string().optional(),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters')
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Password must contain uppercase, lowercase, and number'),
+  email: z.string().email('Địa chỉ email không hợp lệ'),
+  password: z.string().min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Mật khẩu phải chứa chữ hoa, chữ thường và số'),
 });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
@@ -40,9 +40,9 @@ export default function RegisterPage() {
         ...data,
         phone: data.phone || undefined
       })).unwrap();
-      router.push('/'); // redirect sau khi register thành công
+      router.push('/');
     } catch (err: any) {
-      alert(err || 'Registration failed');
+      alert(err || 'Đăng ký thất bại');
     }
   };
 
@@ -53,31 +53,32 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left side - image/background */}
-      <div className="hidden md:flex w-1/2 relative">
+      {/* Bên trái - hình ảnh/nền */}
+      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-purple-900 to-black items-center justify-center">
         <img
-          src="https://thietbimayanh.com/wp-content/uploads/2024/11/thiet-ke-phong-livestream-game-2.png" // đổi thành ảnh nền của bạn
+          src="https://thietbimayanh.com/wp-content/uploads/2024/11/thiet-ke-phong-livestream-game-2.png"
           alt="NeonStream"
-          className="object-cover w-full h-full"
+          className="h-full w-auto opacity-90"
         />
-        <div className="absolute left-12 top-1/4 text-white max-w-xs">
-          <h1 className="text-4xl font-bold mb-2">The Future <span className="text-cyan-400">Is Broadcast</span></h1>
-          <p className="text-gray-300 text-sm">
-            Step into the neon light. Join the most advanced streaming community where high-fidelity performance meets cinematic aesthetics.
+        <div className="absolute left-12 text-white max-w-xs">
+          <h1 className="text-4xl font-bold mb-2">Xác thực <span className="text-purple-400">nhịp đập.</span></h1>
+          <p className="text-sm text-gray-300">
+            Gia nhập cuộc cách mạng biểu diễn trực tiếp. Ghế hàng đầu của bạn ở tương lai neon đang chờ.
           </p>
         </div>
+
       </div>
 
-      {/* Right side - form */}
+      {/* Bên phải - biểu mẫu */}
       <div className="flex flex-col w-full md:w-1/2 justify-center items-center bg-[#0f0f0f] p-8">
         <div className="w-full max-w-md space-y-6">
-          <Link href="/" className="text-gray-400 text-sm mb-2 inline-block">← BACK</Link>
-          <h2 className="text-2xl font-bold text-white">Create Account</h2>
-          <p className="text-gray-400 text-sm">Your journey into the nocturnal network begins here.</p>
+          <Link href="/" className="text-gray-400 text-sm mb-2 inline-block">← QUAY LẠI</Link>
+          <h2 className="text-2xl font-bold text-white">Tạo Tài Khoản</h2>
+          <p className="text-gray-400 text-sm">Hành trình của bạn vào mạng lưới ban đêm bắt đầu từ đây.</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-1">
-              <Label htmlFor="fullName" className="text-gray-300">Full Name</Label>
+              <Label htmlFor="fullName" className="text-gray-300">Họ và Tên</Label>
               <Input
                 id="fullName"
                 placeholder="Elias Vance"
@@ -89,7 +90,7 @@ export default function RegisterPage() {
 
             <div className="flex gap-4">
               <div className="flex-1 space-y-1">
-                <Label htmlFor="username" className="text-gray-300">Username</Label>
+                <Label htmlFor="username" className="text-gray-300">Tên Người Dùng</Label>
                 <Input
                   id="username"
                   placeholder="@neon_knight"
@@ -99,7 +100,7 @@ export default function RegisterPage() {
                 {errors.username && <p className="text-xs text-red-500">{errors.username.message}</p>}
               </div>
               <div className="flex-1 space-y-1">
-                <Label htmlFor="phone" className="text-gray-300">Phone</Label>
+                <Label htmlFor="phone" className="text-gray-300">Số Điện Thoại</Label>
                 <Input
                   id="phone"
                   placeholder="+1 (555) 000-0000"
@@ -111,7 +112,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="email" className="text-gray-300">Email Address</Label>
+              <Label htmlFor="email" className="text-gray-300">Địa Chỉ Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -123,7 +124,7 @@ export default function RegisterPage() {
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="password" className="text-gray-300">Security Key</Label>
+              <Label htmlFor="password" className="text-gray-300">Khóa Bảo Mật</Label>
               <Input
                 id="password"
                 type="password"
@@ -134,18 +135,18 @@ export default function RegisterPage() {
               {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
             </div>
 
-  
+
 
             <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-purple-400 text-white">
-              CREATE ACCOUNT
+              TẠO TÀI KHOẢN
             </Button>
           </form>
 
           <p className="text-gray-400 text-center text-sm">
-            Already a member? <Link href="/login" className="text-cyan-400 hover:underline">LOG IN</Link>
+            Đã là thành viên? <Link href="/login" className="text-cyan-400 hover:underline">ĐĂNG NHẬP</Link>
           </p>
 
-      
+
         </div>
       </div>
     </div>

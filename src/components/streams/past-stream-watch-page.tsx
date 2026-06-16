@@ -119,7 +119,7 @@ export function PastStreamWatchPage({
                     <aside className="overflow-hidden rounded-2xl bg-[#16161b] xl:sticky xl:top-5">
                         <div className="border-b border-white/[0.06] px-5 py-4">
                             <h2 className="text-lg font-black text-white">
-                                More from {stream.streamer.username}
+                                Thêm từ {stream.streamer.username}
                             </h2>
 
                             <p className="mt-1 text-xs font-medium text-white/35">
@@ -201,7 +201,7 @@ function PastStreamListItem({ stream }: { stream: PastStream }) {
                 </p>
 
                 <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px] text-white/30">
-                    <span>{formatCompact(stream.viewCount || 0)} views</span>
+                    <span>{formatCompact(stream.viewCount || 0)} lượt xem</span>
 
                     {stream.startedAt ? (
                         <>
@@ -260,7 +260,7 @@ function StreamInformation({ stream }: { stream: PastStream }) {
 
                                 <span className="flex items-center gap-1.5 text-sm font-semibold text-white/45">
                                     <Eye className="h-3.5 w-3.5" />
-                                    {formatCompact(stream.viewCount || 0)} views
+                                    {formatCompact(stream.viewCount || 0)} lượt xem
                                 </span>
 
                                 {stream.startedAt ? (
@@ -269,7 +269,7 @@ function StreamInformation({ stream }: { stream: PastStream }) {
 
                                         <span className="flex items-center gap-1.5 text-sm text-white/45">
                                             <Calendar className="h-3.5 w-3.5" />
-                                            Streamed{' '}
+                                            Phát{' '}
                                             {formatDistanceToNow(new Date(stream.startedAt), {
                                                 addSuffix: true,
                                             })}
@@ -291,9 +291,9 @@ function StreamInformation({ stream }: { stream: PastStream }) {
 
                             <div className="mt-5 flex flex-wrap gap-2">
                                 <Pill>Past Stream</Pill>
-                                <Pill>Competitive</Pill>
-                                <Pill>English</Pill>
-                                <Pill accent>Drops Enabled</Pill>
+                                <Pill>Cạnh Tranh</Pill>
+                                <Pill>Tiếng Việt</Pill>
+                                <Pill accent>Drops Được Bật</Pill>
                             </div>
                         </div>
                     </div>
@@ -307,13 +307,13 @@ function StreamInformation({ stream }: { stream: PastStream }) {
 
                     <Button className="h-12 rounded-xl bg-[#25252d] px-8 text-base font-black text-white/75 hover:bg-[#30303a]">
                         <Tag className="mr-2 h-5 w-5 text-pink-400" />
-                        Subscribe
+                        Đăng Ký
                     </Button>
 
                     <Button
                         size="icon"
                         onClick={handleShare}
-                        aria-label="Share stream"
+                        aria-label="Chia sẻ stream"
                         className="h-12 w-12 rounded-xl bg-[#25252d] text-white/70 hover:bg-[#30303a]"
                     >
                         <Share2 className="h-5 w-5" />
@@ -346,7 +346,7 @@ function StreamInformation({ stream }: { stream: PastStream }) {
                             {formatCompact(
                                 stream.streamer.followerCount || 0,
                             )}{' '}
-                            followers
+                            người theo dõi
                         </p>
                     </div>
 
@@ -354,7 +354,7 @@ function StreamInformation({ stream }: { stream: PastStream }) {
                         variant="outline"
                         className="rounded-xl border-white/10 bg-transparent font-bold text-white/70 hover:bg-white/5 hover:text-white"
                     >
-                        View Profile
+                        Xem Hồ Sơ
                     </Button>
                 </div>
             </Link>
@@ -362,7 +362,7 @@ function StreamInformation({ stream }: { stream: PastStream }) {
             {/* Mô tả video */}
             <div className="mt-8 max-w-[760px] rounded-2xl bg-[#1a1a20] p-6 shadow-xl shadow-black/10">
                 <h3 className="mb-4 text-xl font-black text-white">
-                    About the Stream
+                    Về Buổi Phát Này
                 </h3>
 
                 <p className="whitespace-pre-line text-sm leading-7 text-white/55">
@@ -395,7 +395,7 @@ function Pill({
 }
 
 function formatCompact(value: number) {
-    return new Intl.NumberFormat('en', {
+    return new Intl.NumberFormat('vi', {
         notation: 'compact',
         maximumFractionDigits: 1,
     }).format(value);

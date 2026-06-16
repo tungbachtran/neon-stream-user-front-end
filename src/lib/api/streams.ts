@@ -21,6 +21,18 @@ export interface UpdateStreamData {
   thumbnailUrl?: string | null;
 }
 
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  thumbnailUrl: string | null;
+  isActive: boolean;
+}
+export interface CategoryWithStreams {
+  category: Category;
+  streams: Stream[];
+}
 export const streamsApi = {
   createStream: (data: CreateStreamData) =>
     apiClient.post<Stream>("/streams", data),
@@ -38,7 +50,8 @@ export const streamsApi = {
       apiClient.get<PastStreamResponse>(`/streams/paststreams/${id}`),
 
   getLiveOverview: () => apiClient.get<LiveOverview>("/streams/live-overview"),
-
+  getCategoriesWithStreams: () =>
+    apiClient.get<CategoryWithStreams[]>("/streams/categories-with-streams"),
   getStreamCredentials: (id: string) =>
     apiClient.get<StreamCredentials>(`/streams/${id}/credentials`),
 

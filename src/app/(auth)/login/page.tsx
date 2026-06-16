@@ -16,8 +16,8 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 
 const loginSchema = z.object({
-  identifier: z.string().min(1, 'Email or phone is required'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  identifier: z.string().min(1, 'Email hoặc số điện thoại là bắt buộc'),
+  password: z.string().min(8, 'Mật khẩu phải có ít nhất 8 ký tự'),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -33,41 +33,42 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       await dispatch(login(data)).unwrap();
-      router.push('/'); // redirect khi login thành công
+      router.push('/');
       toast('Đăng nhập thành công');
     } catch (err: any) {
-      alert(err || 'Login failed');
+      alert(err || 'Đăng nhập thất bại');
     }
   };
 
   const handleGoogleLogin = () => {
     setIsGoogleLoading(true);
-  
+
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   };
 
   return (
     <div className="min-h-screen flex">
-      {/* Left side - image */}
+      {/* Bên trái - hình ảnh */}
       <div className="hidden md:flex w-1/2 bg-gradient-to-br from-purple-900 to-black items-center justify-center">
         <img
-          src="https://thietbimayanh.com/wp-content/uploads/2024/11/thiet-ke-phong-livestream-game-2.png" // bạn có thể thay bằng ảnh của bạn
+          src="https://thietbimayanh.com/wp-content/uploads/2024/11/thiet-ke-phong-livestream-game-2.png"
           alt="NeonStream"
-          className="object-cover h-full w-full opacity-90"
+          className="h-full w-auto opacity-90"
         />
         <div className="absolute left-12 text-white max-w-xs">
-          <h1 className="text-4xl font-bold mb-2">Authenticating <span className="text-purple-400">your pulse.</span></h1>
+          <h1 className="text-4xl font-bold mb-2">Xác thực <span className="text-purple-400">nhịp đập.</span></h1>
           <p className="text-sm text-gray-300">
-            Join the next evolution of cinematic live performance. Your front row seat to the neon future awaits.
+            Gia nhập cuộc cách mạng biểu diễn trực tiếp. Ghế hàng đầu của bạn ở tương lai neon đang chờ.
           </p>
         </div>
+
       </div>
 
-      {/* Right side - form */}
+      {/* Bên phải - biểu mẫu */}
       <div className="flex flex-col w-full md:w-1/2 justify-center items-center bg-[#0f0f0f] p-8">
         <div className="w-full max-w-md space-y-6">
-          <h2 className="text-2xl font-bold text-white text-center">Welcome Back</h2>
-          <p className="text-gray-400 text-center">Enter your details to sync your stream.</p>
+          <h2 className="text-2xl font-bold text-white text-center">Chào mừng trở lại</h2>
+          <p className="text-gray-400 text-center">Nhập chi tiết của bạn để đồng bộ hóa luồng của bạn.</p>
 
           <Button
             variant="outline"
@@ -76,21 +77,21 @@ export default function LoginPage() {
             disabled={isGoogleLoading}
           >
             {isGoogleLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : <Icons.google className="mr-2 h-4 w-4" />}
-            Continue with Google
+            Tiếp tục với Google
           </Button>
 
           <div className="flex items-center gap-2 text-gray-400 text-xs">
             <span className="flex-1 border-t border-gray-700"></span>
-            <span>OR</span>
+            <span>HOẶC</span>
             <span className="flex-1 border-t border-gray-700"></span>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-1">
-              <Label htmlFor="identifier" className="text-gray-300">Email or Phone Number</Label>
+              <Label htmlFor="identifier" className="text-gray-300">Email hoặc Số điện thoại</Label>
               <Input
                 id="identifier"
-                placeholder="Enter your credentials"
+                placeholder="Nhập thông tin đăng nhập của bạn"
                 {...registerField('identifier')}
                 className="bg-[#1a1a1a] border-gray-700 text-white placeholder-gray-500"
               />
@@ -98,7 +99,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="password" className="text-gray-300">Password</Label>
+              <Label htmlFor="password" className="text-gray-300">Mật khẩu</Label>
               <Input
                 id="password"
                 type="password"
@@ -110,13 +111,13 @@ export default function LoginPage() {
             </div>
 
             <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-              Sign In
+              Đăng nhập
             </Button>
           </form>
 
           <p className="text-gray-400 text-center text-sm">
-            Don't have an account?{' '}
-            <Link href="/register" className="text-purple-500 hover:underline">Create an Account</Link>
+            Chưa có tài khoản?{' '}
+            <Link href="/register" className="text-purple-500 hover:underline">Tạo tài khoản</Link>
           </p>
         </div>
       </div>

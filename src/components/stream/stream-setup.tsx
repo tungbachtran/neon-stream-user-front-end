@@ -81,29 +81,7 @@ export function StreamSetup() {
 
   return (
     <main className="min-h-screen flex-1 overflow-hidden bg-[radial-gradient(circle_at_55%_70%,rgba(20,184,166,0.08),transparent_28%),linear-gradient(135deg,#0b0b10_0%,#111018_45%,#08090c_100%)] text-zinc-100">
-      <header className="flex h-16 items-center justify-between border-b border-white/5 px-14">
-        <nav className="flex items-center gap-7 text-sm font-semibold text-zinc-500">
-          <button className="transition hover:text-zinc-100">Discover</button>
-          <button className="transition hover:text-zinc-100">Browse</button>
-          <button className="transition hover:text-zinc-100">Esports</button>
-        </nav>
-
-        <div className="flex items-center gap-5">
-          <button className="text-zinc-500 transition hover:text-zinc-100">
-            <Bell className="size-5" />
-          </button>
-
-          <button className="text-zinc-500 transition hover:text-zinc-100">
-            <Grid2X2 className="size-5" />
-          </button>
-
-          <Avatar className="size-9 border border-violet-400/30">
-            <AvatarImage src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=120&auto=format&fit=crop" />
-            <AvatarFallback>NN</AvatarFallback>
-          </Avatar>
-        </div>
-      </header>
-
+ 
       <section className="px-14 py-10">
         <div>
           <h1 className="text-4xl font-black tracking-tight text-zinc-100">

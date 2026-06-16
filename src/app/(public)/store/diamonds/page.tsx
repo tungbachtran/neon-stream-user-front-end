@@ -9,8 +9,6 @@ import { cn } from '@/lib/utils';
 
 const PAYMENT_METHODS = [
   { id: 'VNPAY', label: 'VNPay', icon: 'VP', description: 'QR / ATM / Thẻ quốc tế' },
-  { id: 'MOMO', label: 'MoMo', icon: 'Mo', description: 'Ví MoMo' },
-  { id: 'ZALOPAY', label: 'ZaloPay', icon: 'ZP', description: 'Ví ZaloPay' },
 ];
 
 export default function DiamondStorePage() {
@@ -27,20 +25,20 @@ export default function DiamondStorePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d0d1a] text-white p-6">
-      <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* ── Left: Packages ── */}
+    <div className="min-h-screen bg-[#0d0d1a] text-white pl-10 pt-6  ml-13 mt-16">
+      <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 ">
+        {/* ── Trái: Gói ── */}
         <div className="lg:col-span-2 space-y-6">
           <div>
             <h1 className="text-3xl font-bold">
-              RECHARGE <span className="text-cyan-400">DIAMONDS</span>
+              NẠP <span className="text-cyan-400">KIM CƯƠNG</span>
             </h1>
             <p className="text-gray-400 mt-1 text-sm">
-              Fuel your favorite streamers, unlock exclusive emotes.
+              Hỗ trợ streamer yêu thích của bạn, mở khóa emote độc quyền.
             </p>
           </div>
 
-          {/* Package Grid */}
+          {/* Lưới Gói */}
           <div className="grid grid-cols-2 gap-4">
             {PACKAGES.map((pkg) => (
               <button
@@ -67,20 +65,10 @@ export default function DiamondStorePage() {
             ))}
           </div>
 
-          {/* First Recharge Banner */}
-          <div className="rounded-xl border border-orange-500/30 bg-orange-500/10 p-4">
-            <span className="text-xs bg-orange-500 text-white px-2 py-0.5 rounded font-bold">
-              DOUBLE DROP
-            </span>
-            <p className="mt-2 text-orange-400 font-semibold">
-              First Recharge 100% Bonus
-            </p>
-            <p className="text-gray-400 text-sm">
-              Nhận gấp đôi kim cương cho lần nạp đầu tiên với gói từ 100,000 VND.
-            </p>
-          </div>
 
-          {/* Payment Methods */}
+
+
+          {/* Phương thức thanh toán */}
           <div>
             <h2 className="text-sm font-semibold uppercase tracking-widest text-gray-400 mb-3">
               Phương thức thanh toán
@@ -106,19 +94,19 @@ export default function DiamondStorePage() {
           </div>
         </div>
 
-        {/* ── Right: Checkout Summary ── */}
+        {/* ── Phải: Tóm tắt Thanh toán ── */}
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 h-fit sticky top-6">
-          <h2 className="font-bold text-lg mb-4">CHECKOUT SUMMARY</h2>
+          <h2 className="font-bold text-lg mb-4">TÓM TẮT THANH TOÁN</h2>
 
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-400">Selected Package</span>
+              <span className="text-gray-400">Gói đã chọn</span>
               <span className="font-semibold text-cyan-400">
-                {selectedPackage ? `${selectedPackage.diamonds} Diamonds` : '—'}
+                {selectedPackage ? `${selectedPackage.diamonds} Kim cương` : '—'}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Payment Method</span>
+              <span className="text-gray-400">Phương thức thanh toán</span>
               <span className="font-semibold text-purple-400">{paymentMethod}</span>
             </div>
             {selectedPackage && (
@@ -126,7 +114,7 @@ export default function DiamondStorePage() {
                 <span className="text-gray-400">Bonus</span>
                 <span className="font-semibold text-orange-400">
                   {selectedPackage.priceVnd >= 100_000
-                    ? `+${selectedPackage.diamonds} (First)`
+                    ? `+${selectedPackage.diamonds} (Lần đầu)`
                     : 'Không áp dụng'}
                 </span>
               </div>
@@ -134,7 +122,7 @@ export default function DiamondStorePage() {
           </div>
 
           <div className="mt-6 border-t border-white/10 pt-4">
-            <div className="text-xs text-gray-400 mb-1">TOTAL AMOUNT</div>
+            <div className="text-xs text-gray-400 mb-1">TỔNG CỘNG</div>
             <div className="text-3xl font-bold text-purple-400">
               {selectedPackage ? formatVnd(selectedPackage.priceVnd) : '—'}
             </div>
@@ -154,7 +142,7 @@ export default function DiamondStorePage() {
                 : 'bg-white/10 text-gray-500 cursor-not-allowed',
             )}
           >
-            {isPending ? 'Đang xử lý...' : 'PROCEED TO PAYMENT'}
+            {isPending ? 'Đang xử lý...' : 'TIẾP TỤC THANH TOÁN'}
           </button>
         </div>
       </div>

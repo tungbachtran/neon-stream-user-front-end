@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, UseQueryResult } from "@tanstack/react-query";
 import {
   streamsApi,
   CreateStreamData,
   UpdateStreamData,
+  CategoryWithStreams,
 } from "@/lib/api/streams";
 import { toast } from "sonner";
 import { Stream } from "@/types";
@@ -81,6 +82,16 @@ export function useStreams() {
     startStream: startStreamMutation.mutate,
     endStream: endStreamMutation.mutate,
   };
+}
+
+export function useCategoriesWithStreams(): UseQueryResult<CategoryWithStreams[], Error> {
+  return useQuery({
+    queryKey: ['categories-with-streams'],
+    queryFn: () => streamsApi.getCategoriesWithStreams(),
+    staleTime: 1000 * 30,
+    gcTime: 1000 * 60 * 5,
+    refetchInterval: 1000 * 30,
+  });
 }
 
 export function useStream(id: string) {

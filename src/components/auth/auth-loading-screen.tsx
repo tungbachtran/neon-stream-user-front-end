@@ -21,7 +21,7 @@ export function AuthLoadingScreen() {
         </div>
 
         <h1 className="text-xl font-semibold tracking-tight">
-          Authenticating your pulse
+          Đang xác thực tài khoản của bạn
           <span className="ml-2 inline-flex gap-1 text-cyan-300">
             <span className="animate-bounce">.</span>
             <span className="animate-bounce [animation-delay:150ms]">.</span>
@@ -30,7 +30,7 @@ export function AuthLoadingScreen() {
         </h1>
 
         <p className="mt-4 text-xs uppercase tracking-widest text-white/35">
-          Establishing encrypted streaming node...
+          Thiết lập nút phát trực tiếp được mã hóa...
         </p>
 
         <div className="mt-24 h-[2px] w-52 overflow-hidden rounded-full bg-white/10">
@@ -38,7 +38,7 @@ export function AuthLoadingScreen() {
         </div>
 
         <div className="mt-10 rounded-full border border-white/10 bg-white/[0.03] px-5 py-2 text-[10px] uppercase tracking-[0.35em] text-white/45">
-          NeonStream Security Protocol Active
+          Giao Thức Bảo Mật NeonStream Đang Hoạt Động
         </div>
       </div>
     </div>

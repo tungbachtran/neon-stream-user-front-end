@@ -20,7 +20,7 @@ export default function DashboardLayout({
         <CreatorSidebar />
 
         {/* Main content */}
-        <main className="flex-1 bg-[#0f0f13] p-6 min-h-[calc(100vh-4rem)]">
+        <main className="flex-1 bg-[#0f0f13] p-6 h-screen">
           {children}
         </main>
       </div>

@@ -38,6 +38,7 @@ import { LiveOverview, Stream } from '@/types';
 import { Navbar } from '@/components/layout/navbar';
 import { ChatButton } from '@/components/chat/ChatButton';
 import { DailyCheckInModal } from '@/components/check-in/daily-check-in-modal';
+import { usePathname } from 'next/navigation';
 
 function formatViewers(value: number) {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
@@ -125,7 +126,8 @@ export default function BrowsePage() {
 
   return (
     <div className="min-h-screen bg-[#08090d] text-white">
-      <div className="flex min-h-screen">
+      <Navbar />
+      <div className="flex min-h-screen pt-15">
         <BrowseSidebar
           followingLive={followingLive}
           topLiveStreams={overview?.topLiveStreams ?? []}
@@ -133,7 +135,7 @@ export default function BrowsePage() {
         />
 
         <main className="min-w-0 flex-1 pl-0 lg:pl-[260px]">
-          <Navbar />
+
 
           <div className="mx-auto max-w-[1480px] px-4 py-6 md:px-8">
 
@@ -142,8 +144,8 @@ export default function BrowsePage() {
 
               <SectionHeader
                 eyebrow="/"
-                title="Recommended For You"
-                action="View All"
+                title="Đề xuất cho bạn"
+
               />
 
               {filteredStreams.length > 0 ? (
@@ -166,8 +168,8 @@ export default function BrowsePage() {
 
               <SectionHeader
                 eyebrow="/"
-                title="Top Categories"
-                action="Explore More"
+                title="Danh mục đứng đầu"
+
                 className="mt-10"
               />
 
@@ -187,7 +189,7 @@ export default function BrowsePage() {
               )}
 
               <SectionHeader
-                title="Popular Channels"
+                title="Kênh phổ biến"
                 className="mt-10"
               />
 
@@ -212,7 +214,7 @@ export default function BrowsePage() {
 
           </div>
         </main>
-        <DailyCheckInModal/>
+        <DailyCheckInModal />
         <ChatButton />
       </div>
     </div>
@@ -233,20 +235,13 @@ export function BrowseSidebar({
   isLoading?: boolean;
 }) {
   return (
-    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[260px] border-r border-white/5 bg-[#111219] lg:flex lg:flex-col">
-      <div className="flex h-16 items-center px-6">
-        <Link
-          href="/browse"
-          className="text-xl font-black italic tracking-tight text-transparent bg-gradient-to-r from-violet-300 via-fuchsia-300 to-cyan-300 bg-clip-text"
-        >
-          NEON NOIR
-        </Link>
-      </div>
+    <aside className="  hidden h-screen w-[260px] border-r border-white/5 bg-[#111219] lg:flex lg:flex-col ">
 
-      <div className="flex-1 overflow-y-auto px-4 pb-4">
+
+      <div className="flex-1 overflow-y-auto px-4 pb-4 pt-5">
         <SidebarNav />
 
-        <SidebarSection title="Channels">
+        <SidebarSection title="Kênh">
           {isFollowingLoading ? (
             <SidebarSkeleton count={3} />
           ) : followingLive.length > 0 ? (
@@ -262,7 +257,7 @@ export function BrowseSidebar({
           )}
         </SidebarSection>
 
-        <SidebarSection title="Recommended">
+        <SidebarSection title="Đề xuất">
           {isLoading ? (
             <SidebarSkeleton count={5} />
           ) : topLiveStreams.length > 0 ? (
@@ -277,59 +272,57 @@ export function BrowseSidebar({
             <SidebarEmpty text="Chưa có kênh live nổi bật" />
           )}
 
-          <Link
-            href="/browse"
-            className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-cyan-300 hover:text-cyan-200"
-          >
-            Browse More
-            <ChevronRight className="h-3 w-3" />
-          </Link>
+
         </SidebarSection>
       </div>
 
-      <div className="border-t border-white/5 p-4">
-        <Link
-          href="/settings"
-          className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-400 transition hover:bg-white/5 hover:text-white"
-        >
-          <Settings className="h-4 w-4" />
-          Settings
-        </Link>
-        <Link
-          href="/support"
-          className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-400 transition hover:bg-white/5 hover:text-white"
-        >
-          <ShieldQuestion className="h-4 w-4" />
-          Support
-        </Link>
-      </div>
+
     </aside>
   );
 }
 
 export function SidebarNav() {
+  const pathname = usePathname();
+
+  const isActive = (path: string) => {
+    if (path === '/' && pathname === '/') return true;
+    if (path !== '/' && pathname.startsWith(path)) return true;
+    return false;
+  };
+
   return (
-    <div className="mb-5 space-y-1">
+    <div className=" space-y-1">
       <Link
         href="/"
-        className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-400 transition hover:bg-white/5 hover:text-white"
+        className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${isActive('/')
+            ? 'bg-violet-500/15 font-semibold text-violet-200'
+            : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+          }`}
       >
         <Home className="h-4 w-4" />
-        Home
+        Trang chủ
       </Link>
+
       <Link
         href="/browse"
-        className="flex items-center gap-3 rounded-xl bg-violet-500/15 px-3 py-2 text-sm font-semibold text-violet-200"
+        className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${isActive('/browse')
+            ? 'bg-violet-500/15 font-semibold text-violet-200'
+            : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+          }`}
       >
         <Compass className="h-4 w-4" />
-        Browse
+        Duyệt
       </Link>
+
       <Link
         href="/following"
-        className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm text-zinc-400 transition hover:bg-white/5 hover:text-white"
+        className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${isActive('/following')
+            ? 'bg-violet-500/15 font-semibold text-violet-200'
+            : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+          }`}
       >
         <Heart className="h-4 w-4" />
-        Following
+        Đang theo dõi
       </Link>
     </div>
   );
@@ -450,10 +443,10 @@ function HeroSection({ stream }: { stream: Stream | null }) {
           <div className="max-w-3xl">
             <div className="mb-5 flex flex-wrap items-center gap-3">
               <Badge className="bg-rose-500 text-white hover:bg-rose-500">
-                LIVE
+                Trực tiếp
               </Badge>
               <span className="text-sm font-semibold text-zinc-300">
-                {formatViewers(stream.viewerCount)} Viewers
+                {formatViewers(stream.viewerCount)} Người xem
               </span>
             </div>
 
@@ -474,7 +467,7 @@ function HeroSection({ stream }: { stream: Stream | null }) {
                   {stream.streamer.username}
                 </p>
                 <p className="text-sm text-zinc-400">
-                  {stream.category?.name ?? 'Live'} · English
+                  {stream.category?.name ?? 'Trực tiếp'}
                 </p>
               </div>
             </div>
@@ -566,9 +559,7 @@ function StreamCard({ stream }: { stream: Stream }) {
                     {stream.category.name}
                   </Badge>
                 )}
-                <Badge className="rounded-md bg-white/10 text-[10px] text-zinc-300 hover:bg-white/10">
-                  English
-                </Badge>
+
               </div>
             </div>
           </div>
@@ -619,7 +610,7 @@ function CategoryCard({
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <h3 className="font-black text-white">{category.name}</h3>
           <p className="mt-1 text-xs font-bold text-cyan-300">
-            {formatViewers(category.viewerCount)} Viewers
+            {formatViewers(category.viewerCount)} Người xem
           </p>
           <p className="text-[11px] text-zinc-400">
             {category.liveCount} live stream
@@ -663,7 +654,7 @@ function PopularChannelCard({
       </p>
 
       <p className="text-xs text-zinc-500">
-        {formatViewers(channel.viewerCount)} viewers
+        {formatViewers(channel.viewerCount)} người xem
       </p>
     </Link>
   );

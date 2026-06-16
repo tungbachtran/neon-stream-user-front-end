@@ -56,12 +56,12 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-[#0f0f1a]">
-      {/* Cover Image / Header */}
+      {/* Ảnh bìa / Tiêu đề */}
       <div className="relative h-48 sm:h-64 lg:h-80 bg-gradient-to-br from-purple-900/50 via-pink-900/30 to-[#0f0f1a] overflow-hidden">
         {profile.coverImage ? (
           <img
             src={profile.coverImage}
-            alt="cover"
+            alt="bìa"
             className="w-full h-full object-cover opacity-60"
           />
         ) : (
@@ -70,7 +70,7 @@ export default function ProfilePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f1a] via-transparent to-transparent" />
       </div>
 
-      {/* Profile Info */}
+      {/* Thông tin hồ sơ */}
       <div className="max-w-5xl mx-auto px-4">
         <div className="relative -mt-16 sm:-mt-20 flex flex-col sm:flex-row items-start sm:items-end gap-4 pb-6 border-b border-white/10">
           {/* Avatar */}
@@ -84,12 +84,12 @@ export default function ProfilePage() {
             {profile.isLive && (
               <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap">
                 <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                LIVE
+                ĐANG PHÁT
               </div>
             )}
           </div>
 
-          {/* Name & Stats */}
+          {/* Tên & Thống kê */}
           <div className="flex-1 min-w-0 sm:pb-2">
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-2xl sm:text-3xl font-bold text-white">{profile.username}</h1>
@@ -108,11 +108,11 @@ export default function ProfilePage() {
             <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-gray-400">
               <span className="flex items-center gap-1.5">
                 <Users className="w-4 h-4" />
-                <strong className="text-white">{followerCount.toLocaleString()}</strong> followers
+                <strong className="text-white">{followerCount.toLocaleString()}</strong> người theo dõi
               </span>
               <span className="flex items-center gap-1.5">
                 <Play className="w-4 h-4" />
-                <strong className="text-white">{profile.totalStreams}</strong> streams
+                <strong className="text-white">{profile.totalStreams}</strong> stream
               </span>
               <span className="flex items-center gap-1.5">
                 <Calendar className="w-4 h-4" />
@@ -121,7 +121,7 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Actions */}
+          {/* Hành động */}
           <div className="flex items-center gap-2 sm:pb-2 shrink-0">
             {profile.isLive && profile.liveStream && (
               <Link href={`/watch/${profile.liveStream.id}`}>
@@ -140,7 +140,7 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Live Stream Banner */}
+        {/* Biểu ngữ Live Stream */}
         {profile.isLive && profile.liveStream && (
           <div className="mt-6">
             <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
@@ -164,7 +164,7 @@ export default function ProfilePage() {
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
                   <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-lg">
                     <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                    LIVE
+                    ĐANG PHÁT
                   </div>
                   <div className="absolute bottom-3 right-3 bg-black/70 text-white text-sm px-3 py-1 rounded-lg flex items-center gap-1.5">
                     <Eye className="w-4 h-4" />
@@ -184,7 +184,7 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* Past Streams */}
+        {/* Video đã phát */}
         <div className="mt-8 pb-12">
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <Play className="w-5 h-5 text-purple-400" />
@@ -220,7 +220,7 @@ function PastStreamCard({
       href={`/watch/past/${stream.id}`}
       className="bg-white/5 border border-white/10 hover:border-purple-500/30 rounded-xl overflow-hidden transition-all group block"
     >
-      {/* Thumbnail */}
+      {/* Hình thu nhỏ */}
       <div className="relative aspect-video bg-black/40">
         {stream.thumbnailUrl ? (
           <img
@@ -234,7 +234,7 @@ function PastStreamCard({
           </div>
         )}
 
-        {/* hover play icon */}
+        {/* Biểu tượng phát khi hover */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
           <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
             <Play className="w-6 h-6 text-white fill-white ml-0.5" />
@@ -242,7 +242,7 @@ function PastStreamCard({
         </div>
       </div>
 
-      {/* Info */}
+      {/* Thông tin */}
       <div className="p-3">
         <h3 className="text-sm font-medium text-white truncate group-hover:text-purple-300 transition-colors">
           {stream.title}

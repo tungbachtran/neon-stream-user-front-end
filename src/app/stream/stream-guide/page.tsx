@@ -73,8 +73,8 @@ function ResourceItem({ icon, title, subtitle }) {
 
 export default function StreamGuideSection() {
   return (
-    <section className="min-h-screen bg-[#070b14] px-6 py-8 md:px-10 lg:px-12">
-      <div className="mx-auto max-w-[1400px]">
+    <section className="h-full bg-[#070b14] px-6 py-8 md:px-10 lg:px-12 overflow-y-auto mt-5">
+      <div className="mx-auto max-w-[1400px] ">
         <div className="relative overflow-hidden rounded-[30px] border border-white/8 bg-[#050811] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_60px_rgba(46,84,255,0.08)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(59,130,246,0.09),transparent_18%),radial-gradient(circle_at_78%_30%,rgba(37,99,235,0.08),transparent_22%),linear-gradient(90deg,rgba(3,7,18,0.96)_0%,rgba(3,7,18,0.88)_42%,rgba(3,7,18,0.62)_68%,rgba(3,7,18,0.84)_100%)]" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02),transparent_16%,transparent_84%,rgba(255,255,255,0.015))]" />
@@ -82,30 +82,24 @@ export default function StreamGuideSection() {
           <div className="relative grid min-h-[620px] items-center lg:grid-cols-[1.05fr_0.95fr]">
             <div className="z-10 px-8 py-12 sm:px-12 md:px-14 lg:px-16 lg:py-16">
               <div className="inline-flex rounded-full border border-cyan-400/30 bg-cyan-400/8 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.12)]">
-                Masterclass phase 01
+                Hướng dẫn thiết lập
               </div>
 
               <h1 className="mt-8 max-w-[680px] text-5xl font-black leading-[0.92] tracking-[-0.04em] text-white sm:text-6xl lg:text-[5.6rem]">
-                Master Your
+                Thiết Lập
                 <br />
                 Stream: <span className="text-violet-300">OBS</span>
                 <br />
                 <span className="bg-gradient-to-r from-violet-300 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
-                  Setup Guide
+                  Hướng Dẫn Chi Tiết
                 </span>
               </h1>
 
               <p className="mt-8 max-w-[640px] text-lg leading-9 text-white/68 md:text-[1.55rem]">
-                Transform your broadcasts from basic to cinematic. Learn the
-                industry-standard configurations used by top-tier streamers to
-                deliver ultra-low latency.
+                Hãy làm theo các bước dưới đây để thiết lập stream của bạn. Từ tải OBS, tạo livestream, đến kết nối với phần mềm phát trực tiếp.
               </p>
 
-              <div className="mt-12">
-                <Button className="h-auto rounded-2xl bg-gradient-to-r from-violet-300 to-violet-500 px-8 py-6 text-lg font-bold text-black shadow-[0_18px_40px_rgba(139,92,246,0.34)] transition hover:scale-[1.02] hover:from-violet-200 hover:to-violet-400">
-                  Start Learning Now
-                </Button>
-              </div>
+
             </div>
 
             <div className="relative hidden min-h-[620px] lg:block">
@@ -137,8 +131,8 @@ export default function StreamGuideSection() {
                   borderClass="border-violet-400/20"
                   glowClass="from-violet-400/8"
                   badgeClass="from-violet-300 to-violet-500 text-[#14091f]"
-                  title="Download & Install OBS Studio"
-                  description="The foundation of your production. Ensure you download the official version for your operating system."
+                  title="Tải Và Cài Đặt OBS Studio"
+                  description="Tải phần mềm OBS Studio chính thức cho hệ điều hành của bạn. Đây là nền tảng để phát trực tiếp stream của bạn."
                 >
                   <div className="mt-6 flex flex-wrap gap-3">
                     <MiniButton icon={<Monitor className="h-4 w-4" />} label="Windows" />
@@ -151,12 +145,12 @@ export default function StreamGuideSection() {
                   borderClass="border-cyan-400/20"
                   glowClass="from-cyan-400/8"
                   badgeClass="from-cyan-300 to-sky-400 text-[#07141b]"
-                  title="Connection Settings"
-                  description="Navigate to Settings > Stream and configure your service credentials to link OBS with NeonStream."
+                  title="Tạo Livestream Mới"
+                  description="Quay lại trang dashboard và tạo một livestream mới. Điền tiêu đề, mô tả và các cài đặt khác cho stream của bạn."
                 >
                   <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                    <InfoTile label="Service type" value="Custom..." />
-                    <InfoTile label="Server" value="rtmp://live.neonstream..." />
+                    <InfoTile label="Tiêu đề" value="Nhập tiêu đề stream..." />
+                    <InfoTile label="Trạng thái" value="Sẵn sàng" />
                   </div>
                 </StepCard>
 
@@ -165,14 +159,12 @@ export default function StreamGuideSection() {
                   borderClass="border-pink-400/20"
                   glowClass="from-pink-400/8"
                   badgeClass="from-pink-300 to-rose-500 text-[#1d0a14]"
-                  title="Optimal Encoding Performance"
-                  description="For the best balance of quality and latency, use these recommended settings in the Output tab."
+                  title="Sao Chép Thông Tin Stream"
+                  description="Trong trang điều khiển stream, tìm phần 'OBS / Phần Mềm Phát Trực Tiếp'. Sao chép URL RTMP và Stream Key."
                 >
-                  <div className="mt-6 grid gap-3 sm:grid-cols-4">
-                    <StatTile label="Encoder" value="NVENC H.264" />
-                    <StatTile label="Bitrate" value="6000 Kbps" />
-                    <StatTile label="Rate Control" value="CBR" />
-                    <StatTile label="Keyframe" value="2s" />
+                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                    <StatTile label="URL RTMP" value="rtmp://..." />
+                    <StatTile label="Stream Key" value="••••••••" />
                   </div>
                 </StepCard>
 
@@ -181,21 +173,50 @@ export default function StreamGuideSection() {
                   borderClass="border-violet-400/20"
                   glowClass="from-violet-400/8"
                   badgeClass="from-violet-300 to-violet-500 text-[#14091f]"
-                  title="Scene & Source Setup"
-                  description="Add your visual assets. Right-click in the Sources panel to add your webcam, microphone, and gameplay window."
+                  title="Thiết Lập OBS - Stream Settings"
+                  description="Mở OBS, vào Settings > Stream. Chọn 'Custom...' làm Service, dán URL RTMP vào Server và Stream Key vào phần Stream Key."
                 >
                   <div className="mt-6 flex h-[220px] items-center justify-center rounded-[18px] border border-white/6 bg-[radial-gradient(circle_at_50%_30%,rgba(251,191,36,0.08),transparent_35%),linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))]">
                     <div className="text-center">
-                      <div className="text-6xl font-black tracking-[-0.06em] text-[#9cb3ff]">OB</div>
+                      <div className="text-6xl font-black tracking-[-0.06em] text-[#9cb3ff]">OBS</div>
                       <div className="mt-4 flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em]">
                         <span className="rounded-full border border-cyan-400/25 bg-cyan-400/10 px-3 py-1 text-cyan-300">
-                          Webcam active
+                          Settings
                         </span>
                         <span className="rounded-full border border-violet-400/25 bg-violet-400/10 px-3 py-1 text-violet-300">
-                          Game capture on
+                          Stream
                         </span>
                       </div>
                     </div>
+                  </div>
+                </StepCard>
+
+                <StepCard
+                  number="05"
+                  borderClass="border-cyan-400/20"
+                  glowClass="from-cyan-400/8"
+                  badgeClass="from-cyan-300 to-sky-400 text-[#07141b]"
+                  title="Bắt Đầu Phát Trực Tiếp"
+                  description="Trong OBS, bấm nút 'Start Streaming'. Sau đó, quay lại trang điều khiển stream và bấm nút 'Phát Trực Tiếp' để kích hoạt stream."
+                >
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <MiniButton icon={<Monitor className="h-4 w-4" />} label="Start Streaming (OBS)" />
+                    <MiniButton icon={<Monitor className="h-4 w-4" />} label="Phát Trực Tiếp (Dashboard)" />
+                  </div>
+                </StepCard>
+
+                <StepCard
+                  number="06"
+                  borderClass="border-pink-400/20"
+                  glowClass="from-pink-400/8"
+                  badgeClass="from-pink-300 to-rose-500 text-[#1d0a14]"
+                  title="Xem Stream Đang Phát"
+                  description="Stream của bạn đã sẵn sàng! Quay lại trang điều khiển stream để xem preview, chat, và các thông tin phát trực tiếp."
+                >
+                  <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                    <StatTile label="Trạng Thái" value="Đang Phát" />
+                    <StatTile label="Người Xem" value="Live" />
+                    <StatTile label="Bitrate" value="6000 Kbps" />
                   </div>
                 </StepCard>
               </div>
@@ -204,13 +225,13 @@ export default function StreamGuideSection() {
                 <aside className="rounded-[22px] border border-white/8 bg-[linear-gradient(180deg,rgba(16,20,33,0.96),rgba(10,12,20,0.98))] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
                   <div className="flex items-center gap-2 text-sm font-semibold text-white">
                     <span className="h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.7)]" />
-                    Ingest Portal
+                    Thông Tin Kết Nối
                   </div>
 
                   <div className="mt-5 space-y-4">
                     <div>
                       <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
-                        Stream server URL
+                        URL Server RTMP
                       </div>
                       <div className="flex items-center justify-between rounded-xl border border-white/6 bg-black/40 px-3 py-3 text-sm text-cyan-300">
                         <span className="truncate pr-3">rtmp://live.neonstream.io/...</span>
@@ -220,35 +241,35 @@ export default function StreamGuideSection() {
 
                     <div>
                       <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35">
-                        Private stream key
+                        Khóa Stream Riêng Tư
                       </div>
                       <div className="flex items-center justify-between rounded-xl border border-white/6 bg-black/40 px-3 py-3 text-sm text-white/60">
                         <span className="truncate pr-3">••••••••••••••••••••</span>
                         <Copy className="h-4 w-4 shrink-0 text-white/45" />
                       </div>
                       <div className="mt-2 text-[11px] text-red-300/70">
-                        Never share your stream key.
+                        Không bao giờ chia sẻ khóa stream của bạn.
                       </div>
                     </div>
 
                     <Button className="w-full rounded-xl bg-white/10 py-5 text-sm font-semibold text-white hover:bg-white/15">
-                      Reset Stream Key
+                      Đặt Lại Stream Key
                     </Button>
                   </div>
                 </aside>
 
                 <aside className="rounded-[22px] border border-white/8 bg-[linear-gradient(180deg,rgba(16,20,33,0.96),rgba(10,12,20,0.98))] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
-                  <div className="text-sm font-semibold text-white">Pro Resources</div>
+                  <div className="text-sm font-semibold text-white">Tài Nguyên Hữu Ích</div>
                   <div className="mt-4 space-y-3">
                     <ResourceItem
                       icon={<Monitor className="h-4 w-4" />}
-                      title="Bitrate Calculator"
-                      subtitle="Optimize your preset"
+                      title="Máy Tính Bitrate"
+                      subtitle="Tối ưu hóa cài đặt của bạn"
                     />
                     <ResourceItem
                       icon={<Calendar className="h-4 w-4" />}
-                      title="VOD Management"
-                      subtitle="Archive your glory"
+                      title="Quản Lý VOD"
+                      subtitle="Lưu trữ stream của bạn"
                     />
                   </div>
                 </aside>
@@ -257,17 +278,17 @@ export default function StreamGuideSection() {
 
             <div className="pt-16 text-center">
               <p className="text-sm text-white/40">
-                Having trouble with your setup? Our 24/7 technical team is here to help.
+                Gặp vấn đề với thiết lập? Đội hỗ trợ kỹ thuật 24/7 của chúng tôi sẵn sàng giúp bạn.
               </p>
               <div className="mt-4 flex flex-wrap items-center justify-center gap-6 text-sm font-medium">
                 <a href="#" className="text-violet-300 transition hover:text-violet-200">
-                  Contact Live Support
+                  Liên Hệ Hỗ Trợ
                 </a>
                 <a href="#" className="text-white/60 transition hover:text-white">
-                  Community Discord
+                  Discord Cộng Đồng
                 </a>
                 <a href="#" className="text-white/60 transition hover:text-white">
-                  Knowledge Base
+                  Cơ Sở Kiến Thức
                 </a>
               </div>
             </div>

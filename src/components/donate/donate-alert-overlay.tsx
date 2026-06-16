@@ -187,7 +187,9 @@ useEffect(() => {
   if (!current) return null;
 
   const style = TIER_STYLES[current.tier];
-
+  const displayMessage = current.messageFlagged 
+    ? '⚠️ Lời nhắn không hợp lệ' 
+    : current.message;
   return (
     <>
 
@@ -205,7 +207,7 @@ useEffect(() => {
               {(current.tier === 'RED' || current.tier === 'ORANGE') && (
                 <div className="mb-3 flex justify-center">
                   <span className={`rounded-full bg-black/30 px-4 py-0.5 text-[10px] font-black uppercase tracking-widest ${style.amountColor}`}>
-                    {current.tier === 'RED' ? '🔥 Super Donate' : '⚡ Mega Donate'}
+                    {current.tier === 'RED' ? '🔥 Donate Siêu Cấp' : '⚡ Donate Khủng'}
                   </span>
                 </div>
               )}
@@ -227,13 +229,13 @@ useEffect(() => {
                 </div>
               </div>
 
-              {current.message && (
-                <div className="mt-4 rounded-xl bg-black/30 px-4 py-3">
-                  <p className="text-sm leading-relaxed text-white/90">
-                    &ldquo;{current.message}&rdquo;
-                  </p>
-                </div>
-              )}
+              {displayMessage && (
+              <div className="mt-4 rounded-xl bg-black/30 px-4 py-3">
+                <p className={`text-sm leading-relaxed ${current.messageFlagged ? 'text-yellow-300' : 'text-white/90'}`}>
+                  &ldquo;{displayMessage}&rdquo;
+                </p>
+              </div>
+            )}
 
               <motion.div className="mt-4 h-1 overflow-hidden rounded-full bg-black/30">
                 <motion.div

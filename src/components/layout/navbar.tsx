@@ -20,13 +20,16 @@ import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/lib/store/store';
 import { logout } from '@/lib/features/auth/authSlice';
 import { NotificationBell } from '@/components/notifications/notification-bell';
+import { useGiftBalance } from '@/lib/hooks/use-gifts';
+
 
 export function Navbar() {
   const router = useRouter();
   const { user, isLoading } = useSelector(
     (state: RootState) => state.auth
   );
-
+  const { data: balanceData } = useGiftBalance();
+  const balance = balanceData?.balance ?? 0;
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<SearchStreamerResult[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -215,11 +218,17 @@ export function Navbar() {
         <div className="flex items-center gap-2 shrink-0 ml-auto">
           {user ? (
             <>
-              <NotificationBell />
+            <Button
+          size="sm"
+          className="rounded-xl bg-violet-500 px-5 font-bold text-white hover:bg-violet-400"
+          asChild
+        >
+          <Link href="/stream/stream-guide">Phát trực tiếp</Link>
+        </Button>
               <Link href="/store/diamonds">
                 <Button variant="ghost" size="sm" className="text-yellow-400 hover:text-yellow-300 gap-1.5">
                   <Gem className="w-4 h-4" />
-                  <span className="hidden sm:inline">{user.diamondBalance ?? 0}</span>
+                  <span className="hidden sm:inline">{balance ?? 0}</span>
                 </Button>
               </Link>
               <DropdownMenu>

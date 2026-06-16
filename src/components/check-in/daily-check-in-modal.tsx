@@ -68,14 +68,14 @@ export function DailyCheckInModal() {
             <DialogContent className="max-w-md p-0 overflow-hidden bg-gray-900 border-white/10">
                 <AnimatePresence mode="wait">
                     {!showReward ? (
-                        // ── MAIN CHECK-IN VIEW ──
+                        // ── VUE ĐIỂM DANH CHÍNH ──
                         <motion.div
                             key="checkin"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                         >
-                            {/* Header */}
+                            {/* Tiêu đề */}
                             <div className="relative bg-gradient-to-br from-purple-900 via-pink-900 to-rose-900 px-6 pt-8 pb-6">
                                 <button
                                     onClick={() => setOpen(false)}
@@ -93,10 +93,10 @@ export function DailyCheckInModal() {
                                         🎁
                                     </motion.div>
                                     <h2 className="text-white text-2xl font-bold">
-                                        Daily Check-in
+                                        Điểm Danh Hàng Ngày
                                     </h2>
                                     <p className="text-white/60 text-sm mt-1">
-                                        Come back every day for bigger rewards!
+                                        Quay lại mỗi ngày để nhận phần thưởng lớn hơn!
                                     </p>
 
                                     {/* Streak badge */}
@@ -104,17 +104,17 @@ export function DailyCheckInModal() {
                                         <div className="inline-flex items-center gap-2 mt-3 bg-orange-500/20 border border-orange-500/30 rounded-full px-4 py-1.5">
                                             <Flame className="h-4 w-4 text-orange-400" />
                                             <span className="text-orange-300 font-bold text-sm">
-                                                {status.currentStreak} Day Streak!
+                                                Chuỗi {status.currentStreak} ngày!
                                             </span>
                                         </div>
                                     )}
                                 </div>
                             </div>
 
-                            {/* Weekly Progress */}
+                            {/* Tiến Độ Hàng Tuần */}
                             <div className="px-6 py-5">
                                 <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-3">
-                                    Weekly Rewards
+                                    Phần Thưởng Hàng Tuần
                                 </p>
                                 <div className="grid grid-cols-7 gap-1.5">
                                     {status.weeklyProgress.map((day) => (
@@ -123,12 +123,12 @@ export function DailyCheckInModal() {
                                 </div>
                             </div>
 
-                            {/* Next Reward Preview */}
+                            {/* Xem Trước Phần Thưởng Tiếp Theo */}
                             {!status.hasCheckedInToday && (
                                 <div className="mx-6 mb-5 p-3 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center gap-3">
                                     <span className="text-2xl">{status.nextReward.emoji}</span>
                                     <div className="flex-1">
-                                        <p className="text-white/60 text-xs">Today's reward</p>
+                                        <p className="text-white/60 text-xs">Phần thưởng hôm nay</p>
                                         <p className="text-white font-bold text-sm">
                                             {status.nextReward.label}
                                         </p>
@@ -142,13 +142,13 @@ export function DailyCheckInModal() {
                                 </div>
                             )}
 
-                            {/* CTA Button */}
+                            {/* Nút CTA */}
                             <div className="px-6 pb-6">
                                 {status.hasCheckedInToday ? (
                                     <div className="flex items-center justify-center gap-2 py-3 rounded-xl bg-green-500/10 border border-green-500/20">
                                         <CheckCircle2 className="h-5 w-5 text-green-400" />
                                         <span className="text-green-400 font-semibold">
-                                            Checked in today!
+                                            Đã điểm danh hôm nay!
                                         </span>
                                     </div>
                                 ) : (
@@ -165,10 +165,10 @@ export function DailyCheckInModal() {
                                                         transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
                                                         className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
                                                     />
-                                                    Claiming...
+                                                    Đang Nhận...
                                                 </span>
                                             ) : (
-                                                '🎁 Claim Daily Reward'
+                                                '🎁 Nhận Phần Thưởng Hàng Ngày'
                                             )}
                                         </Button>
                                     </motion.div>
@@ -176,7 +176,7 @@ export function DailyCheckInModal() {
                             </div>
                         </motion.div>
                     ) : (
-                        // ── REWARD ANIMATION VIEW ──
+                        // ── VUE HOẠT HÌNH PHẦN THƯỞNG ──
                         <motion.div
                             key="reward"
                             initial={{ opacity: 0, scale: 0.8 }}
@@ -196,7 +196,7 @@ export function DailyCheckInModal() {
                             </motion.div>
 
                             <h3 className="text-white text-2xl font-bold mb-2">
-                                Reward Claimed!
+                                Phần Thưởng Đã Nhận!
                             </h3>
 
                             <div className="flex items-center gap-2 mb-3">
@@ -214,7 +214,7 @@ export function DailyCheckInModal() {
                             <div className="flex items-center gap-2 mb-6 bg-orange-500/20 border border-orange-500/30 rounded-full px-4 py-1.5">
                                 <Flame className="h-4 w-4 text-orange-400" />
                                 <span className="text-orange-300 font-bold text-sm">
-                                    {rewardData?.streak} Day Streak!
+                                    Chuỗi {rewardData?.streak} ngày!
                                 </span>
                             </div>
 
@@ -229,7 +229,7 @@ export function DailyCheckInModal() {
                                     setOpen(false);
                                 }}
                             >
-                                Awesome! 🎉
+                                Tuyệt Vời! 🎉
                             </Button>
                         </motion.div>
                     )}
@@ -239,7 +239,7 @@ export function DailyCheckInModal() {
     );
 }
 
-// ── Day Card Sub-component ──
+// ── Sub-component Thẻ Ngày ──
 function DayCard({ day }: { day: ReturnType<typeof import('@/types/check-in').CheckInStatus['weeklyProgress'][0]['valueOf']> | any }) {
     return (
         <motion.div
@@ -251,7 +251,7 @@ function DayCard({ day }: { day: ReturnType<typeof import('@/types/check-in').Ch
                 day.isUpcoming && 'bg-white/5 border-white/10 opacity-50',
             )}
         >
-            <span className="text-xs text-white/50 font-medium">D{day.day}</span>
+            <span className="text-xs text-white/50 font-medium">Ngày{day.day}</span>
             <span className="text-lg leading-none">
                 {day.isCompleted ? '✅' : day.isCurrent ? day.emoji : '🔒'}
             </span>

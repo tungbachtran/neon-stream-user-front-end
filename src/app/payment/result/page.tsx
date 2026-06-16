@@ -47,12 +47,12 @@ export default function PaymentResultPage() {
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Gói</span>
-              <span>{txn.diamondAmount} Diamonds</span>
+              <span>{txn.diamondAmount} Kim cương</span>
             </div>
             {txn.bonusDiamondAmount > 0 && (
               <div className="flex justify-between">
                 <span className="text-gray-400">Thưởng</span>
-                <span className="text-orange-400">+{txn.bonusDiamondAmount} Diamonds</span>
+                <span className="text-orange-400">+{txn.bonusDiamondAmount} Kim cương</span>
               </div>
             )}
             <div className="flex justify-between">

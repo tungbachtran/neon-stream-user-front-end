@@ -99,7 +99,7 @@ const mutation = useMutation({
           <div className="mb-5 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Zap className="h-5 w-5 text-yellow-400" />
-              <h2 className="text-lg font-black text-white">Super Donate</h2>
+              <h2 className="text-lg font-black text-white">Ủng hộ</h2>
             </div>
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1.5 rounded-full bg-[#2a2a35] px-3 py-1.5 text-sm font-bold text-yellow-400">
@@ -217,13 +217,6 @@ const mutation = useMutation({
             </div>
           </div>
 
-           {/* 🧪 Nút test TTS — xóa sau khi debug xong */}
-               <button
-               onClick={testTTS}
-               className="pointer-events-auto absolute right-4 top-4 z-[999] rounded-lg bg-yellow-400 px-3 py-1.5 text-xs font-black text-black hover:bg-yellow-300"
-             >
-               🔊 Test TTS
-             </button>
 
           {/* ── Send button ────────────────────────────────────────────── */}
           <Button
@@ -239,7 +232,7 @@ const mutation = useMutation({
             ) : (
               <span className="flex items-center gap-2">
                 <Send className="h-4 w-4" />
-                Donate {activeDiamonds.toLocaleString()} 💎
+                Ủng hộ {activeDiamonds.toLocaleString()} 💎
                 {!canAfford && ' — Không đủ kim cương'}
               </span>
             )}

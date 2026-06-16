@@ -17,7 +17,7 @@ import { Icons } from '@/components/ui/icons';
 import { Video, MessageSquare, Eye, Settings, ArrowRight } from 'lucide-react';
 
 const streamSchema = z.object({
-  title: z.string().min(3, 'Title must be at least 3 characters').max(200),
+  title: z.string().min(3, 'Tiêu đề phải có ít nhất 3 ký tự').max(200),
   description: z.string().max(1000).optional(),
   isChatEnabled: z.boolean().default(true),
   isPublic: z.boolean().default(true),
@@ -58,23 +58,23 @@ export default function StreamSetupPage() {
   const features = [
     {
       icon: Video,
-      title: 'HD Streaming',
-      description: 'Stream in up to 1080p 60fps with low latency',
+      title: 'Phát Trực Tiếp HD',
+      description: 'Phát trực tiếp với độ phân giải lên đến 1080p 60fps với độ trễ thấp',
     },
     {
       icon: MessageSquare,
-      title: 'Live Chat',
-      description: 'Interact with your audience in real-time',
+      title: 'Chat Trực Tiếp',
+      description: 'Tương tác với khán giả của bạn theo thời gian thực',
     },
     {
       icon: Eye,
-      title: 'Analytics',
-      description: 'Track viewers, engagement, and stream health',
+      title: 'Phân Tích',
+      description: 'Theo dõi người xem, mức độ tương tác và sức khỏe stream',
     },
     {
       icon: Settings,
-      title: 'Full Control',
-      description: 'Manage your stream settings on the fly',
+      title: 'Kiểm Soát Toàn Diện',
+      description: 'Quản lý cài đặt stream của bạn ngay lập tức',
     },
   ];
 
@@ -84,10 +84,10 @@ export default function StreamSetupPage() {
         <div className="max-w-6xl mx-auto py-12">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Welcome to Your Streaming Journey
+              Chào Mừng Đến Với Hành Trình Phát Trực Tiếp Của Bạn
             </h1>
             <p className="text-xl text-muted-foreground">
-              Let get you set up to go live in minutes
+              Hãy để chúng tôi giúp bạn thiết lập để phát trực tiếp trong vài phút
             </p>
           </div>
 
@@ -111,7 +111,7 @@ export default function StreamSetupPage() {
               onClick={() => setStep(2)}
               className="px-8"
             >
-              Get Started
+              Bắt Đầu
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -125,18 +125,18 @@ export default function StreamSetupPage() {
       <div className="max-w-2xl mx-auto py-12">
         <Card>
           <CardHeader>
-            <CardTitle>Create Your First Stream</CardTitle>
+            <CardTitle>Tạo Stream Đầu Tiên Của Bạn</CardTitle>
             <CardDescription>
-              Set up your stream details and preferences
+              Thiết lập chi tiết stream và tùy chọn của bạn
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="title">Stream Title *</Label>
+                <Label htmlFor="title">Tiêu Đề Stream *</Label>
                 <Input
                   id="title"
-                  placeholder="e.g., Welcome Stream - Getting Started!"
+                  placeholder="Ví dụ: Stream Chào Mừng - Bắt Đầu!"
                   {...register('title')}
                 />
                 {errors.title && (
@@ -145,10 +145,10 @@ export default function StreamSetupPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Description (Optional)</Label>
+                <Label htmlFor="description">Mô Tả (Tùy Chọn)</Label>
                 <Textarea
                   id="description"
-                  placeholder="Tell viewers what your stream is about..."
+                  placeholder="Kể cho người xem biết stream của bạn là về cái gì..."
                   rows={4}
                   {...register('description')}
                 />
@@ -158,13 +158,13 @@ export default function StreamSetupPage() {
               </div>
 
               <div className="space-y-4 pt-4 border-t">
-                <h3 className="font-semibold">Stream Settings</h3>
+                <h3 className="font-semibold">Cài Đặt Stream</h3>
 
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label>Enable Chat</Label>
+                    <Label>Bật Chat</Label>
                     <p className="text-sm text-muted-foreground">
-                      Allow viewers to chat during your stream
+                      Cho phép người xem chat trong stream của bạn
                     </p>
                   </div>
                   <Switch
@@ -175,9 +175,9 @@ export default function StreamSetupPage() {
 
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label>Public Stream</Label>
+                    <Label>Stream Công Khai</Label>
                     <p className="text-sm text-muted-foreground">
-                      Make your stream visible to everyone
+                      Làm cho stream của bạn hiển thị cho mọi người
                     </p>
                   </div>
                   <Switch
@@ -194,7 +194,7 @@ export default function StreamSetupPage() {
                   onClick={() => setStep(1)}
                   className="flex-1"
                 >
-                  Back
+                  Quay Lại
                 </Button>
                 <Button
                   type="submit"
@@ -204,7 +204,7 @@ export default function StreamSetupPage() {
                   {isSubmitting && (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  Create Stream
+                  Tạo Stream
                 </Button>
               </div>
             </form>

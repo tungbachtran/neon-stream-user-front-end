@@ -47,7 +47,7 @@ export function GiftTriggerButton({ streamId, className }: GiftTriggerButtonProp
           >
             <Gift className="h-4 w-4" />
           </motion.span>
-          Gift
+          Quà tặng
         </Button>
       </motion.div>
     </div>

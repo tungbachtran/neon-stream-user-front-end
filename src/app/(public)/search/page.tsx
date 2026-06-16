@@ -47,7 +47,7 @@ function SearchResults() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      {/* Header */}
+      {/* Tiêu đề */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-white mb-1">
           Kết quả tìm kiếm cho &quot;{query}&quot;
@@ -57,7 +57,7 @@ function SearchResults() {
         </p>
       </div>
 
-      {/* Tabs */}
+      {/* Các tab */}
       <div className="flex gap-1 mb-6 bg-white/5 rounded-xl p-1 w-fit">
         <button
           onClick={() => setTab('streamers')}
@@ -125,7 +125,7 @@ function StreamerCard({ streamer }: { streamer: SearchStreamerResult }) {
           </Avatar>
           {streamer.isLive && (
             <span className="absolute -bottom-1 -right-1 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full border-2 border-[#0f0f1a]">
-              LIVE
+              ĐANG PHÁT
             </span>
           )}
         </div>
@@ -137,7 +137,7 @@ function StreamerCard({ streamer }: { streamer: SearchStreamerResult }) {
             <div className="text-sm text-gray-400 truncate">{streamer.fullName}</div>
           )}
           <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
-            <span>{streamer.followerCount.toLocaleString()} followers</span>
+            <span>{streamer.followerCount.toLocaleString()} người theo dõi</span>
             {streamer.isLive && (
               <span className="flex items-center gap-1 text-red-400">
                 <Eye className="w-3 h-3" />
@@ -155,7 +155,7 @@ function StreamCard({ stream }: { stream: SearchStreamResult }) {
   return (
     <Link href={`/watch/${stream.id}`}>
       <div className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-purple-500/30 rounded-xl overflow-hidden transition-all group cursor-pointer">
-        {/* Thumbnail */}
+        {/* Hình thu nhỏ */}
         <div className="relative aspect-video bg-black/40">
           {stream.thumbnailUrl ? (
             <img
@@ -170,7 +170,7 @@ function StreamCard({ stream }: { stream: SearchStreamResult }) {
           )}
           <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded">
             <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-            LIVE
+            ĐANG PHÁT
           </div>
           <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-0.5 rounded flex items-center gap-1">
             <Eye className="w-3 h-3" />
@@ -178,7 +178,7 @@ function StreamCard({ stream }: { stream: SearchStreamResult }) {
           </div>
         </div>
 
-        {/* Info */}
+        {/* Thông tin */}
         <div className="p-3">
           <div className="font-medium text-white text-sm truncate group-hover:text-purple-300 transition-colors">
             {stream.title}

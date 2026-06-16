@@ -45,10 +45,10 @@ export default function TransactionHistoryPage() {
                     <div className="text-2xl">💎</div>
                     <div>
                       <div className="font-semibold">
-                        {txn.diamondAmount} Diamonds
+                        {txn.diamondAmount} Kim cương
                         {txn.bonusDiamondAmount > 0 && (
                           <span className="text-orange-400 text-sm ml-2">
-                            +{txn.bonusDiamondAmount} bonus
+                            +{txn.bonusDiamondAmount} thưởng
                           </span>
                         )}
                       </div>

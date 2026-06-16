@@ -53,7 +53,7 @@ export default function StreamControlPage() {
     const [isEnding, setIsEnding] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
 
-    // ── Editable fields (local state, sync từ stream khi load) ──────────
+    // ── Các trường có thể chỉnh sửa (trạng thái cục bộ, đồng bộ từ stream khi tải) ──────────
     const [editTitle, setEditTitle] = useState('');
     const [editDescription, setEditDescription] = useState('');
 
@@ -64,13 +64,13 @@ export default function StreamControlPage() {
 
     const API_BASE = API_BASE_URL;
 
-    // Sync local edit state khi stream load lần đầu
+    // Đồng bộ trạng thái chỉnh sửa cục bộ khi stream tải lần đầu
     useEffect(() => {
         if (stream) {
             setEditTitle(stream.title);
             setEditDescription(stream.description ?? '');
         }
-    }, [stream?.id]); // chỉ sync khi id thay đổi, không override khi user đang gõ
+    }, [stream?.id]); // chỉ đồng bộ khi id thay đổi, không ghi đè khi user đang gõ
 
     useEffect(() => {
         if (stream && user && stream.streamer.id !== user.id) {
@@ -89,7 +89,7 @@ export default function StreamControlPage() {
     if (!stream) {
         return (
             <div className="flex min-h-screen items-center justify-center bg-[#08090d] text-white">
-                <p className="text-white/60">Stream not found</p>
+                <p className="text-white/60">Không tìm thấy stream</p>
             </div>
         );
     }
@@ -98,7 +98,7 @@ export default function StreamControlPage() {
     const isIdle = stream.status === 'IDLE';
     const canEdit = isIdle;
 
-    // Thumbnail hiển thị: ưu tiên preview local → thumbnailUrl từ API → fallback
+    // Thumbnail hiển thị: ưu tiên preview cục bộ → thumbnailUrl từ API → fallback
     const displayThumbnail =
         thumbnailPreview ||
         stream.thumbnailUrl ||
@@ -112,7 +112,7 @@ export default function StreamControlPage() {
         setThumbnailPreview(URL.createObjectURL(file));
     }
 
-    // ── Save changes (title, description, thumbnail) ────────────────────
+    // ── Lưu thay đổi (tiêu đề, mô tả, thumbnail) ────────────────────
     async function handleSaveChanges() {
         if (!user) return;
         setIsSaving(true);
@@ -148,16 +148,16 @@ export default function StreamControlPage() {
     const handleStartStream = async () => {
         setIsStarting(true);
         try {
-            // Nếu có thay đổi chưa lưu thì save trước khi go live
+            // Nếu có thay đổi chưa lưu thì save trước khi phát trực tiếp
             if (canEdit) await handleSaveChanges();
 
             await fetch(`${API_BASE}/streams/${streamId}/start`, {
                 method: 'POST',
                 credentials: 'include',
             });
-            toast('You are now live');
+            toast('Bạn đang phát trực tiếp');
         } catch {
-            toast('Failed to start stream');
+            toast('Không thể bắt đầu stream');
         } finally {
             setIsStarting(false);
         }
@@ -170,10 +170,10 @@ export default function StreamControlPage() {
                 method: 'POST',
                 credentials: 'include',
             });
-            toast('Your stream has been stopped');
+            toast('Stream của bạn đã bị dừng');
             router.push('/dashboard');
         } catch {
-            toast('Failed to end stream');
+            toast('Không thể kết thúc stream');
         } finally {
             setIsEnding(false);
         }
@@ -181,7 +181,7 @@ export default function StreamControlPage() {
 
     const copyToClipboard = (text: string, label: string) => {
         navigator.clipboard.writeText(text);
-        toast(`${label} copied to clipboard`);
+        toast(`${label} đã được sao chép vào bộ nhớ tạm`);
     };
 
     const hasUnsavedChanges =
@@ -191,18 +191,18 @@ export default function StreamControlPage() {
             thumbnailFile !== null);
 
     return (
-        <div className="min-h-screen bg-[#08090d] p-4 text-white md:p-6">
+        <div className="h-screen overflow-auto bg-[#08090d] p-4 text-white pt-15">
             <div className="mx-auto max-w-[1500px]">
-                {/* Header */}
+                {/* Tiêu đề */}
                 <header className="mb-7 flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
                     <div className="min-w-0 flex-1">
-                        {/* Title — editable khi IDLE */}
+                        {/* Tiêu đề — có thể chỉnh sửa khi IDLE */}
                         {canEdit ? (
                             <Input
                                 value={editTitle}
                                 onChange={(e) => setEditTitle(e.target.value)}
                                 className="mb-1 h-auto border-white/10 bg-transparent px-0 text-3xl font-black tracking-tight text-white focus-visible:ring-0 focus-visible:ring-offset-0 md:text-4xl"
-                                placeholder="Stream title..."
+                                placeholder="Tiêu đề stream..."
                             />
                         ) : (
                             <h1 className="text-3xl font-black tracking-tight text-white md:text-4xl">
@@ -212,7 +212,7 @@ export default function StreamControlPage() {
 
                         <div className="mt-1 flex flex-wrap items-center gap-2 text-sm font-semibold text-white/40">
                             <span>
-                                {isLive ? 'Session: 04:12:45' : 'Session: Ready to start'}
+                                {isLive ? 'Phiên: 04:12:45' : 'Phiên: Sẵn sàng để bắt đầu'}
                             </span>
                             <span className="h-1 w-1 rounded-full bg-white/25" />
                             {stream.category && (
@@ -225,26 +225,26 @@ export default function StreamControlPage() {
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                             <StatCard
                                 icon={<Users className="h-5 w-5" />}
-                                label="Viewers"
+                                label="Người Xem"
                                 value={formatCompact(stream.viewerCount || 0)}
                                 color="cyan"
                             />
                             <StatCard
                                 icon={<UserPlus className="h-5 w-5" />}
-                                label="Followers"
+                                label="Người Theo Dõi"
                                 value="+412"
                                 color="violet"
                             />
                             <StatCard
                                 icon={<DollarSign className="h-5 w-5" />}
-                                label="Revenue"
+                                label="Doanh Thu"
                                 value="$1,240.50"
                                 color="pink"
                             />
                         </div>
 
                         <div className="flex gap-2">
-                            {/* Save button — chỉ hiện khi có thay đổi chưa lưu */}
+                            {/* Nút lưu — chỉ hiện khi có thay đổi chưa lưu */}
                             {hasUnsavedChanges && (
                                 <Button
                                     onClick={handleSaveChanges}
@@ -256,7 +256,7 @@ export default function StreamControlPage() {
                                     ) : (
                                         <Pencil className="mr-2 h-4 w-4" />
                                     )}
-                                    Save
+                                    Lưu
                                 </Button>
                             )}
 
@@ -271,7 +271,7 @@ export default function StreamControlPage() {
                                     ) : (
                                         <Play className="mr-2 h-4 w-4 fill-current" />
                                     )}
-                                    Go Live
+                                    Phát Trực Tiếp
                                 </Button>
                             )}
 
@@ -286,17 +286,17 @@ export default function StreamControlPage() {
                                     ) : (
                                         <Square className="mr-2 h-4 w-4 fill-current" />
                                     )}
-                                    End Stream
+                                    Kết Thúc Stream
                                 </Button>
                             )}
                         </div>
                     </div>
                 </header>
 
-                {/* Main layout */}
+                {/* Bố cục chính */}
                 <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_400px]">
                     <main className="min-w-0 space-y-5">
-                        {/* Preview */}
+                        {/* Xem trước */}
                         <section className="relative overflow-hidden rounded-2xl bg-[#050609] shadow-2xl shadow-black/40">
                             <div className="relative aspect-video min-h-[280px] overflow-hidden rounded-2xl bg-black">
                                 {isLive && credentials?.playbackUrl ? (
@@ -307,7 +307,7 @@ export default function StreamControlPage() {
                                         <div className="relative z-10 text-center">
                                             <Video className="mx-auto mb-4 h-14 w-14 text-white/25" />
                                             <p className="text-sm font-bold uppercase tracking-[0.22em] text-white/35">
-                                                {isIdle ? 'Waiting for signal' : 'Loading preview'}
+                                                {isIdle ? 'Chờ tín hiệu' : 'Đang tải xem trước'}
                                             </p>
                                         </div>
                                     </div>
@@ -346,17 +346,17 @@ export default function StreamControlPage() {
                             </div>
                         </section>
 
-                        {/* Thumbnail editor — chỉ hiện khi IDLE */}
+                        {/* Trình chỉnh sửa thumbnail — chỉ hiện khi IDLE */}
                         {canEdit && (
                             <section className="rounded-2xl bg-[#171820] p-5 shadow-xl shadow-black/20">
                                 <h2 className="mb-4 text-sm font-black uppercase tracking-[0.22em] text-white/45">
-                                    Thumbnail
+                                    Hình Thu Nhỏ
                                 </h2>
 
                                 <div className="group relative h-[180px] w-full max-w-[320px] overflow-hidden rounded-xl bg-[#202026]">
                                     <img
                                         src={displayThumbnail}
-                                        alt="Stream thumbnail"
+                                        alt="Hình thu nhỏ stream"
                                         className="h-full w-full object-cover opacity-80 transition duration-300 group-hover:scale-105 group-hover:opacity-50"
                                     />
 
@@ -366,12 +366,12 @@ export default function StreamControlPage() {
                                         className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full border border-white/15 bg-black/65 px-4 py-2 text-xs font-bold text-white backdrop-blur-md transition hover:bg-violet-500 group-hover:flex"
                                     >
                                         <Upload className="size-4" />
-                                        Change thumbnail
+                                        Thay đổi hình thu nhỏ
                                     </button>
 
                                     {thumbnailFile && (
                                         <div className="absolute right-2 top-2 rounded-md bg-violet-500 px-2 py-0.5 text-[10px] font-black text-white">
-                                            Pending upload
+                                            Chờ upload
                                         </div>
                                     )}
 
@@ -385,98 +385,98 @@ export default function StreamControlPage() {
                                 </div>
 
                                 <p className="mt-2 text-xs text-white/30">
-                                    Thumbnail sẽ được upload khi bạn bấm Save hoặc Go Live.
+                                    Hình thu nhỏ sẽ được upload khi bạn bấm Lưu hoặc Phát Trực Tiếp.
                                 </p>
                             </section>
                         )}
 
-                        {/* Description editor — chỉ hiện khi IDLE */}
+                        {/* Trình chỉnh sửa mô tả — chỉ hiện khi IDLE */}
                         {canEdit && (
                             <section className="rounded-2xl bg-[#171820] p-5 shadow-xl shadow-black/20">
                                 <h2 className="mb-4 text-sm font-black uppercase tracking-[0.22em] text-white/45">
-                                    Description
+                                    Mô Tả
                                 </h2>
                                 <textarea
                                     value={editDescription}
                                     onChange={(e) => setEditDescription(e.target.value)}
-                                    placeholder="Describe your stream..."
+                                    placeholder="Mô tả stream của bạn..."
                                     rows={3}
                                     className="w-full resize-none rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-violet-500/50"
                                 />
                             </section>
                         )}
 
-                        {/* Action buttons */}
+                        {/* Nút hành động */}
                         <section className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                            <ActionButton icon={<Scissors className="h-6 w-6" />} label="Clip That" color="violet" />
-                            <ActionButton icon={<Bookmark className="h-6 w-6 fill-current" />} label="Stream Marker" color="cyan" />
-                            <ActionButton icon={<Megaphone className="h-6 w-6" />} label="Run Ad" color="pink" />
-                            <ActionButton icon={<Sparkles className="h-6 w-6" />} label="Raid Channel" color="white" />
+                            <ActionButton icon={<Scissors className="h-6 w-6" />} label="Cắt Clip" color="violet" />
+                            <ActionButton icon={<Bookmark className="h-6 w-6 fill-current" />} label="Đánh Dấu" color="cyan" />
+                            <ActionButton icon={<Megaphone className="h-6 w-6" />} label="Phát Quảng Cáo" color="pink" />
+                            <ActionButton icon={<Sparkles className="h-6 w-6" />} label="Raid Kênh" color="white" />
                         </section>
 
-                        {/* Stream Health */}
+                        {/* Sức Khỏe Stream */}
                         <section className="rounded-2xl bg-[#171820] p-5 shadow-xl shadow-black/20">
                             <h2 className="mb-5 text-sm font-black uppercase tracking-[0.22em] text-white/45">
-                                Stream Health
+                                Sức Khỏe Stream
                             </h2>
                             <div className="grid gap-5 md:grid-cols-3">
-                                <HealthMetric label="Dropped Frames" value="0%" percent={0} color="cyan" />
-                                <HealthMetric label="CPU Usage" value="24%" percent={24} color="violet" />
-                                <HealthMetric label="Memory" value="4.2GB" percent={68} color="pink" />
+                                <HealthMetric label="Frame Bị Mất" value="0%" percent={0} color="cyan" />
+                                <HealthMetric label="Sử Dụng CPU" value="24%" percent={24} color="violet" />
+                                <HealthMetric label="Bộ Nhớ" value="4.2GB" percent={68} color="pink" />
                             </div>
                         </section>
 
-                        {/* OBS setup */}
+                        {/* Thiết lập OBS */}
                         {isIdle && credentials && (
                             <section className="rounded-2xl border border-cyan-400/15 bg-[#111219] p-5 shadow-xl shadow-black/20">
                                 <div className="mb-5 flex items-start justify-between gap-4">
                                     <div>
                                         <h2 className="text-sm font-black uppercase tracking-[0.22em] text-white/55">
-                                            OBS / Streaming Software
+                                            OBS / Phần Mềm Phát Trực Tiếp
                                         </h2>
                                         <p className="mt-2 text-sm text-white/40">
-                                            Copy these values into OBS, start streaming, then press Go Live.
+                                            Sao chép các giá trị này vào OBS, bắt đầu phát, sau đó bấm Phát Trực Tiếp.
                                         </p>
                                     </div>
                                     <Wifi className="h-5 w-5 text-cyan-400" />
                                 </div>
                                 <div className="space-y-4">
                                     <CopyField
-                                        label="RTMP URL"
+                                        label="URL RTMP"
                                         value={credentials.rtmpUrl}
-                                        onCopy={() => copyToClipboard(credentials.rtmpUrl, 'RTMP URL')}
+                                        onCopy={() => copyToClipboard(credentials.rtmpUrl, 'URL RTMP')}
                                     />
                                     <CopyField
-                                        label="Stream Key"
+                                        label="Khóa Stream"
                                         value={credentials.streamKey}
                                         type="password"
-                                        onCopy={() => copyToClipboard(credentials.streamKey, 'Stream Key')}
+                                        onCopy={() => copyToClipboard(credentials.streamKey, 'Khóa Stream')}
                                     />
                                 </div>
                                 <p className="mt-4 text-xs font-semibold text-pink-300/80">
-                                    Keep your stream key private. Treat it like a password.
+                                    Giữ khóa stream của bạn bí mật. Coi nó như một mật khẩu.
                                 </p>
                             </section>
                         )}
 
-                        {/* Settings */}
+                        {/* Cài Đặt */}
                         <section className="rounded-2xl bg-[#171820] p-5 shadow-xl shadow-black/20">
                             <h2 className="mb-5 text-sm font-black uppercase tracking-[0.22em] text-white/45">
-                                Stream Settings
+                                Cài Đặt Stream
                             </h2>
                             <div className="space-y-5">
                                 <SettingRow
                                     icon={<MessageSquare className="h-5 w-5" />}
-                                    title="Enable Chat"
-                                    description="Allow viewers to chat during your stream"
+                                    title="Bật Chat"
+                                    description="Cho phép người xem chat trong stream của bạn"
                                     checked={stream.isChatEnabled}
                                     onCheckedChange={(checked) => updateStream({ isChatEnabled: checked })}
                                     disabled={isLive}
                                 />
                                 <SettingRow
                                     icon={stream.isPublic ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
-                                    title="Public Stream"
-                                    description="Make this stream visible in browse page"
+                                    title="Stream Công Khai"
+                                    description="Làm cho stream này hiển thị trên trang duyệt"
                                     checked={stream.isPublic}
                                     onCheckedChange={(checked) => updateStream({ isPublic: checked })}
                                     disabled={isLive}
@@ -484,12 +484,12 @@ export default function StreamControlPage() {
                             </div>
                         </section>
 
-                        {/* Bottom status */}
+                        {/* Trạng thái dưới cùng */}
                         <section className="flex justify-center pt-8">
                             <div className="flex items-center gap-5 rounded-full bg-[#101118] px-6 py-3 shadow-2xl shadow-black/40">
                                 <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wide text-white/55">
                                     <span className="h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.9)]" />
-                                    Bitrate Stable
+                                    Bitrate Ổn Định
                                 </div>
                                 <div className="flex items-center gap-2 text-sm font-bold text-white/70">
                                     <Heart className="h-5 w-5 fill-pink-400 text-pink-400" />
@@ -507,7 +507,7 @@ export default function StreamControlPage() {
                         </section>
                     </main>
 
-                    {/* Real-time chat — dùng chung component với trang watch */}
+                    {/* Chat trực tiếp — sử dụng component chung với trang watch */}
                     <aside className="min-w-0">
                         {stream.isChatEnabled && isLive ? (
                             <StreamChat roomId={streamId} />
@@ -517,13 +517,13 @@ export default function StreamControlPage() {
                                     <MessageSquare className="mx-auto mb-4 h-12 w-12 text-white/25" />
                                     <p className="font-bold text-white/70">
                                         {stream.isChatEnabled
-                                            ? 'Chat will be available when the stream is live'
-                                            : 'Chat is disabled'}
+                                            ? 'Chat sẽ có sẵn khi stream đang phát trực tiếp'
+                                            : 'Chat bị vô hiệu hóa'}
                                     </p>
                                     <p className="mt-1 text-sm text-white/40">
                                         {stream.isChatEnabled
-                                            ? 'Start the stream to connect to the live chat room.'
-                                            : 'Turn chat back on from Stream Settings.'}
+                                            ? 'Bắt đầu stream để kết nối với phòng chat trực tiếp.'
+                                            : 'Bật lại chat từ Cài Đặt Stream.'}
                                     </p>
                                 </div>
                             </div>
@@ -535,7 +535,7 @@ export default function StreamControlPage() {
     );
 }
 
-// ── Sub-components (giữ nguyên, chỉ thêm disabled vào SettingRow) ────────
+// ── Các sub-component (giữ nguyên, chỉ thêm disabled vào SettingRow) ────────
 
 function SettingRow({
     icon, title, description, checked, onCheckedChange, disabled = false,
@@ -612,7 +612,7 @@ function StatusPill({ live }: { live: boolean }) {
                         : 'mr-2 h-2 w-2 rounded-full bg-white/35'
                 }
             />
-            {live ? 'Live' : 'Idle'}
+            {live ? 'Đang Phát' : 'Chờ'}
         </span>
     );
 }
