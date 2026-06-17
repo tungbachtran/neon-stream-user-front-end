@@ -196,7 +196,7 @@ export function BrowseSidebar({
   return (
     <aside className=" w-[260px] border-r border-white/5 bg-[#111219] lg:flex lg:flex-col ">
 
-
+      <DailyCheckInModal/>
       <div className="flex-1  px-4 pb-4 pt-5">
         <SidebarNav />
 
