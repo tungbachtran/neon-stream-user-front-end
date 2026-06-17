@@ -215,7 +215,7 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
           </div>
 
           <div className="space-y-4">
-           
+
 
             {messages.map((message) => (
               message.isDonate && message.donateData ? (
@@ -230,8 +230,11 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
               ) : (
                 <div
                   key={message.messageId}
-                  className={`group flex items-start gap-2 text-sm leading-relaxed transition-opacity duration-500 ${message.status === 'FLAGGED' ? 'opacity-30' : 'opacity-100'
+                  className={`group flex items-start gap-2 text-sm leading-relaxed ${message.status === 'FLAGGED'
+                      ? 'blur-sm opacity-30 select-none pointer-events-none'
+                      : 'opacity-100 transition-opacity duration-500'
                     }`}
+
                 >
                   <div className="min-w-0 flex-1">
                     <span className="font-bold text-[#8b6cff]">
@@ -264,9 +267,9 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
               </div>
             )}
 
-            
 
-           
+
+
           </div>
         </div>
 
@@ -299,9 +302,9 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
           </div>
 
           <div className="mt-4 flex items-center justify-between">
-            
-            <GiftTriggerButton streamId={roomId}/>
-           
+
+            <GiftTriggerButton streamId={roomId} />
+
             {/* ✅ Nút Donate — tách riêng */}
             <Button
               onClick={() => setShowDonatePanel(true)}
@@ -320,27 +323,7 @@ export function StreamChat({ roomId, isModerator = false }: StreamChatProps) {
             />
           )}
 
-          <div className="mt-6 border-t border-white/5 pt-5">
-            <h3 className="mb-4 text-[11px] font-black uppercase tracking-[0.24em] text-white/35">
-              Các Stream Được Đề Xuất
-            </h3>
 
-            <div className="space-y-3">
-              <RecommendedStream
-                title="Đêm Retro: RPG Kinh Điển"
-                streamer="PixelMistress"
-                viewers="12.5K"
-                imageClass="from-cyan-500/50 via-blue-500/20 to-violet-500/30"
-              />
-
-              <RecommendedStream
-                title="Workshop Thiết Kế Nhân Vật"
-                streamer="ArtByAris"
-                viewers="3.2K"
-                imageClass="from-emerald-500/40 via-zinc-700 to-orange-500/20"
-              />
-            </div>
-          </div>
         </div>
       </div>
     </aside>

@@ -223,7 +223,7 @@ export function Navbar() {
           className="rounded-xl bg-violet-500 px-5 font-bold text-white hover:bg-violet-400"
           asChild
         >
-          <Link href="/stream/stream-guide">Phát trực tiếp</Link>
+          <Link href="/stream/stream-setup">Phát trực tiếp</Link>
         </Button>
               <Link href="/store/diamonds">
                 <Button variant="ghost" size="sm" className="text-yellow-400 hover:text-yellow-300 gap-1.5">
