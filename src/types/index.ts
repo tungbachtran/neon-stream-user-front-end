@@ -29,7 +29,7 @@ export interface Stream {
   startedAt: Date | null;
   endedAt: Date | null;
   playbackUrl: string;
-
+  totalDiamonds?: number;
   streamer: {
     id: string;
     username: string;

@@ -33,6 +33,11 @@ const menuItems = [
     icon: BarChart3,
     href: "/stream/stream-setup",
   },
+  {
+    label: "Quản lý livestream",
+    icon: Video,
+    href: "/stream/past-streams",
+  },
 ];
 
 export function CreatorSidebar() {
@@ -43,7 +48,7 @@ export function CreatorSidebar() {
   };
 
   return (
-    <aside className="flex h-[880px] w-[240px] flex-col border-r border-white/5 bg-[#15151a] text-zinc-300">
+    <aside className="flex  w-[240px] flex-col border-r border-white/5 bg-[#15151a] text-zinc-300">
       <div className="px-6 ">
 
       </div>
@@ -61,7 +66,7 @@ export function CreatorSidebar() {
             <div className="mt-0.5 flex items-center gap-1.5">
               <span className="size-1.5 rounded-full bg-rose-500" />
               <span className="text-[10px] font-bold uppercase text-rose-400">
-                Live Now
+                Phát trực tiếp ngay
               </span>
             </div>
           </div>

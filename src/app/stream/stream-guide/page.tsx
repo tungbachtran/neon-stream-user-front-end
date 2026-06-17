@@ -73,13 +73,16 @@ function ResourceItem({ icon, title, subtitle }) {
 
 export default function StreamGuideSection() {
   return (
-    <section className="h-[830px] bg-[#070b14] px-6 py-8 md:px-10 lg:px-12 overflow-y-auto mt-5">
-      <div className="mx-auto max-w-[1400px] ">
+    <div className="bg-[#070b14] text-white">
+      <div className="mx-auto max-w-[1400px] px-6 py-8 md:px-10 lg:px-12">
+
+        {/* ── Hero Banner ── */}
         <div className="relative overflow-hidden rounded-[30px] border border-white/8 bg-[#050811] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_60px_rgba(46,84,255,0.08)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(59,130,246,0.09),transparent_18%),radial-gradient(circle_at_78%_30%,rgba(37,99,235,0.08),transparent_22%),linear-gradient(90deg,rgba(3,7,18,0.96)_0%,rgba(3,7,18,0.88)_42%,rgba(3,7,18,0.62)_68%,rgba(3,7,18,0.84)_100%)]" />
           <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02),transparent_16%,transparent_84%,rgba(255,255,255,0.015))]" />
 
           <div className="relative grid min-h-[620px] items-center lg:grid-cols-[1.05fr_0.95fr]">
+            {/* Trái */}
             <div className="z-10 px-8 py-12 sm:px-12 md:px-14 lg:px-16 lg:py-16">
               <div className="inline-flex rounded-full border border-cyan-400/30 bg-cyan-400/8 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.12)]">
                 Hướng dẫn thiết lập
@@ -96,137 +99,116 @@ export default function StreamGuideSection() {
               </h1>
 
               <p className="mt-8 max-w-[640px] text-lg leading-9 text-white/68 md:text-[1.55rem]">
-                Hãy làm theo các bước dưới đây để thiết lập stream của bạn. Từ tải OBS, tạo livestream, đến kết nối với phần mềm phát trực tiếp.
+                Hãy làm theo các bước dưới đây để thiết lập stream của bạn.
+                Từ tải OBS, tạo livestream đến kết nối với phần mềm —
+                tất cả trong một hướng dẫn duy nhất.
               </p>
 
-
+              <div className="mt-12">
+                <Button className="h-auto rounded-2xl bg-gradient-to-r from-violet-300 to-violet-500 px-8 py-6 text-lg font-bold text-black shadow-[0_18px_40px_rgba(139,92,246,0.34)] transition hover:scale-[1.02] hover:from-violet-200 hover:to-violet-400">
+                  Bắt đầu ngay
+                </Button>
+              </div>
             </div>
 
+            {/* Phải — trang trí */}
             <div className="relative hidden min-h-[620px] lg:block">
               <div className="absolute inset-y-0 right-0 w-full bg-[radial-gradient(circle_at_60%_42%,rgba(59,130,246,0.12),transparent_18%),radial-gradient(circle_at_72%_55%,rgba(15,23,42,0.18),transparent_30%)]" />
-
               <div className="absolute bottom-[86px] left-[18px] h-[340px] w-[180px] rounded-[32px] border border-white/6 bg-gradient-to-b from-[#0e1118]/95 to-[#070a11]/95 shadow-[0_25px_80px_rgba(0,0,0,0.55)]">
                 <div className="absolute left-1/2 top-6 h-4 w-16 -translate-x-1/2 rounded-full bg-white/6" />
               </div>
-
               <div className="absolute bottom-[78px] left-[138px] h-[210px] w-[470px] rotate-[5deg] rounded-[24px] border border-white/6 bg-[#090d15]/95 shadow-[0_35px_90px_rgba(0,0,0,0.52)]" />
-
               <div className="absolute bottom-[118px] left-[218px] h-[292px] w-[338px] rounded-[20px] border border-white/6 bg-gradient-to-b from-[#0d1320]/95 to-[#080b12]/95 shadow-[0_30px_90px_rgba(0,0,0,0.56)]">
                 <div className="absolute left-1/2 top-5 h-2.5 w-20 -translate-x-1/2 rounded-full bg-white/6" />
                 <div className="absolute inset-x-5 bottom-5 top-12 rounded-[12px] bg-[linear-gradient(90deg,rgba(17,24,39,0.98),rgba(11,18,32,0.88),rgba(17,24,39,0.98))]">
                   <div className="absolute inset-0 rounded-[12px] bg-[radial-gradient(circle_at_50%_30%,rgba(59,130,246,0.09),transparent_32%)]" />
                 </div>
               </div>
-
               <div className="absolute bottom-[72px] right-[46px] h-[118px] w-[118px] rounded-full bg-[radial-gradient(circle_at_35%_35%,rgba(255,255,255,0.2),rgba(82,82,91,0.2)_34%,rgba(10,10,12,0.98)_72%)] shadow-[0_12px_32px_rgba(0,0,0,0.55)]" />
               <div className="absolute bottom-[84px] right-[16px] h-[66px] w-[80px] rotate-[16deg] rounded-full border border-white/6 bg-[#0d1017] shadow-[0_12px_30px_rgba(0,0,0,0.4)]" />
             </div>
           </div>
-
-          <div className="relative px-5 pb-8 pt-2 sm:px-8 lg:px-10 lg:pb-10">
-            <div className="grid gap-5 lg:grid-cols-[1fr]">
-              <div className="space-y-5">
-                <StepCard
-                  number="01"
-                  borderClass="border-violet-400/20"
-                  glowClass="from-violet-400/8"
-                  badgeClass="from-violet-300 to-violet-500 text-[#14091f]"
-                  title="Tải Và Cài Đặt OBS Studio"
-                  description="Tải phần mềm OBS Studio chính thức cho hệ điều hành của bạn. Đây là nền tảng để phát trực tiếp stream của bạn."
-                >
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <MiniButton icon={<Monitor className="h-4 w-4" />} label="Windows" />
-                    <MiniButton icon={<Monitor className="h-4 w-4" />} label="macOS" />
-                  </div>
-                </StepCard>
-
-                <StepCard
-                  number="02"
-                  borderClass="border-cyan-400/20"
-                  glowClass="from-cyan-400/8"
-                  badgeClass="from-cyan-300 to-sky-400 text-[#07141b]"
-                  title="Tạo Livestream Mới"
-                  description="Quay lại trang Thiết lập livestream và tạo một livestream mới. Điền tiêu đề, mô tả và các cài đặt khác cho stream của bạn."
-                >
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                    <InfoTile label="Tiêu đề" value="Nhập tiêu đề stream..." />
-                    <InfoTile label="Trạng thái" value="Sẵn sàng" />
-                  </div>
-                </StepCard>
-
-                <StepCard
-                  number="03"
-                  borderClass="border-pink-400/20"
-                  glowClass="from-pink-400/8"
-                  badgeClass="from-pink-300 to-rose-500 text-[#1d0a14]"
-                  title="Sao Chép Thông Tin Stream"
-                  description="Trong trang điều khiển stream, tìm phần 'OBS / Phần Mềm Phát Trực Tiếp'. Sao chép URL RTMP và Stream Key."
-                >
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                    <StatTile label="URL RTMP" value="rtmp://..." />
-                    <StatTile label="Stream Key" value="••••••••" />
-                  </div>
-                </StepCard>
-
-                <StepCard
-                  number="04"
-                  borderClass="border-violet-400/20"
-                  glowClass="from-violet-400/8"
-                  badgeClass="from-violet-300 to-violet-500 text-[#14091f]"
-                  title="Thiết Lập OBS - Stream Settings"
-                  description="Mở OBS, vào Settings > Stream. Chọn 'Custom...' làm Service, dán URL RTMP vào Server và Stream Key vào phần Stream Key."
-                >
-                  <div className="mt-6 flex h-[220px] items-center justify-center rounded-[18px] border border-white/6 bg-[radial-gradient(circle_at_50%_30%,rgba(251,191,36,0.08),transparent_35%),linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))]">
-                    <div className="text-center">
-                      <div className="text-6xl font-black tracking-[-0.06em] text-[#9cb3ff]">OBS</div>
-                      <div className="mt-4 flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em]">
-                        <span className="rounded-full border border-cyan-400/25 bg-cyan-400/10 px-3 py-1 text-cyan-300">
-                          Settings
-                        </span>
-                        <span className="rounded-full border border-violet-400/25 bg-violet-400/10 px-3 py-1 text-violet-300">
-                          Stream
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </StepCard>
-
-                <StepCard
-                  number="05"
-                  borderClass="border-cyan-400/20"
-                  glowClass="from-cyan-400/8"
-                  badgeClass="from-cyan-300 to-sky-400 text-[#07141b]"
-                  title="Bắt Đầu Phát Trực Tiếp"
-                  description="Trong OBS, bấm nút 'Start Streaming'. Sau đó, quay lại trang Thiết lập livestream "
-                >
-                  <div className="mt-6 flex flex-wrap gap-3">
-                    <MiniButton icon={<Monitor className="h-4 w-4" />} label="Start Streaming (OBS)" />
-                    <MiniButton icon={<Monitor className="h-4 w-4" />} label="Phát Trực Tiếp (Dashboard)" />
-                  </div>
-                </StepCard>
-
-                <StepCard
-                  number="06"
-                  borderClass="border-pink-400/20"
-                  glowClass="from-pink-400/8"
-                  badgeClass="from-pink-300 to-rose-500 text-[#1d0a14]"
-                  title="Xem Stream Đang Phát"
-                  description="Stream của bạn đã sẵn sàng! Quay lại trang điều khiển stream để xem preview, chat, và các thông tin phát trực tiếp."
-                >
-                  <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                    <StatTile label="Trạng Thái" value="Đang Phát" />
-                    <StatTile label="Người Xem" value="Live" />
-                    <StatTile label="Bitrate" value="6000 Kbps" />
-                  </div>
-                </StepCard>
-              </div>
-
-            
-            </div>
-
-          </div>
         </div>
+
+        {/* ── Các bước + Sidebar ── */}
+        <div className="mt-8 grid gap-5 lg:grid-cols-[1fr]">
+
+          {/* Các bước */}
+          <div className="space-y-5">
+            <StepCard
+              number="01"
+              borderClass="border-violet-400/20"
+              glowClass="from-violet-400/8"
+              badgeClass="from-violet-300 to-violet-500 text-[#14091f]"
+              title="Tải & Cài đặt OBS Studio"
+              description="Nền tảng cho mọi buổi stream. Hãy tải đúng phiên bản chính thức dành cho hệ điều hành của bạn."
+            >
+              <div className="mt-6 flex flex-wrap gap-3">
+                <MiniButton icon={<Monitor className="h-4 w-4" />} label="Windows" />
+                <MiniButton icon={<Monitor className="h-4 w-4" />} label="macOS" />
+              </div>
+            </StepCard>
+
+            <StepCard
+              number="02"
+              borderClass="border-cyan-400/20"
+              glowClass="from-cyan-400/8"
+              badgeClass="from-cyan-300 to-sky-400 text-[#07141b]"
+              title="Cấu hình kết nối"
+              description="Vào Cài đặt > Stream, điền thông tin xác thực để kết nối OBS với NeonStream."
+            >
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <InfoTile label="Loại dịch vụ" value="Tùy chỉnh..." />
+                <InfoTile label="Máy chủ" value="rtmp://live.neonstream..." />
+              </div>
+            </StepCard>
+
+            <StepCard
+              number="03"
+              borderClass="border-pink-400/20"
+              glowClass="from-pink-400/8"
+              badgeClass="from-pink-300 to-rose-500 text-[#1d0a14]"
+              title="Tối ưu hoá chất lượng mã hoá"
+              description="Để cân bằng tốt nhất giữa chất lượng và độ trễ, hãy dùng các thông số khuyến nghị trong tab Đầu ra."
+            >
+              <div className="mt-6 grid gap-3 sm:grid-cols-4">
+                <StatTile label="Bộ mã hoá" value="NVENC H.264" />
+                <StatTile label="Bitrate" value="6000 Kbps" />
+                <StatTile label="Kiểm soát tốc độ" value="CBR" />
+                <StatTile label="Keyframe" value="2 giây" />
+              </div>
+            </StepCard>
+
+            <StepCard
+              number="04"
+              borderClass="border-violet-400/20"
+              glowClass="from-violet-400/8"
+              badgeClass="from-violet-300 to-violet-500 text-[#14091f]"
+              title="Thiết lập Scene & Source"
+              description="Thêm các nguồn hình ảnh. Nhấp chuột phải vào bảng Sources để thêm webcam, microphone và cửa sổ game."
+            >
+              <div className="mt-6 flex h-[220px] items-center justify-center rounded-[18px] border border-white/6 bg-[radial-gradient(circle_at_50%_30%,rgba(251,191,36,0.08),transparent_35%),linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))]">
+                <div className="text-center">
+                  <div className="text-6xl font-black tracking-[-0.06em] text-[#9cb3ff]">OB</div>
+                  <div className="mt-4 flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em]">
+                    <span className="rounded-full border border-cyan-400/25 bg-cyan-400/10 px-3 py-1 text-cyan-300">
+                      Webcam đang bật
+                    </span>
+                    <span className="rounded-full border border-violet-400/25 bg-violet-400/10 px-3 py-1 text-violet-300">
+                      Game capture bật
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </StepCard>
+          </div>
+
+          
+        </div>
+
+        
+
       </div>
-    </section>
+    </div>
   );
 }

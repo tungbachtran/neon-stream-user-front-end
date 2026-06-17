@@ -93,7 +93,7 @@ export default function WatchPage() {
 
                 <DonateAlertOverlay roomId={streamId} />
                 <GiftAnimationOverlay streamId={streamId} />
-                <div className="absolute left-4 top-4 flex items-center gap-3">
+                <div className="absolute left-80 top-30 flex items-center gap-3">
                   <Badge className="rounded-full bg-pink-500 px-3 py-1 text-xs font-black uppercase text-white hover:bg-pink-500">
                     <span className="mr-2 h-2 w-2 rounded-full bg-white" />
                     Đang Phát

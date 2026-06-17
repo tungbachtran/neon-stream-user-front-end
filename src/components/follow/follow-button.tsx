@@ -1,81 +1,57 @@
+// src/components/follow/follow-button.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
 import { UserPlus, UserCheck, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { followsAPI } from '@/lib/api/follows';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
+import { useFollowStatus, useToggleFollow } from '@/lib/hooks/useFollow';
 
 interface FollowButtonProps {
   username: string;
-  initialFollowing?: boolean;
   variant?: 'default' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg';
   className?: string;
-  onFollowChange?: (followed: boolean) => void;
 }
 
 export function FollowButton({
   username,
-  initialFollowing = false,
   variant = 'default',
   size = 'default',
   className = '',
-  onFollowChange,
 }: FollowButtonProps) {
-  const { user } = useSelector(state => state.auth);
+  const { user } = useSelector((state: any) => state.auth);
   const router = useRouter();
-  const [isFollowing, setIsFollowing] = useState(initialFollowing);
-  const [loading, setLoading] = useState(false);
-  const [checked, setChecked] = useState(false);
 
-  // Fetch trạng thái follow thực tế
-  useEffect(() => {
-    if (!user || checked) return;
-    followsAPI
-      .checkFollowStatus(username)
-      .then((res) => {
-        setIsFollowing(res.isFollowing);
-        setChecked(true);
-      })
-      .catch(() => setChecked(true));
-  }, [user, username, checked]);
+  const isSelf = user?.username === username;
 
-  const handleClick = async () => {
+  // ✅ Chỉ fetch khi đã login và không phải bản thân
+  const { data: isFollowing = false } = useFollowStatus(username, !!user && !isSelf);
+  const { mutate: toggle, isPending } = useToggleFollow(username);
+
+  if (isSelf) return null;
+
+  const handleClick = () => {
     if (!user) {
       router.push('/login');
       return;
     }
-    if (user.username === username) return; // Không follow bản thân
-
-    setLoading(true);
-    try {
-      const res = await followsAPI.toggleFollow(username);
-      setIsFollowing(res.followed);
-      onFollowChange?.(res.followed);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    toggle();
   };
-
-  if (user?.username === username) return null;
 
   return (
     <Button
       variant={isFollowing ? 'outline' : variant}
       size={size}
       onClick={handleClick}
-      disabled={loading}
+      disabled={isPending}
       className={`gap-2 transition-all ${
         isFollowing
           ? 'border-purple-500/50 text-purple-300 hover:border-red-500/50 hover:text-red-400 hover:bg-red-500/10'
           : 'bg-purple-600 hover:bg-purple-700 text-white'
       } ${className}`}
     >
-      {loading ? (
+      {isPending ? (
         <Loader2 className="w-4 h-4 animate-spin" />
       ) : isFollowing ? (
         <UserCheck className="w-4 h-4" />

@@ -1,52 +1,46 @@
+// src/app/(public)/profile/[username]/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import {
-  Users, Eye, Calendar, Play, Radio,
-  ExternalLink, Loader2
-} from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { Users, Eye, Calendar, Play, Radio, Loader2 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { usersAPI, PublicProfile } from '@/lib/api/users';
 import { FollowButton } from '@/components/follow/follow-button';
+import { followKeys } from '@/lib/hooks/useFollow';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 
 export default function ProfilePage() {
   const { username } = useParams<{ username: string }>();
   const router = useRouter();
-  const [profile, setProfile] = useState<PublicProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [followerCount, setFollowerCount] = useState(0);
 
-  useEffect(() => {
-    if (!username) return;
-    setLoading(true);
-    usersAPI
-      .getPublicProfile(username)
-      .then((data) => {
-        setProfile(data);
-        setFollowerCount(data.followerCount);
-      })
-      .catch(() => setError('Không tìm thấy streamer này'))
-      .finally(() => setLoading(false));
-  }, [username]);
+  // ✅ useQuery thay useEffect + useState
+  const {
+    data: profile,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: followKeys.profile(username),   // cùng key với invalidate trong useToggleFollow
+    queryFn: () => usersAPI.getPublicProfile(username),
+    enabled: !!username,
+    staleTime: 30_000,
+  });
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-[#0f0f1a]">
         <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
       </div>
     );
   }
 
-  if (error || !profile) {
+  if (isError || !profile) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-gray-400 gap-4">
-        <p className="text-xl">{error ?? 'Không tìm thấy'}</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#0f0f1a] text-gray-400 gap-4">
+        <p className="text-xl">Không tìm thấy streamer này</p>
         <button onClick={() => router.back()} className="text-purple-400 hover:underline">
           Quay lại
         </button>
@@ -56,22 +50,18 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-[#0f0f1a]">
-      {/* Ảnh bìa / Tiêu đề */}
-      <div className="relative h-48 sm:h-64 lg:h-80 bg-gradient-to-br from-purple-900/50 via-pink-900/30 to-[#0f0f1a] overflow-hidden">
+      {/* Cover */}
+      <div className="relative h-48 sm:h-64 lg:h-80 overflow-hidden">
         {profile.coverImage ? (
-          <img
-            src={profile.coverImage}
-            alt="bìa"
-            className="w-full h-full object-cover opacity-60"
-          />
+          <img src={profile.coverImage} alt="bìa" className="w-full h-full object-cover opacity-60" />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-purple-800/40 via-pink-800/20 to-transparent" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f1a] via-transparent to-transparent" />
       </div>
 
-      {/* Thông tin hồ sơ */}
       <div className="max-w-5xl mx-auto px-4">
+        {/* Profile header */}
         <div className="relative -mt-16 sm:-mt-20 flex flex-col sm:flex-row items-start sm:items-end gap-4 pb-6 border-b border-white/10">
           {/* Avatar */}
           <div className="relative shrink-0">
@@ -89,7 +79,7 @@ export default function ProfilePage() {
             )}
           </div>
 
-          {/* Tên & Thống kê */}
+          {/* Info */}
           <div className="flex-1 min-w-0 sm:pb-2">
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-2xl sm:text-3xl font-bold text-white">{profile.username}</h1>
@@ -99,16 +89,14 @@ export default function ProfilePage() {
                 </Badge>
               )}
             </div>
-            {profile.fullName && (
-              <p className="text-gray-400 mt-0.5">{profile.fullName}</p>
-            )}
-            {profile.bio && (
-              <p className="text-gray-300 text-sm mt-2 max-w-lg">{profile.bio}</p>
-            )}
+            {profile.fullName && <p className="text-gray-400 mt-0.5">{profile.fullName}</p>}
+            {profile.bio && <p className="text-gray-300 text-sm mt-2 max-w-lg">{profile.bio}</p>}
+
             <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-gray-400">
               <span className="flex items-center gap-1.5">
                 <Users className="w-4 h-4" />
-                <strong className="text-white">{followerCount.toLocaleString()}</strong> người theo dõi
+                {/* ✅ followerCount lấy từ query — tự cập nhật khi invalidate */}
+                <strong className="text-white">{profile.followerCount.toLocaleString()}</strong> người theo dõi
               </span>
               <span className="flex items-center gap-1.5">
                 <Play className="w-4 h-4" />
@@ -121,7 +109,7 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Hành động */}
+          {/* Actions */}
           <div className="flex items-center gap-2 sm:pb-2 shrink-0">
             {profile.isLive && profile.liveStream && (
               <Link href={`/watch/${profile.liveStream.id}`}>
@@ -131,16 +119,12 @@ export default function ProfilePage() {
                 </button>
               </Link>
             )}
-            <FollowButton
-              username={profile.username}
-              onFollowChange={(followed) =>
-                setFollowerCount((prev) => prev + (followed ? 1 : -1))
-              }
-            />
+            {/* ✅ Bỏ hoàn toàn onFollowChange — invalidate tự lo followerCount */}
+            <FollowButton username={profile.username} />
           </div>
         </div>
 
-        {/* Biểu ngữ Live Stream */}
+        {/* Live banner */}
         {profile.isLive && profile.liveStream && (
           <div className="mt-6">
             <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
@@ -184,17 +168,15 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* Video đã phát */}
+        {/* Past streams */}
         <div className="mt-8 pb-12">
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <Play className="w-5 h-5 text-purple-400" />
             Video đã phát ({profile.pastStreams.length})
           </h2>
-
           {profile.pastStreams.length === 0 ? (
             <div className="text-center py-12 text-gray-400">
-              <Play className="w-12 h-12 mx-auto mb-3 opacity-20
-                " />
+              <Play className="w-12 h-12 mx-auto mb-3 opacity-20" />
               Chưa có video nào được lưu
             </div>
           ) : (

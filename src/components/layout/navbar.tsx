@@ -123,7 +123,7 @@ export function Navbar() {
   };
 
   return (
-    <nav className=" bg-[#0f0f1a]/95 backdrop-blur-md border-b border-white/10 h-16">
+    <nav className=" bg-[#0f0f1a]/95 backdrop-blur-md border-b border-white/10 h-16 p-10">
       <div className="max-w-screen-2xl mx-auto px-4 h-full flex items-center gap-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
@@ -157,7 +157,7 @@ export function Navbar() {
 
           {/* Suggestions Dropdown */}
           {showSuggestions && (
-            <div className="absolute top-full mt-2 w-full bg-[#1a1a2e] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50">
+            <div className="absolute top-full mt-2 w-full bg-[#1a1a2e] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-999">
               {loadingSuggestions ? (
                 <div className="p-4 text-center text-gray-400 text-sm">Đang tìm...</div>
               ) : suggestions.length === 0 ? (
@@ -250,11 +250,7 @@ export function Navbar() {
                       <User className="w-4 h-4" /> Trang cá nhân
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard" className="flex items-center gap-2 cursor-pointer">
-                      <Settings className="w-4 h-4" /> Dashboard
-                    </Link>
-                  </DropdownMenuItem>
+
                   <DropdownMenuSeparator className="bg-white/10" />
                   <DropdownMenuItem
                     onSelect={() => void handleLogout()}

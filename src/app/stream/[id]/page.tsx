@@ -19,6 +19,8 @@ import { streamsApi } from '@/lib/api/streams';
 import {
     Bookmark,
     Copy,
+    Diamond,
+    DiamondIcon,
     DollarSign,
     Eye,
     EyeOff,
@@ -40,6 +42,7 @@ import {
 } from 'lucide-react';
 import { API_BASE_URL } from '@/lib/api/config';
 import { GiftAnimationOverlay } from '@/components/gifts/gift-animation-overlay';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function StreamControlPage() {
     const params = useParams();
@@ -53,7 +56,15 @@ export default function StreamControlPage() {
     const [isStarting, setIsStarting] = useState(false);
     const [isEnding, setIsEnding] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const queryClient = useQueryClient();
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
+    // Hàm refresh thủ công
+    const handleRefresh = async () => {
+        setIsRefreshing(true);
+        await queryClient.invalidateQueries({ queryKey: ['streams', streamId] });
+        setIsRefreshing(false);
+    };
     // ── Các trường có thể chỉnh sửa (trạng thái cục bộ, đồng bộ từ stream khi tải) ──────────
     const [editTitle, setEditTitle] = useState('');
     const [editDescription, setEditDescription] = useState('');
@@ -192,7 +203,7 @@ export default function StreamControlPage() {
             thumbnailFile !== null);
 
     return (
-        <div className=" h-[850px] overflow-auto bg-[#08090d] p-4 text-white ">
+        <div className=" overflow-auto bg-[#08090d] p-4 text-white ">
             <div className="mx-auto max-w-[1500px]">
                 {/* Tiêu đề */}
                 <header className="mb-7 flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
@@ -223,29 +234,38 @@ export default function StreamControlPage() {
                     </div>
 
                     <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <StatCard
                                 icon={<Users className="h-5 w-5" />}
                                 label="Người Xem"
                                 value={formatCompact(stream.viewerCount || 0)}
                                 color="cyan"
                             />
-                            <StatCard
-                                icon={<UserPlus className="h-5 w-5" />}
-                                label="Người Theo Dõi"
-                                value="+412"
-                                color="violet"
-                            />
-                            <StatCard
-                                icon={<DollarSign className="h-5 w-5" />}
-                                label="Doanh Thu"
-                                value="$1,240.50"
+                           
+                           <StatCard
+                                icon={<DiamondIcon className="h-5 w-5" />}
+                                label="Kim cương"
+                                value={formatCompact(stream.totalDiamonds ?? 0)}
                                 color="pink"
                             />
+                            
+                            
                         </div>
 
                         <div className="flex gap-2">
                             {/* Nút lưu — chỉ hiện khi có thay đổi chưa lưu */}
+                            <Button
+                                onClick={handleRefresh}
+                                disabled={isRefreshing}
+                                variant="ghost"
+                                className="h-12 w-30 rounded-xl border border-white/10 bg-white/5 p-0 text-white/60 hover:bg-white/10 hover:text-white "
+                                title="Làm mới số liệu"
+                            >
+                                Làm mới
+                                <Icons.spinner
+                                    className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`}
+                                />
+                            </Button>
                             {hasUnsavedChanges && (
                                 <Button
                                     onClick={handleSaveChanges}
@@ -296,16 +316,6 @@ export default function StreamControlPage() {
                                     </span>
                                 </div>
 
-                                <div className="absolute bottom-4 left-4 flex items-center gap-3">
-                                    <button className="grid h-12 w-12 place-items-center rounded-xl bg-white/10 text-white backdrop-blur transition hover:bg-white/15">
-                                        <Play className="h-5 w-5 fill-current" />
-                                    </button>
-                                    <button className="grid h-12 w-12 place-items-center rounded-xl bg-white/10 text-white backdrop-blur transition hover:bg-white/15">
-                                        <Volume2 className="h-5 w-5" />
-                                    </button>
-                                </div>
-
-                               
                             </div>
                         </section>
 
@@ -418,14 +428,7 @@ export default function StreamControlPage() {
                                     onCheckedChange={(checked) => updateStream({ isChatEnabled: checked })}
                                     disabled={isLive}
                                 />
-                                <SettingRow
-                                    icon={stream.isPublic ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
-                                    title="Stream Công Khai"
-                                    description="Làm cho stream này hiển thị trên trang duyệt"
-                                    checked={stream.isPublic}
-                                    onCheckedChange={(checked) => updateStream({ isPublic: checked })}
-                                    disabled={isLive}
-                                />
+                               
                             </div>
                         </section>
 

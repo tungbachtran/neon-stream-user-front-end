@@ -15,7 +15,7 @@ export function AuthBootstrap({
   const dispatch = useAppDispatch();
   const pathname = usePathname();
 
-  const { isCheckingAuth } = useAppSelector(
+  const { user,isCheckingAuth } = useAppSelector(
     (state) => state.auth
   );
 
@@ -38,7 +38,7 @@ export function AuthBootstrap({
     return <>{children}</>;
   }
 
-  if (isCheckingAuth) {
+  if (!user && isCheckingAuth) {
     return <AuthLoadingScreen />;
   }
 

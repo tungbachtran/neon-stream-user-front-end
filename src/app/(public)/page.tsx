@@ -39,6 +39,7 @@ import { Navbar } from '@/components/layout/navbar';
 import { ChatButton } from '@/components/chat/ChatButton';
 import { DailyCheckInModal } from '@/components/check-in/daily-check-in-modal';
 import { usePathname } from 'next/navigation';
+import { useSelector } from 'react-redux';
 
 function formatViewers(value: number) {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
@@ -71,39 +72,7 @@ export default function BrowsePage() {
   }, [initialFollowingLive]);
 
 
-  useEffect(() => {
-    const token =
-      typeof window !== 'undefined'
-        ? localStorage.getItem('access_token')
-        : null;
-
-    if (!token) return;
-
-    const controller = new AbortController();
-
-    fetchEventSource(`${API_URL}/follows/events/live`, {
-      signal: controller.signal,
-      openWhenHidden: true,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      onmessage(event) {
-        if (!event.data) return;
-
-        try {
-          const parsed = JSON.parse(event.data) as Stream[];
-          setFollowingLive(parsed);
-        } catch {
-          // ignore malformed event
-        }
-      },
-      onerror() {
-        // fetch-event-source sẽ tự retry
-      },
-    });
-
-    return () => controller.abort();
-  }, []);
+ 
 
   const filteredStreams = useMemo(() => {
     const streams = followingLive ?? [];
@@ -125,97 +94,87 @@ export default function BrowsePage() {
   const heroStream = overview?.heroStream ?? filteredStreams[0] ?? null;
 
   return (
-    <div className="h-full bg-[#08090d] text-white">
-      <Navbar />
-      <div className="flex h-[880px]">
-        <BrowseSidebar
-          followingLive={followingLive}
-          topLiveStreams={overview?.topLiveStreams ?? []}
-          isFollowingLoading={isFollowingLoading}
-        />
-
-        <main className="min-w-0 flex-1 pl-0 ">
+    <div className=" bg-[#08090d] text-white">
 
 
-          <div className="mx-auto max-w-[1480px] px-4 py-6 md:px-8 h-[880px] overflow-auto">
 
-            <>
-              <HeroSection stream={heroStream} />
 
-              <SectionHeader
-                eyebrow="/"
-                title="Đề xuất cho bạn"
 
-              />
 
-              {filteredStreams.length > 0 ? (
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                  {filteredStreams.slice(0, 8).map((stream) => (
-                    <StreamCard key={stream.id} stream={stream} />
-                  ))}
-                </div>
-              ) : (
-                <EmptyState
-                  icon={<Video className="h-10 w-10" />}
-                  title="Không có live stream phù hợp"
-                  description={
-                    searchQuery
-                      ? 'Không tìm thấy stream theo từ khóa bạn nhập.'
-                      : 'Hiện chưa có ai đang live. Neon hơi yên tĩnh một chút.'
-                  }
+      <div className="mx-auto max-w-[1480px] px-4 py-6 md:px-8 ">
+
+        <>
+          <HeroSection stream={heroStream} />
+
+          <SectionHeader
+            eyebrow="/"
+            title="Đề xuất cho bạn"
+
+          />
+
+          {filteredStreams.length > 0 ? (
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+              {filteredStreams.slice(0, 8).map((stream) => (
+                <StreamCard key={stream.id} stream={stream} />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              icon={<Video className="h-10 w-10" />}
+              title="Không có live stream phù hợp"
+              description={
+                searchQuery
+                  ? 'Không tìm thấy stream theo từ khóa bạn nhập.'
+                  : 'Hiện chưa có ai đang live. Neon hơi yên tĩnh một chút.'
+              }
+            />
+          )}
+
+          <SectionHeader
+            eyebrow="/"
+            title="Danh mục đứng đầu"
+
+            className="mt-10"
+          />
+
+          {overview?.liveCategories?.length ? (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
+              {overview.liveCategories.slice(0, 6).map((category) => (
+                <CategoryCard key={category.id} category={category} />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              compact
+              icon={<Gamepad2 className="h-8 w-8" />}
+              title="Chưa có danh mục đang live"
+              description="Khi có stream live thuộc danh mục, khu vực này sẽ tự cập nhật realtime."
+            />
+          )}
+
+          <SectionHeader
+            title="Kênh phổ biến"
+            className="mt-10"
+          />
+
+          {overview?.popularChannels?.length ? (
+            <div className="grid grid-cols-3 gap-6 md:grid-cols-4 lg:grid-cols-6">
+              {overview.popularChannels.map((channel) => (
+                <PopularChannelCard
+                  key={channel.id}
+                  channel={channel}
                 />
-              )}
-
-              <SectionHeader
-                eyebrow="/"
-                title="Danh mục đứng đầu"
-
-                className="mt-10"
-              />
-
-              {overview?.liveCategories?.length ? (
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
-                  {overview.liveCategories.slice(0, 6).map((category) => (
-                    <CategoryCard key={category.id} category={category} />
-                  ))}
-                </div>
-              ) : (
-                <EmptyState
-                  compact
-                  icon={<Gamepad2 className="h-8 w-8" />}
-                  title="Chưa có danh mục đang live"
-                  description="Khi có stream live thuộc danh mục, khu vực này sẽ tự cập nhật realtime."
-                />
-              )}
-
-              <SectionHeader
-                title="Kênh phổ biến"
-                className="mt-10"
-              />
-
-              {overview?.popularChannels?.length ? (
-                <div className="grid grid-cols-3 gap-6 md:grid-cols-4 lg:grid-cols-6">
-                  {overview.popularChannels.map((channel) => (
-                    <PopularChannelCard
-                      key={channel.id}
-                      channel={channel}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <EmptyState
-                  compact
-                  icon={<Users className="h-8 w-8" />}
-                  title="Chưa có kênh nổi bật"
-                  description="Top kênh sẽ xuất hiện khi có streamer đang live."
-                />
-              )}
-            </>
-
-          </div>
-        </main>
-        <DailyCheckInModal />
-        <ChatButton />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              compact
+              icon={<Users className="h-8 w-8" />}
+              title="Chưa có kênh nổi bật"
+              description="Top kênh sẽ xuất hiện khi có streamer đang live."
+            />
+          )}
+        </>
       </div>
     </div>
   );
@@ -235,7 +194,7 @@ export function BrowseSidebar({
   isLoading?: boolean;
 }) {
   return (
-    <aside className=" h-[880px] w-[260px] border-r border-white/5 bg-[#111219] lg:flex lg:flex-col  ">
+    <aside className=" w-[260px] border-r border-white/5 bg-[#111219] lg:flex lg:flex-col ">
 
 
       <div className="flex-1  px-4 pb-4 pt-5">
@@ -283,7 +242,7 @@ export function BrowseSidebar({
 
 export function SidebarNav() {
   const pathname = usePathname();
-
+  const { user } = useSelector(state => state.auth)
   const isActive = (path: string) => {
     if (path === '/' && pathname === '/') return true;
     if (path !== '/' && pathname.startsWith(path)) return true;
@@ -295,8 +254,8 @@ export function SidebarNav() {
       <Link
         href="/"
         className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${isActive('/')
-            ? 'bg-violet-500/15 font-semibold text-violet-200'
-            : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+          ? 'bg-violet-500/15 font-semibold text-violet-200'
+          : 'text-zinc-400 hover:bg-white/5 hover:text-white'
           }`}
       >
         <Home className="h-4 w-4" />
@@ -306,24 +265,26 @@ export function SidebarNav() {
       <Link
         href="/browse"
         className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${isActive('/browse')
-            ? 'bg-violet-500/15 font-semibold text-violet-200'
-            : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+          ? 'bg-violet-500/15 font-semibold text-violet-200'
+          : 'text-zinc-400 hover:bg-white/5 hover:text-white'
           }`}
       >
         <Compass className="h-4 w-4" />
         Duyệt
       </Link>
 
-      <Link
-        href="/following"
-        className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${isActive('/following')
+      {user && (
+        <Link
+          href="/following"
+          className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${isActive('/following')
             ? 'bg-violet-500/15 font-semibold text-violet-200'
             : 'text-zinc-400 hover:bg-white/5 hover:text-white'
-          }`}
-      >
-        <Heart className="h-4 w-4" />
-        Đang theo dõi
-      </Link>
+            }`}
+        >
+          <Heart className="h-4 w-4" />
+          Đang theo dõi
+        </Link>
+      )}
     </div>
   );
 }
@@ -406,7 +367,7 @@ function SidebarEmpty({ text }: { text: string }) {
 function HeroSection({ stream }: { stream: Stream | null }) {
   if (!stream) {
     return (
-      <div className="relative overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-br from-zinc-900 via-[#12141d] to-black p-10 shadow-2xl">
+      <div className=" overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-br from-zinc-900 via-[#12141d] to-black p-10 shadow-2xl">
         <div className="max-w-2xl">
           <Badge className="mb-5 bg-white/10 text-zinc-300 hover:bg-white/10">
             <Sparkles className="mr-2 h-3 w-3" />

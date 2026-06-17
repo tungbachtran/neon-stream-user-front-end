@@ -151,6 +151,10 @@ class ApiClient {
   public delete<T>(url: string, config?: any): Promise<T> {
     return this.client.delete(url, config);
   }
+
+  public patch<T>(url: string, data?: any, config?: any): Promise<T> {
+    return this.client.patch(url, data, config);
+  }
 }
 
 export const apiClient = new ApiClient();

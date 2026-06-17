@@ -1,18 +1,20 @@
+import { Stream } from '@/types';
 import { apiClient } from './client';
 
 export const followsAPI = {
-  toggleFollow: async (username: string) => {
-    const res = await apiClient.post(`/follows/${username}`);
-    return res.data as { followed: boolean; message: string };
+  // ✅ return để có giá trị boolean
+  toggleFollow: async (username: string): Promise<boolean> => {
+    const res = await apiClient.post<{ isFollowing: boolean }>(`/follows/${username}`);
+    return res.isFollowing;
   },
 
-  checkFollowStatus: async (username: string) => {
-    const res = await apiClient.get(`/follows/status/${username}`);
-    return res.data as { isFollowing: boolean };
+  // ✅ return để có giá trị boolean
+  checkFollowStatus: async (username: string): Promise<boolean> => {
+    const res = await apiClient.get<{ isFollowing: boolean }>(`/follows/status/${username}`);
+    return res.isFollowing;
   },
 
-  getLiveFollowedStreams: async () => {
-    const res = await apiClient.get('/follows/events/live');
-    return res.data;
+  getLiveFollowedStreams: async (): Promise<Stream[]> => {
+    return apiClient.get<Stream[]>('/follows/live');
   },
 };
