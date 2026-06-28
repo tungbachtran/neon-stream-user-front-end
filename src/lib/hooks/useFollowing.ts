@@ -4,7 +4,7 @@ import { apiClient } from "../api/client";
 export interface FollowingChannel {
   id: string;
   username: string;
-  avatarUrl?: string;
+  avatar?: string;
   isLive: boolean;
   liveStream: {
     id: string;

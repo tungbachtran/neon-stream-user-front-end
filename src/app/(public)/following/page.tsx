@@ -79,9 +79,9 @@ export default function FollowingPage() {
                     <div className={`h-14 w-14 overflow-hidden rounded-full ring-2 transition group-hover:ring-violet-400 ${
                       channel.isLive ? 'ring-red-500' : 'ring-white/10'
                     }`}>
-                      {channel.avatarUrl ? (
+                      {channel.avatar ? (
                         <Image
-                          src={channel.avatarUrl}
+                          src={channel.avatar}
                           alt={channel.username}
                           fill
                           className="object-cover"
@@ -158,9 +158,9 @@ export default function FollowingPage() {
                     {/* Info */}
                     <div className="flex items-center gap-3 p-3">
                       <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-full ring-1 ring-red-500/50">
-                        {channel.avatarUrl ? (
+                        {channel.avatar ? (
                           <Image
-                            src={channel.avatarUrl}
+                            src={channel.avatar}
                             alt={channel.username}
                             fill
                             className="object-cover"
