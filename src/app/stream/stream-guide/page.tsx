@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Monitor, ChevronRight, Copy, Calendar } from "lucide-react";
+import { Monitor, ChevronRight, Copy, Calendar, Radio, Settings, Play, RefreshCw, Square } from "lucide-react";
 
 function StepCard({ number, title, description, children, borderClass, glowClass, badgeClass }) {
   return (
@@ -71,6 +71,23 @@ function ResourceItem({ icon, title, subtitle }) {
   );
 }
 
+function CopyField({ label, value }) {
+  return (
+    <div className="rounded-2xl border border-white/6 bg-black/40 p-4">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/35 mb-2">
+        {label}
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="flex-1 truncate text-sm font-bold text-cyan-300">{value}</div>
+        <button className="flex items-center gap-1.5 rounded-lg border border-white/8 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/70 transition hover:bg-white/10">
+          <Copy className="h-3.5 w-3.5" />
+          Sao chép
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function StreamGuideSection() {
   return (
     <div className="bg-[#070b14] text-white">
@@ -99,9 +116,8 @@ export default function StreamGuideSection() {
               </h1>
 
               <p className="mt-8 max-w-[640px] text-lg leading-9 text-white/68 md:text-[1.55rem]">
-                Hãy làm theo các bước dưới đây để thiết lập stream của bạn.
-                Từ tải OBS, tạo livestream đến kết nối với phần mềm —
-                tất cả trong một hướng dẫn duy nhất.
+                Làm theo 7 bước đơn giản dưới đây để bắt đầu buổi livestream đầu tiên của bạn —
+                từ tạo phòng stream, kết nối OBS cho đến khi lên sóng thành công.
               </p>
 
               <div className="mt-12">
@@ -130,83 +146,136 @@ export default function StreamGuideSection() {
           </div>
         </div>
 
-        {/* ── Các bước + Sidebar ── */}
-        <div className="mt-8 grid gap-5 lg:grid-cols-[1fr]">
+        {/* ── Các bước ── */}
+        <div className="mt-8 space-y-5">
 
-          {/* Các bước */}
-          <div className="space-y-5">
-            <StepCard
-              number="01"
-              borderClass="border-violet-400/20"
-              glowClass="from-violet-400/8"
-              badgeClass="from-violet-300 to-violet-500 text-[#14091f]"
-              title="Tải & Cài đặt OBS Studio"
-              description="Nền tảng cho mọi buổi stream. Hãy tải đúng phiên bản chính thức dành cho hệ điều hành của bạn."
-            >
-              <div className="mt-6 flex flex-wrap gap-3">
-                <MiniButton icon={<Monitor className="h-4 w-4" />} label="Windows" />
-                <MiniButton icon={<Monitor className="h-4 w-4" />} label="macOS" />
+          {/* Bước 1 */}
+          <StepCard
+            number="01"
+            borderClass="border-violet-400/20"
+            glowClass="from-violet-400/8"
+            badgeClass="from-violet-300 to-violet-500 text-[#14091f]"
+            title="Tạo buổi livestream mới"
+            description="Vào mục Thiết lập Livestream và tạo một buổi phát mới. Sau khi tạo xong, sao chép đường dẫn RTMP và khoá stream được cấp — bạn sẽ cần dùng chúng ở bước tiếp theo."
+          >
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <CopyField label="Đường dẫn RTMP" value="rtmp://live.neonstream.io/app" />
+              <CopyField label="Khoá stream" value="sk_live_xxxxxxxxxxxxxxxx" />
+            </div>
+          </StepCard>
+
+          {/* Bước 2 */}
+          <StepCard
+            number="02"
+            borderClass="border-cyan-400/20"
+            glowClass="from-cyan-400/8"
+            badgeClass="from-cyan-300 to-sky-400 text-[#07141b]"
+            title="Tải & cài đặt OBS Studio"
+            description="Tải OBS Studio hoặc bất kỳ phần mềm phát trực tiếp nào hỗ trợ giao thức RTMP. Đảm bảo cài đúng phiên bản chính thức phù hợp với hệ điều hành của bạn."
+          >
+            <div className="mt-6 flex flex-wrap gap-3">
+              <MiniButton icon={<Monitor className="h-4 w-4" />} label="Tải cho Windows" />
+              <MiniButton icon={<Monitor className="h-4 w-4" />} label="Tải cho macOS" />
+            </div>
+          </StepCard>
+
+          {/* Bước 3 */}
+          <StepCard
+            number="03"
+            borderClass="border-pink-400/20"
+            glowClass="from-pink-400/8"
+            badgeClass="from-pink-300 to-rose-500 text-[#1d0a14]"
+            title="Kết nối OBS với nền tảng"
+            description="Mở OBS, vào File → Settings → Stream. Tại mục Service, chọn Custom. Dán đường dẫn RTMP vào ô Server và khoá stream vào ô Stream Key, sau đó nhấn Apply để lưu."
+          >
+            <div className="mt-6 rounded-[18px] border border-white/6 bg-black/30 p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <Settings className="h-4 w-4 text-white/40" />
+                <span className="text-xs font-semibold uppercase tracking-[0.15em] text-white/40">File → Settings → Stream</span>
               </div>
-            </StepCard>
-
-            <StepCard
-              number="02"
-              borderClass="border-cyan-400/20"
-              glowClass="from-cyan-400/8"
-              badgeClass="from-cyan-300 to-sky-400 text-[#07141b]"
-              title="Cấu hình kết nối"
-              description="Vào Cài đặt > Stream, điền thông tin xác thực để kết nối OBS với NeonStream."
-            >
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                <InfoTile label="Loại dịch vụ" value="Tùy chỉnh..." />
-                <InfoTile label="Máy chủ" value="rtmp://live.neonstream..." />
+              <div className="grid gap-3 sm:grid-cols-3">
+                <InfoTile label="Service" value="Custom..." />
+                <InfoTile label="Server" value="rtmp://live.neonstream..." />
+                <InfoTile label="Stream Key" value="sk_live_xxxxxxxx..." />
               </div>
-            </StepCard>
+            </div>
+          </StepCard>
 
-            <StepCard
-              number="03"
-              borderClass="border-pink-400/20"
-              glowClass="from-pink-400/8"
-              badgeClass="from-pink-300 to-rose-500 text-[#1d0a14]"
-              title="Tối ưu hoá chất lượng mã hoá"
-              description="Để cân bằng tốt nhất giữa chất lượng và độ trễ, hãy dùng các thông số khuyến nghị trong tab Đầu ra."
-            >
-              <div className="mt-6 grid gap-3 sm:grid-cols-4">
-                <StatTile label="Bộ mã hoá" value="NVENC H.264" />
-                <StatTile label="Bitrate" value="6000 Kbps" />
-                <StatTile label="Kiểm soát tốc độ" value="CBR" />
-                <StatTile label="Keyframe" value="2 giây" />
-              </div>
-            </StepCard>
-
-            <StepCard
-              number="04"
-              borderClass="border-violet-400/20"
-              glowClass="from-violet-400/8"
-              badgeClass="from-violet-300 to-violet-500 text-[#14091f]"
-              title="Thiết lập Scene & Source"
-              description="Thêm các nguồn hình ảnh. Nhấp chuột phải vào bảng Sources để thêm webcam, microphone và cửa sổ game."
-            >
-              <div className="mt-6 flex h-[220px] items-center justify-center rounded-[18px] border border-white/6 bg-[radial-gradient(circle_at_50%_30%,rgba(251,191,36,0.08),transparent_35%),linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))]">
-                <div className="text-center">
-                  <div className="text-6xl font-black tracking-[-0.06em] text-[#9cb3ff]">OB</div>
-                  <div className="mt-4 flex items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em]">
-                    <span className="rounded-full border border-cyan-400/25 bg-cyan-400/10 px-3 py-1 text-cyan-300">
-                      Webcam đang bật
-                    </span>
-                    <span className="rounded-full border border-violet-400/25 bg-violet-400/10 px-3 py-1 text-violet-300">
-                      Game capture bật
-                    </span>
-                  </div>
+          {/* Bước 4 */}
+          <StepCard
+            number="04"
+            borderClass="border-violet-400/20"
+            glowClass="from-violet-400/8"
+            badgeClass="from-violet-300 to-violet-500 text-[#14091f]"
+            title="Thiết lập Scene & Source, rồi bắt đầu stream"
+            description="Thêm các nguồn hình ảnh và âm thanh vào Scene: webcam, microphone, cửa sổ game hoặc màn hình. Khi mọi thứ đã sẵn sàng, nhấn nút Start Streaming trong OBS để bắt đầu phát."
+          >
+            <div className="mt-6 flex h-[220px] items-center justify-center rounded-[18px] border border-white/6 bg-[radial-gradient(circle_at_50%_30%,rgba(251,191,36,0.08),transparent_35%),linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))]">
+              <div className="text-center">
+                <div className="text-6xl font-black tracking-[-0.06em] text-[#9cb3ff]">OBS</div>
+                <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-[10px] font-semibold uppercase tracking-[0.12em]">
+                  <span className="rounded-full border border-cyan-400/25 bg-cyan-400/10 px-3 py-1 text-cyan-300">
+                    Webcam đang bật
+                  </span>
+                  <span className="rounded-full border border-violet-400/25 bg-violet-400/10 px-3 py-1 text-violet-300">
+                    Game Capture bật
+                  </span>
+                  <span className="rounded-full border border-green-400/25 bg-green-400/10 px-3 py-1 text-green-300">
+                    Microphone bật
+                  </span>
+                </div>
+                <div className="mt-5">
+                  <button className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-green-400 to-emerald-500 px-5 py-2.5 text-sm font-bold text-black shadow-[0_8px_24px_rgba(52,211,153,0.3)]">
+                    <Play className="h-4 w-4" />
+                    Start Streaming
+                  </button>
                 </div>
               </div>
-            </StepCard>
-          </div>
+            </div>
+          </StepCard>
 
-          
+          {/* Bước 5 */}
+          <StepCard
+            number="05"
+            borderClass="border-green-400/20"
+            glowClass="from-green-400/8"
+            badgeClass="from-green-300 to-emerald-500 text-[#071a0f]"
+            title="Làm mới trang quản lý để lên sóng"
+            description="Quay lại giao diện quản lý buổi livestream và nhấn Làm mới. Hệ thống sẽ nhận tín hiệu từ OBS và chuyển trạng thái buổi live sang Đang phát — khán giả có thể xem ngay lúc này."
+          >
+            <div className="mt-6 flex flex-wrap gap-3">
+              <MiniButton icon={<RefreshCw className="h-4 w-4" />} label="Làm mới trang" />
+              <div className="inline-flex items-center gap-2 rounded-xl border border-green-400/20 bg-green-400/8 px-4 py-3 text-sm font-semibold text-green-300">
+                <Radio className="h-4 w-4" />
+                Trạng thái: Đang phát
+              </div>
+            </div>
+          </StepCard>
+
+          {/* Bước 6 — placeholder nếu cần, hoặc bỏ qua theo yêu cầu */}
+
+          {/* Bước 7 */}
+          <StepCard
+            number="07"
+            borderClass="border-rose-400/20"
+            glowClass="from-rose-400/8"
+            badgeClass="from-rose-300 to-red-500 text-[#1d0808]"
+            title="Dừng buổi livestream"
+            description="Khi muốn kết thúc, quay lại OBS và nhấn Stop Streaming. Tín hiệu sẽ ngắt kết nối và buổi live tự động chuyển sang trạng thái Đã kết thúc trên hệ thống."
+          >
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-rose-500 to-red-600 px-5 py-3 text-sm font-bold text-white shadow-[0_8px_24px_rgba(244,63,94,0.3)] transition hover:from-rose-400 hover:to-red-500">
+                <Square className="h-4 w-4" />
+                Stop Streaming
+              </button>
+              <div className="inline-flex items-center gap-2 rounded-xl border border-white/8 bg-black/35 px-4 py-3 text-sm font-semibold text-white/50">
+                <Radio className="h-4 w-4" />
+                Trạng thái: Đã kết thúc
+              </div>
+            </div>
+          </StepCard>
+
         </div>
-
-        
 
       </div>
     </div>
